@@ -4,5 +4,5 @@
   :url "https://github.com/metosin/metosin-common"
   :dependencies [[org.clojure/clojure "1.7.0"]]
   :source-paths ["src/clj" "src/cljc" "src/cljs"]
-  :plugins [[circle/s3-wagon-private "1.2.2"]]
+  :plugins [[s3-wagon-private "1.2.0"]]
   :repositories [["private" {:url "s3p://metosin-maven/releases/" :creds :gpg}]])

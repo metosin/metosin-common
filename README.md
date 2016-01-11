@@ -8,7 +8,7 @@ You need S3 credentials to use this. Save them to *~/.lein/credentials.clj.gpg*.
 (You need GPG setup...).
 
 ```clj
-{#"s3p://metosinmaven/releases/"
+{#"s3p://metosin-maven/releases/"
  {:username "<access key id>"
   :passphrase "<secret key>"}}
 ```
@@ -18,7 +18,7 @@ You need S3 credentials to use this. Save them to *~/.lein/credentials.clj.gpg*.
 *project.clj:*
 ```clj
 :plugins [[s3-wagon-private "1.2.0"]]
-:repositories [["private" {:url "s3p://metosinmaven/releases/" :creds :gpg}]]
+:repositories [["private" {:url "s3p://metosin-maven/releases/" :creds :gpg}]]
 ```
 ### Boot
 
@@ -26,7 +26,7 @@ You need S3 credentials to use this. Save them to *~/.lein/credentials.clj.gpg*.
 ```clj
 (set-env!
  :wagons       '[[s3-wagon-private "1.1.2"]]
- :repositories #(conj % '["private" {:url "s3p://metosinmaven/releases/"}])
+ :repositories #(conj % '["private" {:url "s3p://metosin-maven/releases/"}])
  :dependencies '[[acme/s3library "1.0.0"]])
 ```
 

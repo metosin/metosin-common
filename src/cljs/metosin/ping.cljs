@@ -3,8 +3,7 @@
   (:require [reagent.core :as r]
             [chord.client :refer [ws-ch]]
             [cljs.core.async :refer [chan <! >! put! close! timeout]]
-            ; [common.loc :refer [loc]]
-            ))
+            [common.loc :refer [loc]]))
 
 (defonce prev-channel (atom nil))
 (defonce offline? (r/atom false))
@@ -16,6 +15,11 @@
 (defn reconnect []
   (js/window.location.reload))
 
+(defn create-url [path]
+  (let [proto (.. js/window -location -protocol)
+        host  (.. js/window -location -host)]
+    (str (if (= "https:" proto) "wss" "ws") ":" host path)))
+
 (defn start-ping []
   (let [ctrl-ch (chan)]
     (go
@@ -26,7 +30,7 @@
             fail 0]
        (reset! offline? (>= fail +fails+))
        (if-not conn
-         (let [y (ws-ch "ws://localhost:3000/ping")
+         (let [y (ws-ch (create-url "/ping"))
                {:keys [ws-channel error] :as x} (alt! ctrl-ch :stop
                                                       y ([v] v))]
            (if (= :stop x)
@@ -89,4 +93,4 @@
         {:style {:text-align "center"
                  :color "#fff"
                  :text-shadow "0 0 10px rgba(0,0,0,1)"}}
-        [:i.fa.fa-spinner.fa-pulse] " Offline"]]]]))
+        [:i.fa.fa-spinner.fa-pulse] " " (loc :app.offline)]]]]))

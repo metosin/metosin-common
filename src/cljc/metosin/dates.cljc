@@ -1,24 +1,18 @@
 (ns metosin.dates
   "Use this namespace to format dates and datetimes for user.
 
-  Don't use for serializing or deserializing.
-
-  Clojure side uses always Helsinki timezone.
-  On Cljs side, uses the timezone of browser."
+  Don't use for serializing or deserializing."
   (:refer-clojure :exclude [format])
   #?(:cljs (:require goog.date.UtcDateTime
                      goog.date.Date
                      goog.i18n.DateTimeFormat
-                     goog.i18n.DateTimeParse))
+                     goog.i18n.DateTimeParse
+                     goog.i18n.TimeZone))
   #?(:clj  (:import [org.joda.time DateTimeZone]
                     [org.joda.time.format DateTimeFormat])))
 
 ; Default to UTC ALWAYS!
 #?(:clj (DateTimeZone/setDefault DateTimeZone/UTC))
-
-; FIXME: No hardcoding
-; Maybe we should have own formatter type which contains this?
-#?(:clj (def helsinki-tz (DateTimeZone/forID "Europe/Helsinki")))
 
 ;;
 ;; Types
@@ -26,6 +20,7 @@
 
 (def DateTime #?(:clj  org.joda.time.DateTime,
                  :cljs goog.date.UtcDateTime))
+
 (def LocalDate #?(:clj  org.joda.time.LocalDate,
                   :cljs goog.date.Date))
 
@@ -130,16 +125,58 @@
 (def ^:private parser (memoize parser'))
 
 ;;
+;; Timezone stuff
+;; Cljs needs magic
+;;
+
+#?(:cljs (def timezones (atom {})))
+
+#?(:clj (defn closure-timezone
+          "Builds Closure timeZoneData map from JodaTime timezone."
+          [timezone-id]
+          ; Note: Java8 doesn't have nextTransitions so would be harder to implement with it?
+          (let [tz (DateTimeZone/forID timezone-id)
+                ms->m #(/ % (* 1000 60))
+                ms->h #(/ % (* 1000 60 60))
+                std-offset (.getStandardOffset tz 0)
+                transitions (mapcat (fn [ms]
+                                      [(ms->h ms) (ms->m (- (.getOffset tz ms) std-offset))])
+                                    ; FIXME: Magic number
+                                    (take 137 (iterate #(.nextTransition tz %) 0)))
+                ; Skip first two items if they are both zero
+                transitions (if (and (zero? (first transitions))
+                                     (zero? (second transitions)))
+                              (drop 2 transitions)
+                              transitions)
+                first-transition (.nextTransition tz 0)]
+            {:id timezone-id
+             :std_offset (ms->m std-offset)
+             :names [(.getShortName tz 0) (.getName tz 0)
+                     ; First transition should be summer time?
+                     (.getShortName tz first-transition) (.getName tz first-transition)]
+             :transitions (vec transitions)})))
+
+#?(:clj (defmacro initialize-timezone!
+          "Initializes given timezone for ClojureScript use."
+          [timezone-id]
+          `(swap! timezones assoc ~timezone-id (goog.i18n.TimeZone.createTimeZone (~'#'clj->js ~(closure-timezone timezone-id))))))
+
+(defn- timezone' [^String zone]
+  #?(:clj (DateTimeZone/forID zone)
+     :cljs nil))
+
+(def ^:private timezone (memoize timezone'))
+
+;;
 ;; Constructors
 ;;
 
 (defn date-time
   ([x]
    (-to-date-time x))
-  ([s pattern]
-   #?(:cljs (let [d (goog.date.UtcDateTime. 0 0 0 0 0 0 0)]
-              (.strictParse (parser pattern) s d)
-              d)
+  ([s {:keys [pattern]}]
+   #?(:cljs (doto (goog.date.UtcDateTime. 0 0 0 0 0 0 0)
+              (as-> date (.strictParse (parser pattern) s date)))
       :clj  (org.joda.time.DateTime/parse s (parser pattern))))
   ([y m d hh mm]
    #?(:clj  (org.joda.time.DateTime. y m d hh mm)
@@ -151,10 +188,9 @@
 (defn date
   ([x]
    (-to-date x))
-  ([s pattern]
-   #?(:cljs (let [d (goog.date.Date. 0 0 0)]
-              (.strictParse (parser pattern) s d)
-              d)
+  ([s {:keys [pattern]}]
+   #?(:cljs (doto (goog.date.Date. 0 0 0)
+              (as-> date (.strictParse (parser pattern) s date)))
       :clj  (org.joda.time.LocalDate/parse s (parser pattern))))
   ([y m d]
    #?(:clj  (org.joda.time.LocalDate. y m d)
@@ -168,12 +204,24 @@
   #?(:clj  (org.joda.time.LocalDate.)
      :cljs (goog.date.Date.)))
 
+(defn with-zone [d timezone-id]
+  (if timezone-id
+    #?(:clj  (.withZone d (timezone timezone-id))
+       :cljs (let [tz (or (get @timezones timezone-id)
+                          (throw (js/Error. (str "Can't find timezone \"" timezone-id "\". Did you remember to initialize it?"))))
+                   offset (- (.getOffset tz d))]
+               ; Doesn't change date timeZone, as it's not possible in JS
+               (doto (goog.date.UtcDateTime. d)
+                 (.add (goog.date.Interval. goog.date.Interval.MINUTES offset)))))
+    d))
+
 ;;
 ;; Format
 ;;
 
-(defn format [x pattern]
-  (let [f (formatter pattern)]
+(defn format [x {:keys [pattern timezone]}]
+  (let [x (with-zone x timezone)
+        f (formatter pattern)]
     #?(:cljs (.format f x)
        :clj  (.toString x f))))
 
@@ -199,9 +247,8 @@
 (defn add [date x]
   {:pre [#?(:cljs (instance? goog.date.Interval x))]}
   #?(:cljs
-      (let [n (.clone date)]
-        (.add n x)
-        n)
+      (doto (.clone date)
+        (.add x))
      :clj
      (.plus date x)))
 
@@ -222,8 +269,9 @@
 ;; "Legacy api"
 ;;
 
-(def date-fmt "d.M.yyyy")
-(def date-time-fmt "d.M.yyyy H:mm")
+(def date-fmt {:pattern "d.M.yyyy"})
+(def date-time-fmt {:pattern "d.M.yyyy H:mm"
+                    :timezone "Europe/Helsinki"})
 
 (defn date->str [d]
   (if d
@@ -231,7 +279,4 @@
 
 (defn date-time->str [d]
   (if d
-    (format
-      #?(:clj  (.withZone d helsinki-tz)
-         :cljs (goog.date.DateTime. d))
-      date-time-fmt)))
+    (format d date-time-fmt)))

@@ -9,7 +9,7 @@
                   [boot/core "2.5.2" :scope "test"]
                   [adzerk/boot-cljs "1.7.170-3" :scope "test"]
                   [crisptrutski/boot-cljs-test "0.2.2-SNAPSHOT" :scope "test"]
-                  [adzerk/boot-test "1.0.7" :scope "test"]
+                  [adzerk/boot-test "1.1.0" :scope "test"]
 
                   ;; metosin.core.async.debounce
                   [org.clojure/core.async "0.2.374"]

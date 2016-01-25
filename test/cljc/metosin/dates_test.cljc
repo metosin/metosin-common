@@ -3,13 +3,29 @@
             #?(:clj [clojure.test :refer :all]
                :cljs [cljs.test :refer-macros [deftest is testing] :as test])))
 
+(deftest date-test
+  (testing "date-time to date"
+    (is (= (d/date 2015 5 14) (d/date (d/date-time 2015 5 14 9 13)))))
+  (testing "native to date"
+    (is (= (d/date 2015 5 14) (d/date #inst "2015-05-14T12:00"))))
+  (testing "to native"
+    (is (= #inst "2015-05-14T00:00" (d/to-native (d/date 2015 5 14))))))
+
+(deftest date-time-test
+  (testing "date to date-time"
+    (is (= (d/date-time 2015 5 14 0 0) (d/date-time (d/date 2015 5 14)))))
+  (testing "native to date-time"
+    (is (= (d/date-time 2015 5 14 9 13) (d/date-time #inst "2015-05-14T09:13"))))
+  (testing "to native"
+    (is (= #inst "2015-05-14T09:13" (d/to-native (d/date-time 2015 5 14 9 13))))))
+
 (deftest unparse-test
   (is (= "2015-04-15" (d/unparse "yyyy-MM-dd" (d/date 2015 4 15))))
   (is (= "2015-04-15 09:13" (d/unparse "yyyy-MM-dd HH:mm" (d/date-time 2015 4 15 9 13)))))
 
 (deftest parse-test
-  (is (= (d/date 2015 4 15) (d/parse-date "yyyy-MM-dd" "2015-04-15")))
-  (is (= (d/date-time 2015 4 15 9 13) (d/parse "yyyy-MM-dd HH:mm" "2015-04-15 09:13"))))
+  (is (= (d/date 2015 4 15) (d/date "2015-04-15" "yyyy-MM-dd")))
+  (is (= (d/date-time 2015 4 15 9 13) (d/date-time "2015-04-15 09:13" "yyyy-MM-dd HH:mm"))))
 
 (deftest start-of-week-test
   (is (= (d/date 2016 1 25) (d/start-of-week (d/date 2016 1 27)))))

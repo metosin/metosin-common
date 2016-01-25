@@ -16,6 +16,7 @@
 #?(:clj (DateTimeZone/setDefault DateTimeZone/UTC))
 
 ; FIXME: No hardcoding
+; Maybe we should have own formatter type which contains this?
 #?(:clj (def helsinki-tz (DateTimeZone/forID "Europe/Helsinki")))
 
 ;;
@@ -34,21 +35,45 @@
 (defprotocol ToNative
   (to-native [x] "Convers to native Date object (java.util.Date or js/Date)."))
 
-#?(:clj
+#?(:cljs
+    (extend-protocol ToNative
+      goog.date.Date
+      (to-native [x]
+        ; FIXME: broken
+        (js/Date. (.getYear x) (.getMonth x) (.getDate x) 0 0 0 0))
+      goog.date.UtcDateTime
+      (to-native [x]
+        ; FIXME: broken
+        (js/Date. (.getYear x) (.getMonth x) (.getDate x) (.getHours x) (.getMinutes x) (.getSeconds x) (.getMilliseconds x))))
+   :clj
     (extend-protocol ToNative
       org.joda.time.DateTime
-      (to-native [x] (.toDate x))
+      (to-native [x]
+        (.toDate x))
       org.joda.time.LocalDate
-      (to-native [x] (.toDate x))))
+      (to-native [x]
+        ; LocalDate toDate creates date in local timezone, that is Helsinki
+        (.toDate (.toDateTimeAtStartOfDay x)))))
 
 (defprotocol ToDateTime
   (-to-date-time [x] "Convers Date or such to DateTime."))
 
 #?(:cljs
-    (extend-protocol ToDateTime
-      goog.date.Date
-      (-to-date-time [x]
-        (goog.date.UtcDateTime. (.getYear x) (.getMonth x) (.getDate x)))))
+   (extend-protocol ToDateTime
+     js/Date
+     (-to-date-time [x]
+       (goog.date.UtcDateTime. x))
+     goog.date.Date
+     (-to-date-time [x]
+       (goog.date.UtcDateTime. (.getYear x) (.getMonth x) (.getDate x))))
+   :clj
+   (extend-protocol ToDateTime
+     java.util.Date
+     (-to-date-time [x]
+       (org.joda.time.DateTime. x))
+     org.joda.time.LocalDate
+     (-to-date-time [x]
+       (org.joda.time.DateTime. (.getYear x) (.getMonthOfYear x) (.getDayOfMonth x) 0 0))))
 
 (defprotocol ToDate
   (-to-date [x] "Convers DateTime or such to Date."))
@@ -58,14 +83,20 @@
      java.util.Date
      (-to-date [x]
        (org.joda.time.LocalDate/fromDateFields x))
+     org.joda.time.DateTime
+     (-to-date [x]
+       (.toLocalDate x))
      nil
      (-to-date [x]
        nil))
    :cljs
    (extend-protocol ToDate
-      goog.date.UtcDateTime
-      (-to-date [x]
-        (goog.date.Date. (.getYear x) (.getMonth x) (.getDate x)))))
+     js/Date
+     (-to-date [x]
+       (goog.date.Date. x))
+     goog.date.UtcDateTime
+     (-to-date [x]
+       (goog.date.Date. (.getYear x) (.getMonth x) (.getDate x)))))
 
 ; FIXME: Is this a good idea?
 ; Required for using dates as keys etc.
@@ -81,11 +112,34 @@
         (- (.getTime o) (.getTime other)))))
 
 ;;
+;; Formatter and parser constructors, private.
+;; these turn pattern values into low level implementations.
+;;
+
+(defn- formatter' [f]
+  #?(:cljs (goog.i18n.DateTimeFormat. f)
+     :clj  (DateTimeFormat/forPattern f)))
+
+(def ^:private formatter (memoize formatter'))
+
+(defn- parser' [f]
+  #?(:cljs (goog.i18n.DateTimeParse. f)
+     :clj  (DateTimeFormat/forPattern f)))
+
+(def ^:private parser (memoize parser'))
+
+;;
 ;; Constructors
 ;;
 
 (defn date-time
-  ([x] (-to-date-time x))
+  ([x]
+   (-to-date-time x))
+  ([s pattern]
+   #?(:cljs (let [d (goog.date.UtcDateTime. 0 0 0 0 0 0 0)]
+              (.strictParse (parser pattern) s d)
+              d)
+      :clj  (org.joda.time.DateTime/parse s (parser pattern))))
   ([y m d hh mm]
    #?(:clj  (org.joda.time.DateTime. y m d hh mm)
       :cljs (goog.date.UtcDateTime.  y (dec m) d hh mm)))
@@ -94,7 +148,13 @@
       :cljs (goog.date.UtcDateTime.  y (dec m) d hh mm ss))))
 
 (defn date
-  ([x] (-to-date x))
+  ([x]
+   (-to-date x))
+  ([s pattern]
+   #?(:cljs (let [d (goog.date.Date. 0 0 0)]
+              (.strictParse (parser pattern) s d)
+              d)
+      :clj  (org.joda.time.LocalDate/parse s (parser pattern))))
   ([y m d]
    #?(:clj  (org.joda.time.LocalDate. y m d)
       :cljs (goog.date.Date. y (dec m) d))))
@@ -111,33 +171,14 @@
 ;; Parsing and unparsing
 ;;
 
-(defn formatter [f]
-  #?(:cljs (goog.i18n.DateTimeFormat. f)
-     :clj  (DateTimeFormat/forPattern f)))
-
-(defn parser [f]
-  #?(:cljs (goog.i18n.DateTimeParse. f)
-     :clj  (DateTimeFormat/forPattern f)))
-
-(defn unparse [f x]
-  (let [f (if (string? f) (formatter f) f)]
+(defn unparse [pattern x]
+  (let [f (formatter pattern)]
     #?(:cljs (.format f x)
        :clj  (.toString x f))))
 
-;; TODO: Replace with date and date-time str, format arities?
-(defn parse [p x]
-  (let [p (if (string? p) (parser p) p)]
-    #?(:cljs (let [d (goog.date.UtcDateTime. 0 0 0 0 0 0 0)]
-               (.strictParse p x d)
-               d)
-       :clj  (org.joda.time.DateTime/parse x p))))
-
-(defn parse-date [p x]
-  (let [p (if (string? p) (parser p) p)]
-    #?(:cljs (let [d (goog.date.Date. 0 0 0)]
-               (.strictParse p x d)
-               d)
-       :clj  (org.joda.time.LocalDate/parse x p))))
+;;
+;; Utilities
+;;
 
 (defn start-of-week [date]
   #?(:cljs (goog.date.Date. (.getYear date) (.getMonth date) (- (.getDate date) (.getIsoWeekday date)))
@@ -146,6 +187,13 @@
 (defn end-of-week [date]
   #?(:cljs (goog.date.Date. (.getYear date) (.getMonth date) (+ (.getDate date) (- 6 (.getIsoWeekday date))))
      :clj  (.withMaximumValue (.dayOfWeek date))))
+
+;; TODO:
+;; start-of-month
+;; end-of-month
+;; start-of-year?
+;; end-of-year?
+;; Better API for these 6 calls?
 
 (defn add [date x]
   {:pre [#?(:cljs (instance? goog.date.Interval x))]}
@@ -160,12 +208,21 @@
   #?(:cljs (goog.date.Interval. goog.date.Interval.DAYS n)
      :clj  (org.joda.time.Days/days n)))
 
+;; TODO:
+;; minus
+;; years
+;; months
+;; hours
+;; minutes
+;; seconds
+;; milliseconds?
+
 ;;
 ;; "Legacy api"
 ;;
 
-(def date-fmt (formatter "d.M.yyyy"))
-(def date-time-fmt (formatter "d.M.yyyy H:mm"))
+(def date-fmt "d.M.yyyy")
+(def date-time-fmt "d.M.yyyy H:mm")
 
 (defn date->str [d]
   (if d

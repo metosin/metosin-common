@@ -42,7 +42,7 @@
                 (<! (timeout +ping-every+))
                 (recur nil (timeout +timeout+) (inc fail)))
                (do
-                (if (pos? fail) (reconnect))
+                (if (>= fail +fails+) (reconnect))
                 (>! ws-channel {:type :ping})
                 (recur ws-channel (timeout +timeout+) 0)))))
          (do

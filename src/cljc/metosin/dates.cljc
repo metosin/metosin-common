@@ -1,10 +1,11 @@
 (ns metosin.dates
   "Use this namespace to format dates and datetimes for user.
 
-   Don't use for serializing or deserializing.
+  Don't use for serializing or deserializing.
 
-   Clojure side uses always Helsinki timezone.
-   On Cljs side, uses the timezone of browser."
+  Clojure side uses always Helsinki timezone.
+  On Cljs side, uses the timezone of browser."
+  (:refer-clojure :exclude [format])
   #?(:cljs (:require goog.date.UtcDateTime
                      goog.date.Date
                      goog.i18n.DateTimeFormat
@@ -168,10 +169,10 @@
      :cljs (goog.date.Date.)))
 
 ;;
-;; Parsing and unparsing
+;; Format
 ;;
 
-(defn unparse [pattern x]
+(defn format [x pattern]
   (let [f (formatter pattern)]
     #?(:cljs (.format f x)
        :clj  (.toString x f))))
@@ -226,10 +227,11 @@
 
 (defn date->str [d]
   (if d
-    (unparse date-fmt d)))
+    (format d date-fmt)))
 
 (defn date-time->str [d]
   (if d
-    (unparse date-time-fmt
-             #?(:clj  (.withZone d helsinki-tz)
-                :cljs (goog.date.DateTime. d)))))
+    (format
+      #?(:clj  (.withZone d helsinki-tz)
+         :cljs (goog.date.DateTime. d))
+      date-time-fmt)))

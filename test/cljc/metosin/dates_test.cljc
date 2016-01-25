@@ -19,9 +19,9 @@
   (testing "to native"
     (is (= #inst "2015-05-14T09:13" (d/to-native (d/date-time 2015 5 14 9 13))))))
 
-(deftest unparse-test
-  (is (= "2015-04-15" (d/unparse "yyyy-MM-dd" (d/date 2015 4 15))))
-  (is (= "2015-04-15 09:13" (d/unparse "yyyy-MM-dd HH:mm" (d/date-time 2015 4 15 9 13)))))
+(deftest format-test
+  (is (= "2015-04-15" (d/format (d/date 2015 4 15) "yyyy-MM-dd")))
+  (is (= "2015-04-15 09:13" (d/format (d/date-time 2015 4 15 9 13) "yyyy-MM-dd HH:mm"))))
 
 (deftest parse-test
   (is (= (d/date 2015 4 15) (d/date "2015-04-15" "yyyy-MM-dd")))

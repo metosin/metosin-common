@@ -35,12 +35,16 @@
     (extend-protocol ToNative
       goog.date.Date
       (to-native [x]
-        ; FIXME: broken
-        (js/Date. (.getYear x) (.getMonth x) (.getDate x) 0 0 0 0))
+        (let [d (js/Date. (.getYear x) (.getMonth x) (.getDate x) 0 0 0 0)]
+          (.setMinutes d (- (.getMinutes d) (.getTimezoneOffset d)))
+          d))
       goog.date.UtcDateTime
       (to-native [x]
-        ; FIXME: broken
-        (js/Date. (.getYear x) (.getMonth x) (.getDate x) (.getHours x) (.getMinutes x) (.getSeconds x) (.getMilliseconds x))))
+        ; Will create js/Date in local time zone.
+        ; Manually convert to UTC. x.getTimezoneOffset can't be used because it's zero for UtcDateTime.
+        (let [d (js/Date. (.getYear x) (.getMonth x) (.getDate x) (.getHours x) (.getMinutes x) (.getSeconds x) (.getMilliseconds x))]
+          (.setMinutes d (- (.getMinutes d) (.getTimezoneOffset d)))
+          d)))
    :clj
     (extend-protocol ToNative
       org.joda.time.DateTime
@@ -161,9 +165,10 @@
           [timezone-id]
           `(swap! timezones assoc ~timezone-id (goog.i18n.TimeZone.createTimeZone (~'#'clj->js ~(closure-timezone timezone-id))))))
 
-(defn- timezone' [^String zone]
-  #?(:clj (DateTimeZone/forID zone)
-     :cljs nil))
+(defn- timezone' [^String timezone-id]
+  #?(:clj (DateTimeZone/forID timezone-id)
+     :cljs (or (get @timezones timezone-id)
+               (throw (js/Error. (str "Can't find timezone \"" timezone-id "\". Did you remember to initialize it?"))))))
 
 (def ^:private timezone (memoize timezone'))
 
@@ -207,8 +212,7 @@
 (defn with-zone [d timezone-id]
   (if timezone-id
     #?(:clj  (.withZone d (timezone timezone-id))
-       :cljs (let [tz (or (get @timezones timezone-id)
-                          (throw (js/Error. (str "Can't find timezone \"" timezone-id "\". Did you remember to initialize it?"))))
+       :cljs (let [tz (timezone timezone-id)
                    offset (- (.getOffset tz d))]
                ; Doesn't change date timeZone, as it's not possible in JS
                (doto (goog.date.UtcDateTime. d)

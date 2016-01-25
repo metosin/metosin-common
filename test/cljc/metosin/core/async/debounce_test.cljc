@@ -1,4 +1,4 @@
 (ns metosin.core.async.debounce-test
-  (:require [metosin.core.async.debounce :refer :all]
+  (:require [metosin.core.async.debounce :as d]
             #?(:clj [clojure.test :refer :all]
-               :cljs [cljs.test :refer :all :include-macros true])))
+               :cljs [cljs.test :refer-macros [deftest is testing] :as test])))

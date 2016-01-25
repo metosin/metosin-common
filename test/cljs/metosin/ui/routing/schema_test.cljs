@@ -1,6 +1,7 @@
 (ns metosin.ui.routing.schema-test
   (:require [metosin.ui.routing.schema :refer [schema-query]]
             [domkm.silk :as silk]
+            [schema.core :as s]
             [cljs.test :refer-macros [deftest testing is] :as test]))
 
 ;;

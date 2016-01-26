@@ -23,10 +23,24 @@
 ; only when using the same connection that was used to create the type. After
 ; resetting the connection, the dispatcher sometimes gets "app.keyword"
 ; and sometimes it gets "keyword"
+
+
+
 (def keyword-type-name "keyword")
 (def keyword-type-long-name "\"app\".\"keyword\"")
 
+;;TODO Above should be generalized somehow better, but it could break
+;; existing code. Then we could perhaps agree that keyword namespace
+;; is the type and handle project spesific types on the project level, not here
+
+;; Marker for wrapping inserted values to wanted Postgres type
+(defrecord PgType [type value])
+
 (extend-protocol jdbc/ISQLValue
+  PgType
+  (sql-value [this]
+    (->PGobject (:type this) (:value this)))
+
   clojure.lang.Keyword
   (sql-value [this]
     (let [k (if (namespace this)
@@ -46,13 +60,13 @@
 ;; From Postgres to Clojure
 ;;
 
-(defn handle-keyword [x]
+(defn handle-keyword [^PGobject x]
   (let [s (.getValue x)]
     (keyword (.substring s 1 (dec (count s))))))
 
-(defmulti pgobject->clj (fn [x] (.getType x)))
+(defmulti pgobject->clj (fn [^PGobject x] (.getType x)))
 
-(defmethod pgobject->clj "json" [x]
+(defmethod pgobject->clj "json" [^PGobject x]
   (json/parse-string (.getValue x) true))
 
 (defmethod pgobject->clj keyword-type-name [x]
@@ -67,18 +81,3 @@
   PGobject
   (result-set-read-column [x rsmeta idx]
     (pgobject->clj x)))
-
-; FIXME: Move to test file
-(deftest pgobject->clj-test
-  (testing "keyword"
-    (is (= :foo/bar (pgobject->clj (->PGobject keyword-type-name "(foo/bar)"))))
-    (is (= :foo/bar (pgobject->clj (jdbc/sql-value :foo/bar))))
-    (is (= :bar (pgobject->clj (->PGobject keyword-type-name "(bar)"))))
-    (is (= :bar (pgobject->clj (jdbc/sql-value :bar)))))
-
-  (testing "json"
-    (is (= {:foo "a"} (pgobject->clj (->PGobject "json" "{\"foo\":\"a\"}"))))
-    (is (= {:foo "a"} (pgobject->clj (jdbc/sql-value {:foo "a"}))))
-    (is (= ["a" "b"] (pgobject->clj (->PGobject "json" "[\"a\",\"b\"]"))))
-    (is (= ["a" "b"] (pgobject->clj (jdbc/sql-value ["a" "b"]))))
-    ))

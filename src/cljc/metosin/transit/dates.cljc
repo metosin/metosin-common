@@ -44,7 +44,7 @@
 (defn write-local-date
   "Represent Date in YYYY-MM-DD format."
   [x]
-  #?(:clj  (.toString ^org.joda.time.DateTime x)
+  #?(:clj  (.toString ^org.joda.time.LocalDate x)
      :cljs (.toIsoString x true false)))
 
 (defn read-local-date

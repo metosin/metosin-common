@@ -61,8 +61,9 @@
   "Adds `onhashchange` hook and calls update-route logic when hash change event happens.
 
   Update-route will call given `route-change` function. `route-change` should return a
-  new route map or a channel which will contain new route map or multiple route maps
-  in future. This can be used to delay route-change until e.g. data is loaded.
+  new route data or a channel which will contain new route data in future. Channel
+  can return multiple route data maps. This can be used to delay route-change
+  until e.g. data is loaded.
 
   FIXME: Using cursor/atom is stupid.
   Update-route will set the new route data to given cursor using `reset!`."

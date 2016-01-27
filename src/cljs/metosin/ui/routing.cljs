@@ -20,7 +20,13 @@
   (-unmatch-validators [_]
     {}))
 
-(defn data [x]
+(defn data
+  "Merges additional data into route data.
+
+  Useful for:
+  - marking if the route is private or public
+  - marking what menu item should be active"
+  [x]
   (AdditionalData. x))
 
 ;;
@@ -51,7 +57,16 @@
               (recur)))))
       (if v (reset! cursor v)))))
 
-(defn hook! [routes cursor route-change]
+(defn hook!
+  "Adds `onhashchange` hook and calls update-route logic when hash change event happens.
+
+  Update-route will call given `route-change` function. `route-change` should return a
+  new route map or a channel which will contain new route map or multiple route maps
+  in future. This can be used to delay route-change until e.g. data is loaded.
+
+  FIXME: Using cursor/atom is stupid.
+  Update-route will set the new route data to given cursor using `reset!`."
+  [routes cursor route-change]
   (set! js/window.onhashchange (partial update-route! routes cursor route-change))
   (update-route! routes cursor route-change))
 

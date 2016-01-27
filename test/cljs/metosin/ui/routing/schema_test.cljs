@@ -8,8 +8,6 @@
 ;; Search query params
 ;;
 
-(enable-console-print!)
-
 (deftest schema-query-test
   (testing "single required option"
     (let [routes (silk/routes [[:tickets [["tickets"] (schema-query {:q s/Str})]]])]
@@ -37,5 +35,3 @@
              (silk/depart routes :tickets {:baskets #{"a" "b"}})))
       (is (= {:domkm.silk/name :tickets :baskets #{"a" "b"}}
              (select-keys (silk/arrive routes (str "/tickets?baskets=" (js/encodeURIComponent "a,b"))) [:domkm.silk/name :baskets]))))))
-
-(test/run-tests)

@@ -69,6 +69,9 @@
 (defmethod pgobject->clj "json" [^PGobject x]
   (json/parse-string (.getValue x) true))
 
+(defmethod pgobject->clj "jsonb" [^PGobject x]
+  (json/parse-string (.getValue x) true))
+
 (defmethod pgobject->clj keyword-type-name [x]
   (handle-keyword x))
 

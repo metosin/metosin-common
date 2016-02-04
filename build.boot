@@ -11,6 +11,9 @@
                   [crisptrutski/boot-cljs-test "0.2.2-SNAPSHOT" :scope "test"]
                   [adzerk/boot-test "1.1.0" :scope "test"]
 
+                  ;; for testing metosin.jdbc
+                  [com.h2database/h2 "1.4.191" :scope "test"]
+
                   ;; metosin.core.async.debounce
                   [org.clojure/core.async "0.2.374"]
                   ;; metosin.email

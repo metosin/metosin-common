@@ -48,5 +48,8 @@
                  [jarohen/chord "0.7.0"]
                  ;; metosin.ui.routing.schema
                  [com.domkm/silk "0.1.1"]]
+  :profiles {:dev {:dependencies [;; for metosin.jdbc tests
+                                  [com.h2database/h2 "1.4.191"]]}}
   :source-paths ["src/clj" "src/cljc" "src/cljs"]
-  :test-paths ["test/clj" "test/cljc"])
+  :test-paths ["test/clj" "test/cljc"]
+  :aliases {"run-tests" ["with-profile" "dev" "test"]})

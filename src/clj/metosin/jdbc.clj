@@ -2,7 +2,10 @@
   "Wraps clojure.jdbc with optionated entities and identifiers fn."
   (:require [clojure.string :as string]
             [clojure.java.jdbc :as jdbc]
-            [potemkin :refer [import-vars]]))
+            [potemkin :refer [import-vars]]
+            [clojure.walk :refer [postwalk]]
+            [camel-snake-kebab.core :refer [->kebab-case]]))
+
 
 (defn entities [x]
   (string/replace x #"-" "_"))
@@ -11,6 +14,15 @@
   (-> x
       (string/lower-case)
       (string/replace #"_" "-")))
+
+(defn- kebab-keywords [x]
+  (postwalk
+    (fn [x]
+      (if (map? x)
+        (into (empty x) (for [[k v] x]
+                          [(if (keyword? k) (->kebab-case k) k) v]))
+        x))
+    x))
 
 (defn query
   {:arglists '([db-spec sql-and-params
@@ -31,7 +43,8 @@
                [db-spec table row-map & row-maps :transaction? true]
                [db-spec table col-name-vec col-val-vec & col-val-vecs :transaction? true])}
   [db table & options]
-  (apply jdbc/insert! db table (concat options [:entities entities])))
+  (-> (apply jdbc/insert! db table (concat options [:entities entities]))
+      (kebab-keywords)))
 
 (defn update!
   [db table set-map where-clause & {:as m}]

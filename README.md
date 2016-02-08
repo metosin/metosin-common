@@ -1,5 +1,8 @@
 # Metosin-common
 
+[![Clojars Project](https://img.shields.io/clojars/v/metosin/metosin-common.svg)](https://clojars.org/metosin/metosin-common)
+[![Build Status](https://travis-ci.org/metosin/metosin-common.svg?branch=master)](https://travis-ci.org/metosin/metosin-common)
+
 Random collection is various namespaces used in multiple Metosin projects
 
 ## Project statement

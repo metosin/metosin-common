@@ -1,3 +1,5 @@
+(def +version+ "0.1.0-SNAPSHOT")
+
 (set-env!
   ; Test path can be included here as source-files are not included in JAR
   ; Just be careful to not AOT them
@@ -6,7 +8,7 @@
   :dependencies '[[org.clojure/clojure "1.7.0" :scope "test"]
                   [org.clojure/clojurescript "1.7.228" :scope "test"]
 
-                  [boot/core "2.5.2" :scope "test"]
+                  [boot/core "2.5.5" :scope "test"]
                   [adzerk/boot-cljs "1.7.170-3" :scope "test"]
                   [crisptrutski/boot-cljs-test "0.2.2-SNAPSHOT" :scope "test"]
                   [adzerk/boot-test "1.1.0" :scope "test"]
@@ -64,10 +66,16 @@
 
 (task-options!
   pom {:project 'metosin/metosin-common
-       :version "0.1.0-SNAPSHOT"
-       :description "Random collection is various namespaces used in multiple Metosin projects."
+       :version +version+
+       :description "Random collection of various namespaces used in multiple Metosin projects."
        :license {"Eclipse Public License" "http://opensource.org/licenses/mit-license.php"}}
   cljs {:source-map true})
+
+(deftask build []
+  (comp
+    (pom)
+    (jar)
+    (install)))
 
 (deftask run-tests []
   (comp
@@ -82,3 +90,8 @@
     (jar)
     (install)
     (run-tests)))
+
+(deftask deploy []
+  (comp
+    (build)
+    (push :repo "clojars" :gpg-sign (not (.endsWith +version+ "-SNAPSHOT")))))

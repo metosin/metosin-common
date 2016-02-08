@@ -3,7 +3,9 @@
 [![Clojars Project](https://img.shields.io/clojars/v/metosin/metosin-common.svg)](https://clojars.org/metosin/metosin-common)
 [![Build Status](https://travis-ci.org/metosin/metosin-common.svg?branch=master)](https://travis-ci.org/metosin/metosin-common)
 
-Random collection is various namespaces used in multiple Metosin projects
+Random collection is various namespaces used in multiple Metosin projects.
+
+Our intent is to package bits and pieces from this repo as proper libraries where it makes sense.
 
 ## Project statement
 

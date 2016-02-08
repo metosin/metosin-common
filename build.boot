@@ -9,7 +9,7 @@
                   [org.clojure/clojurescript "1.7.228" :scope "test"]
 
                   [boot/core "2.5.5" :scope "test"]
-                  [adzerk/boot-cljs "1.7.170-3" :scope "test"]
+                  [adzerk/boot-cljs "1.7.228-1" :scope "test"]
                   [crisptrutski/boot-cljs-test "0.2.2-SNAPSHOT" :scope "test"]
                   [adzerk/boot-test "1.1.0" :scope "test"]
 
@@ -49,7 +49,8 @@
                   ;; metosin.postgres.types
                   [cheshire "5.5.0"]
                   ;; metosin.transit.dates
-                  [com.cognitect/transit-clj "0.8.269"]
+                  [com.cognitect/transit-clj "0.8.285"]
+                  [com.cognitect/transit-cljs "0.8.237"]
                   ;; metosin.bootstrap.modal, metosin.bootstrap.tabs
                   [reagent "0.6.0-alpha"]
                   ;; metosin.forms, metosin.email, metosin

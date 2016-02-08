@@ -15,5 +15,6 @@ jdk:
 cache:
   directories:
   - $HOME/.m2
-  - $HOME/.boot/cache
+  - $HOME/.boot/cache/bin
+  - $HOME/.boot/cache/lib
   - $HOME/bin

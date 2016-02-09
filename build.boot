@@ -42,6 +42,8 @@
                   [com.draines/postal "1.11.4"]
                   ;; metosin.jdbc, metosin.postgres.joda.time, metosin.postgres.types
                   [org.clojure/java.jdbc "0.4.2"]
+                  ;; metosin.jdbc
+                  [camel-snake-kebab "0.3.2"]
                   ;; metosin.postgres.types
                   [org.postgresql/postgresql "9.4.1207.jre7"]
                   ;; metosin.sql

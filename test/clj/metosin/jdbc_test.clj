@@ -69,11 +69,13 @@
       (is (= '(1)
              (execute! db ["INSERT INTO test_table (test_column1) VALUES (1)"]))))))
 
+(def kebab-keywords #'metosin.jdbc/kebab-keywords)
+
 (deftest kebab-keywords-test
   (testing "kebab-keywords"
-    (is (= nil (#'kebab-keywords nil)))
-    (is (= 1 (#'kebab-keywords 1)))
-    (is (= '() (#'kebab-keywords '())))
-    (is (= '({:id 1 :column "foo"}) (#'kebab-keywords '({:id 1 :column "foo"}))))
-    (is (= '({:id 1 :column-name "foo"}) (#'kebab-keywords '({:id 1 :column_name "foo"}))))
-    (is (= '({:id 1 :column-name "bar"}) (#'kebab-keywords '({:id 1 :column-name "bar"}))))))
+    (is (= nil (kebab-keywords nil)))
+    (is (= 1 (kebab-keywords 1)))
+    (is (= '() (kebab-keywords '())))
+    (is (= '({:id 1 :column "foo"}) (kebab-keywords '({:id 1 :column "foo"}))))
+    (is (= '({:id 1 :column-name "foo"}) (kebab-keywords '({:id 1 :column_name "foo"}))))
+    (is (= '({:id 1 :column-name "bar"}) (kebab-keywords '({:id 1 :column-name "bar"}))))))

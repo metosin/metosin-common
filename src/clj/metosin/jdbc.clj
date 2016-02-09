@@ -1,7 +1,8 @@
 (ns metosin.jdbc
   "Wraps clojure.jdbc with optionated entities and identifiers fn."
   (:require [clojure.string :as string]
-            [clojure.java.jdbc :as jdbc]))
+            [clojure.java.jdbc :as jdbc]
+            [potemkin :refer [import-vars]]))
 
 (defn entities [x]
   (string/replace x #"-" "_"))
@@ -42,4 +43,17 @@
   (let [options (assoc m :entities entities)]
     (apply jdbc/delete! db table where-clause (mapcat identity options))))
 
-(def execute! jdbc/execute!)
+(import-vars
+  [clojure.java.jdbc
+
+   execute!
+
+   with-db-transaction
+   with-db-metadata
+   with-db-connection
+
+   db-do-commands
+   db-do-prepared
+   db-transaction
+
+   create-table-ddl])

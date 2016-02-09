@@ -16,6 +16,9 @@
                   ;; for testing metosin.jdbc
                   [com.h2database/h2 "1.4.191" :scope "test"]
 
+                  ;; metosin.jdbc
+                  [potemkin "0.4.3"]
+
                   ;; metosin.core.async.debounce
                   [org.clojure/core.async "0.2.374"]
                   ;; metosin.email

@@ -2,6 +2,9 @@
 
 **[compare](https://github.com/metosin/metosin-common/compare/0.1.1...master)**
 
+- `metosin.jdbc`
+    - maps in `insert!` result are converted to use kebab-case
+
 ## 0.1.1 (9.2.2016)
 
 **[compare](https://github.com/metosin/metosin-common/compare/0.1.0...0.1.1)**

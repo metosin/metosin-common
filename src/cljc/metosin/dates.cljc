@@ -85,10 +85,7 @@
        (org.joda.time.LocalDate/fromDateFields x))
      org.joda.time.DateTime
      (-to-date [x]
-       (.toLocalDate x))
-     nil
-     (-to-date [x]
-       nil))
+       (.toLocalDate x)))
    :cljs
    (extend-protocol ToDate
      js/Date

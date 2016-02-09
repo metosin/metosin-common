@@ -5,6 +5,7 @@
 - `metosin.dates`
     - Fix start/end-of-week with date-times on cljs
 - Imported more `java.jdbc` function to `metosin.jdbc`
+- Renamed namespace `metosin.postgres.joda.time` to `metosin.jdbc.joda.time`
 - Added tests for Joda Time <-> JDBC conversions
 - Fixed `LocalDate` <-> `java.sql.Date` conversion
 

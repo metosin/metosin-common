@@ -7,9 +7,12 @@
                      goog.date.Date
                      goog.i18n.DateTimeFormat
                      goog.i18n.DateTimeParse
-                     goog.i18n.TimeZone))
+                     goog.i18n.TimeZone
+                     [goog.string :as gs]))
   #?(:clj  (:import [org.joda.time DateTimeZone]
                     [org.joda.time.format DateTimeFormat])))
+
+#?(:clj (set! *warn-on-reflection* true))
 
 ; Default to UTC ALWAYS!
 #?(:clj (DateTimeZone/setDefault DateTimeZone/UTC))
@@ -23,6 +26,42 @@
 
 (def LocalDate #?(:clj  org.joda.time.LocalDate,
                   :cljs goog.date.Date))
+
+;;
+;; RFC3339 conversions
+;;
+
+(defn- write-date-time
+  "Represent DateTime in RFC3339 format string."
+  [d]
+  #?(:clj  (.toString (.withZone ^org.joda.time.DateTime d (org.joda.time.DateTimeZone/forID "UTC")))
+     :cljs (str (.getUTCFullYear d)
+                "-" (gs/padNumber (inc (.getUTCMonth d)) 2)
+                "-" (gs/padNumber (.getUTCDate d) 2)
+                "T" (gs/padNumber (.getUTCHours d) 2)
+                ":" (gs/padNumber (.getUTCMinutes d) 2)
+                ":" (gs/padNumber (.getUTCSeconds d) 2)
+                "." (gs/padNumber (.getUTCMilliseconds d) 3)
+                "Z")))
+
+(defn- read-date-time
+  "Read RFC3339 string to DateTime."
+  [s]
+  #?(:clj  (org.joda.time.DateTime/parse s)
+     :cljs (goog.date.UtcDateTime.fromIsoString s)))
+
+(defn- write-local-date
+  "Represent Date in YYYY-MM-DD format."
+  [x]
+  #?(:clj  (.toString ^org.joda.time.LocalDate x)
+     :cljs (.toIsoString x true false)))
+
+(defn- read-local-date
+  "Read Date in YYYY-MM-DD format."
+  [x]
+  #?(:clj  (org.joda.time.LocalDate/parse x)
+     :cljs (let [[_ y m d] (re-find #"(\d{4})-(\d{2})-(\d{2})" x)]
+             (goog.date.Date. (long y) (dec (long m)) (long d)))))
 
 ;;
 ;; Conversions
@@ -65,7 +104,10 @@
        (goog.date.UtcDateTime. x))
      goog.date.Date
      (-to-date-time [x]
-       (goog.date.UtcDateTime. (.getYear x) (.getMonth x) (.getDate x))))
+       (goog.date.UtcDateTime. (.getYear x) (.getMonth x) (.getDate x)))
+     string
+     (-to-date-time [x]
+       (read-date-time x)))
    :clj
    (extend-protocol ToDateTime
      java.util.Date
@@ -73,7 +115,10 @@
        (org.joda.time.DateTime. x))
      org.joda.time.LocalDate
      (-to-date-time [x]
-       (org.joda.time.DateTime. (.getYear x) (.getMonthOfYear x) (.getDayOfMonth x) 0 0))))
+       (org.joda.time.DateTime. (.getYear x) (.getMonthOfYear x) (.getDayOfMonth x) 0 0))
+     String
+     (-to-date-time [x]
+       (read-date-time x))))
 
 (defprotocol ToDate
   (-to-date [x] "Convers DateTime or such to Date."))
@@ -85,7 +130,10 @@
        (org.joda.time.LocalDate/fromDateFields x))
      org.joda.time.DateTime
      (-to-date [x]
-       (.toLocalDate x)))
+       (.toLocalDate x))
+     String
+     (-to-date [x]
+       (read-local-date x)))
    :cljs
    (extend-protocol ToDate
      js/Date
@@ -93,7 +141,30 @@
        (goog.date.Date. x))
      goog.date.UtcDateTime
      (-to-date [x]
-       (goog.date.Date. (.getYear x) (.getMonth x) (.getDate x)))))
+       (goog.date.Date. (.getYear x) (.getMonth x) (.getDate x)))
+     string
+     (-to-date [x]
+       (read-local-date x))))
+
+(defprotocol ToString
+  (-to-string [x] "Converts object to good date string representation"))
+
+#?(:clj
+    (extend-protocol ToString
+      org.joda.time.DateTime
+      (-to-string [x]
+        (write-date-time x))
+      org.joda.time.LocalDate
+      (-to-string [x]
+        (write-local-date x)))
+   :cljs
+     (extend-protocol ToString
+       goog.date.UtcDateTime
+       (-to-string [x]
+         (write-date-time x))
+       goog.date.Date
+       (-to-string [x]
+         (write-local-date x))))
 
 ; FIXME: Is this a good idea?
 ; Required for using dates as keys etc.
@@ -203,6 +274,11 @@
   ([y m d]
    #?(:clj  (org.joda.time.LocalDate. y m d)
       :cljs (goog.date.Date. y (dec m) d))))
+
+(defn to-string
+  "Returns good (e.g. RFC3339 or YYYY-MM-DD) representation for given object."
+  [x]
+  (-to-string x))
 
 (defn with-zone [d timezone-id]
   (if timezone-id

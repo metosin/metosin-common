@@ -7,6 +7,11 @@
 #?(:cljs (d/initialize-timezone! "America/Los_Angeles"))
 
 (deftest date-test
+  (testing "today"
+    (is (d/date)))
+  (testing "string to date"
+    ; FIXME: test badly formated input
+    (is (= (d/date 2015 5 14) (d/date "2015-05-14"))))
   (testing "date-time to date"
     (is (= (d/date 2015 5 14) (d/date (d/date-time 2015 5 14 9 13)))))
   (testing "native to date"
@@ -15,12 +20,23 @@
     (is (= #inst "2015-05-14T00:00" (d/to-native (d/date 2015 5 14))))))
 
 (deftest date-time-test
+  (testing "now"
+    (is (d/date-time)))
+  (testing "RFC3339 string to date-time"
+    ; FIXME: test badly formated input
+    (is (= (d/date-time 2015 5 14 9 13) (d/date-time "2015-05-14T09:13"))))
   (testing "date to date-time"
     (is (= (d/date-time 2015 5 14 0 0) (d/date-time (d/date 2015 5 14)))))
   (testing "native to date-time"
     (is (= (d/date-time 2015 5 14 9 13) (d/date-time #inst "2015-05-14T09:13"))))
   (testing "to native"
     (is (= #inst "2015-05-14T09:13" (d/to-native (d/date-time 2015 5 14 9 13))))))
+
+(deftest to-string-test
+  (is (= "2015-05-14"
+         (d/to-string (d/date 2015 5 14))))
+  (is (= "2015-05-14T09:13:00.000Z"
+         (d/to-string (d/date-time 2015 5 14 9 13)))))
 
 (deftest format-test
   (is (= "2015-04-15" (d/format (d/date 2015 4 15) {:pattern "yyyy-MM-dd"})))

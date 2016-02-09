@@ -177,6 +177,9 @@
 ;;
 
 (defn date-time
+  ([]
+   #?(:clj  (org.joda.time.DateTime.)
+      :cljs (goog.date.UtcDateTime.)))
   ([x]
    (-to-date-time x))
   ([s {:keys [pattern]}]
@@ -191,6 +194,9 @@
       :cljs (goog.date.UtcDateTime.  y (dec m) d hh mm ss))))
 
 (defn date
+  ([]
+   #?(:clj  (org.joda.time.LocalDate.)
+      :cljs (goog.date.Date.)))
   ([x]
    (-to-date x))
   ([s {:keys [pattern]}]
@@ -200,14 +206,6 @@
   ([y m d]
    #?(:clj  (org.joda.time.LocalDate. y m d)
       :cljs (goog.date.Date. y (dec m) d))))
-
-(defn now []
-  #?(:clj  (org.joda.time.DateTime.)
-     :cljs (goog.date.UtcDateTime.)))
-
-(defn today []
-  #?(:clj  (org.joda.time.LocalDate.)
-     :cljs (goog.date.Date.)))
 
 (defn with-zone [d timezone-id]
   (if timezone-id

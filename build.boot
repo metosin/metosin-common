@@ -39,8 +39,6 @@
                   [de.ubercode.clostache/clostache "1.4.0"]
                   ;; metosin.email
                   [com.draines/postal "1.11.4"]
-                  ;; metosin.postgres.joda.time, metosin.dates
-                  [clj-time "0.11.0"]
                   ;; metosin.jdbc, metosin.postgres.joda.time, metosin.postgres.types
                   [org.clojure/java.jdbc "0.4.2"]
                   ;; metosin.postgres.types

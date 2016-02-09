@@ -234,11 +234,13 @@
 ;;
 
 (defn start-of-week [date]
-  #?(:cljs (goog.date.Date. (.getYear date) (.getMonth date) (- (.getDate date) (.getIsoWeekday date)))
+  #?(:cljs (doto (.clone date)
+             (.setDate (- (.getDate date) (.getIsoWeekday date))))
      :clj  (.withMinimumValue (.dayOfWeek date))))
 
 (defn end-of-week [date]
-  #?(:cljs (goog.date.Date. (.getYear date) (.getMonth date) (+ (.getDate date) (- 6 (.getIsoWeekday date))))
+  #?(:cljs (doto (.clone date)
+             (.setDate (+ (.getDate date) (- 6 (.getIsoWeekday date)))))
      :clj  (.withMaximumValue (.dayOfWeek date))))
 
 ;; TODO:

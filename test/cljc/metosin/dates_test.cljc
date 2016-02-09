@@ -38,10 +38,12 @@
   (is (= (d/date-time 2015 4 15 9 13) (d/date-time "2015-04-15 09:13" {:pattern "yyyy-MM-dd HH:mm"}))))
 
 (deftest start-of-week-test
-  (is (= (d/date 2016 1 25) (d/start-of-week (d/date 2016 1 27)))))
+  (is (= (d/date 2016 1 25) (d/start-of-week (d/date 2016 1 27))))
+  (is (= (d/date-time 2016 1 25 12 0) (d/start-of-week (d/date-time 2016 1 27 12 0)))))
 
 (deftest end-of-week-test
-  (is (= (d/date 2016 1 31) (d/end-of-week (d/date 2016 1 27)))))
+  (is (= (d/date 2016 1 31) (d/end-of-week (d/date 2016 1 27))))
+  (is (= (d/date-time 2016 1 31 12 0) (d/end-of-week (d/date-time 2016 1 27 12 0)))))
 
 (deftest add-test
   (is (= (d/date 2016 1 28) (d/add (d/date 2016 1 27) (d/days 1))))

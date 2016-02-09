@@ -1,4 +1,4 @@
-(def +version+ "0.1.1-SNAPSHOT")
+(def +version+ "0.1.1")
 
 (set-env!
   ; Test path can be included here as source-files are not included in JAR

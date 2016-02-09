@@ -1,6 +1,6 @@
-## Unreleased
+## 0.1.1 (9.2.2016)
 
-**[compare](https://github.com/metosin/metosin-common/compare/0.1.0...master)**
+**[compare](https://github.com/metosin/metosin-common/compare/0.1.0...0.1.1)**
 
 - `metosin.dates`
     - Fix start/end-of-week with date-times on cljs

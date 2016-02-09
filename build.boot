@@ -18,7 +18,8 @@
 
                   ;; metosin.jdbc
                   [potemkin "0.4.3"]
-
+                  ;; metosin.dates
+                  [joda-time/joda-time "2.9.2"]
                   ;; metosin.core.async.debounce
                   [org.clojure/core.async "0.2.374"]
                   ;; metosin.email

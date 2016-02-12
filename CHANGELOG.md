@@ -1,6 +1,8 @@
 ## Unreleased
 
 - Allow custom coercion-matcher with `metosin.ui.routing.schema/schema-query`
+- New namespace: `metosin.dates.schema`
+    - Implements Schema coercion-matchers for well-formatted date strings
 
 ## 0.1.2 (9.2.2016)
 

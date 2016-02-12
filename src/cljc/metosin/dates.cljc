@@ -211,7 +211,7 @@
                 ms->m #(/ % (* 1000 60))
                 ms->h #(/ % (* 1000 60 60))
                 std-offset (.getStandardOffset tz 0)
-                transitions (mapcat (fn [ms]
+                transitions (mapcat (fn [^long ms]
                                       [(ms->h ms) (ms->m (- (.getOffset tz ms) std-offset))])
                                     ; FIXME: Magic number
                                     (take 137 (iterate #(.nextTransition tz %) 0)))

@@ -1,3 +1,7 @@
+## Unreleased
+
+- Allow custom coercion-matcher with `metosin.ui.routing.schema/schema-query`
+
 ## 0.1.2 (9.2.2016)
 
 **[compare](https://github.com/metosin/metosin-common/compare/0.1.1...master)**

@@ -51,7 +51,10 @@
   (or (collection-matcher schema)
       (sc/string-coercion-matcher schema)))
 
-(defn schema-query [schema]
-  (map->SchemaQueryParams {:schema schema
-                           :coercer (sc/coercer schema query-string-coercion-matcher)}))
+(defn schema-query
+  ([schema] (schema-query schema nil))
+  ([schema {:keys [coercion-matcher]
+            :or {coercion-matcher query-string-coercion-matcher}}]
+   (map->SchemaQueryParams {:schema schema
+                            :coercer (sc/coercer schema coercion-matcher)})))
 

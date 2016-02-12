@@ -14,4 +14,4 @@
   (is (= {:local-date (d/date 2015 5 14)
           :date-time (d/date-time 2015 5 14 9 13)}
          (coercer {:local-date "2015-05-14"
-                   :date-time "2015-05-14T9:13:00.000Z"}))))
+                   :date-time "2015-05-14T09:13:00.000Z"}))))

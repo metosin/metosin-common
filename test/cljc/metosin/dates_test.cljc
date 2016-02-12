@@ -63,7 +63,25 @@
 
 (deftest add-test
   (is (= (d/date 2016 1 28) (d/add (d/date 2016 1 27) (d/days 1))))
-  (is (= (d/date-time 2016 1 28 12 13) (d/add (d/date-time 2016 1 27 12 13) (d/days 1)))))
+
+  (is (= (d/date-time 2017 1 27 12 13) (d/add (d/date-time 2016 1 27 12 13) (d/years 1))))
+  (is (= (d/date-time 2016 2 27 12 13) (d/add (d/date-time 2016 1 27 12 13) (d/months 1))))
+  (is (= (d/date-time 2016 1 28 12 13) (d/add (d/date-time 2016 1 27 12 13) (d/days 1))))
+  (is (= (d/date-time 2016 1 27 13 13) (d/add (d/date-time 2016 1 27 12 13) (d/hours 1))))
+  (is (= (d/date-time 2016 1 27 12 14) (d/add (d/date-time 2016 1 27 12 13) (d/minutes 1))))
+  (is (= (d/date-time 2016 1 27 12 13 02)
+         (d/add (d/date-time 2016 1 27 12 13 01) (d/seconds 1)))))
+
+(deftest minus-test
+  (is (= (d/date 2016 1 26) (d/minus (d/date 2016 1 27) (d/days 1))))
+
+  (is (= (d/date-time 2015 1 27 12 13) (d/minus (d/date-time 2016 1 27 12 13) (d/years 1))))
+  (is (= (d/date-time 2016 3 27 12 13) (d/minus (d/date-time 2016 4 27 12 13) (d/months 1))))
+  (is (= (d/date-time 2016 1 26 12 13) (d/minus (d/date-time 2016 1 27 12 13) (d/days 1))))
+  (is (= (d/date-time 2016 1 27 11 13) (d/minus (d/date-time 2016 1 27 12 13) (d/hours 1))))
+  (is (= (d/date-time 2016 1 27 12 12) (d/minus (d/date-time 2016 1 27 12 13) (d/minutes 1))))
+  (is (= (d/date-time 2016 1 27 12 13 00)
+         (d/minus (d/date-time 2016 1 27 12 13 01) (d/seconds 1)))))
 
 (deftest legacy-api-test
   (is (= "14.5.2015" (d/date->str (d/date 2015 5 14))))

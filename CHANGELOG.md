@@ -5,6 +5,8 @@
     - Replaced `today` and `now` with `date` and `date-time` zero-arity versions.
     - Support creating dates from good string representation
     - Add `to-string` to create good string representation for a object
+    - Add `minus`
+    - Add all durations
 - New namespace: `metosin.dates.schema`
     - Implements Schema coercion-matchers for well-formatted date strings
 

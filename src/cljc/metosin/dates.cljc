@@ -329,18 +329,49 @@
      :clj
      (.plus date x)))
 
-(defn days [n]
-  #?(:cljs (goog.date.Interval. goog.date.Interval.DAYS n)
-     :clj  (org.joda.time.Days/days n)))
+(defn minus [date x]
+  {:pre [#?(:cljs (instance? goog.date.Interval x))]}
+  #?(:cljs
+      (doto (.clone date)
+        (.minus x))
+     :clj
+     (.minus date x)))
 
-;; TODO:
-;; minus
-;; years
-;; months
-;; hours
-;; minutes
-;; seconds
-;; milliseconds?
+(defn years
+  ([] (years 1))
+  ([n]
+   #?(:cljs (goog.date.Interval. goog.date.Interval.YEARS n)
+      :clj  (org.joda.time.Years/years n))))
+
+(defn months
+  ([] (months 1))
+  ([n]
+   #?(:cljs (goog.date.Interval. goog.date.Interval.MONTHS n)
+      :clj  (org.joda.time.Months/months n))))
+
+(defn days
+  ([] (days 1))
+  ([n]
+   #?(:cljs (goog.date.Interval. goog.date.Interval.DAYS n)
+      :clj  (org.joda.time.Days/days n))))
+
+(defn hours
+  ([] (hours 1))
+  ([n]
+   #?(:cljs (goog.date.Interval. goog.date.Interval.HOURS n)
+      :clj  (org.joda.time.Hours/hours n))))
+
+(defn minutes
+  ([] (days 1))
+  ([n]
+   #?(:cljs (goog.date.Interval. goog.date.Interval.MINUTES n)
+      :clj  (org.joda.time.Minutes/minutes n))))
+
+(defn seconds
+  ([] (days 1))
+  ([n]
+   #?(:cljs (goog.date.Interval. goog.date.Interval.SECONDS n)
+      :clj  (org.joda.time.Seconds/seconds n))))
 
 ;;
 ;; "Legacy api"

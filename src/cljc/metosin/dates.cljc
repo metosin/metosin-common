@@ -349,6 +349,12 @@
    #?(:cljs (goog.date.Interval. goog.date.Interval.MONTHS n)
       :clj  (org.joda.time.Months/months n))))
 
+(defn weeks
+  ([] (weeks 1))
+  ([n]
+   #?(:cljs (goog.date.Interval. goog.date.Interval.Weeks n)
+      :clj  (org.joda.time.Weeks/weeks n))))
+
 (defn days
   ([] (days 1))
   ([n]

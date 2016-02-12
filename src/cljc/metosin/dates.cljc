@@ -333,7 +333,7 @@
   {:pre [#?(:cljs (instance? goog.date.Interval x))]}
   #?(:cljs
       (doto (.clone date)
-        (.minus x))
+        (.add (.getInverse x)))
      :clj
      (.minus date x)))
 

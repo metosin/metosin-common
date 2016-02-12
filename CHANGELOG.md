@@ -1,4 +1,4 @@
-## Unreleased
+## 0.1.3 (12.2.2016)
 
 - Allow custom coercion-matcher with `metosin.ui.routing.schema/schema-query`
 - `metosin.dates`

@@ -1,6 +1,10 @@
 ## Unreleased
 
 - Allow custom coercion-matcher with `metosin.ui.routing.schema/schema-query`
+- `metosin.dates`
+    - Replaced `today` and `now` with `date` and `date-time` zero-arity versions.
+    - Support creating dates from good string representation
+    - Add `to-string` to create good string representation for a object
 - New namespace: `metosin.dates.schema`
     - Implements Schema coercion-matchers for well-formatted date strings
 
@@ -17,9 +21,6 @@
 
 - `metosin.dates`
     - Fix start/end-of-week with date-times on cljs
-    - Replaced `today` and `now` with `date` and `date-time` zero-arity versions.
-    - Support creating dates from good string representation
-    - Add `to-string` to create good string representation for a object
 - Imported more `java.jdbc` function to `metosin.jdbc`
 - Renamed namespace `metosin.postgres.joda.time` to `metosin.jdbc.joda.time`
 - Added tests for Joda Time <-> JDBC conversions

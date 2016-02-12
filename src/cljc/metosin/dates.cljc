@@ -352,7 +352,7 @@
 (defn weeks
   ([] (weeks 1))
   ([n]
-   #?(:cljs (goog.date.Interval. goog.date.Interval.Weeks n)
+   #?(:cljs (goog.date.Interval. goog.date.Interval.DAYS (* 7 n))
       :clj  (org.joda.time.Weeks/weeks n))))
 
 (defn days

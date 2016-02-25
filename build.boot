@@ -85,7 +85,7 @@
 (deftask run-tests []
   (comp
     (test)
-    (test-cljs)))
+    #_(test-cljs)))
 
 (deftask dev []
   (comp

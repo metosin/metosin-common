@@ -29,6 +29,12 @@ don't expect full support.
 - [ ] Common users, groups and logic backend and UI
 - [ ] Changelog UI and generation mechanism...?
 
+## Separate useful stuff
+
+1. Cljc Date library
+2. Postgres library
+3. Reagent components library?
+
 ## License
 
 Copyright © 2016 [Metosin Oy](http://www.metosin.fi)

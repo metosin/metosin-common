@@ -1,3 +1,7 @@
+## 0.1.4 (13.4.2016)
+
+- Disable warn of reflection
+
 ## 0.1.3 (12.2.2016)
 
 - Allow custom coercion-matcher with `metosin.ui.routing.schema/schema-query`

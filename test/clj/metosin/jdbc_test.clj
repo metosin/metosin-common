@@ -12,9 +12,9 @@
   (jdbc/with-db-connection [db h2-spec]
     (jdbc/db-do-commands db
       (jdbc/create-table-ddl :test_table
-        [:id "bigint primary key auto_increment"]
-        [:test_column1 "int"]
-        [:test_column2 "varchar"]))
+                             [[:id "bigint primary key auto_increment"]
+                              [:test_column1 "int"]
+                              [:test_column2 "varchar"]]))
 
     (testing "insert! with underscores"
       (insert! db :test_table {:test_column1 100}))

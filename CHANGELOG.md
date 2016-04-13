@@ -1,3 +1,7 @@
+## Unreleased
+
+- **BREAKING**: Update java.jdbc to new version and removed all deprecated versions arities from metosin.jdbc namespace
+
 ## 0.1.4 (13.4.2016)
 
 - Disable warn of reflection

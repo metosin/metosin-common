@@ -25,36 +25,37 @@
     x))
 
 (defn query
-  {:arglists '([db-spec sql-and-params
-                :as-arrays? false
-                :result-set-fn doall :row-fn identity]
-               [db-spec sql-and-params
-                :as-arrays? true
-                :result-set-fn vec :row-fn identity]
-               [db-spec [sql-string & params]]
-               [db-spec [stmt & params]]
-               [db-spec [option-map sql-string & params]])}
-  [db sql-params & {:as m}]
-  (let [options (assoc m :identifiers identifiers)]
-    (apply jdbc/query db sql-params (mapcat identity options))))
+  ([db sql-params] (query db sql-params {}))
+  ([db sql-params options]
+   (jdbc/query db sql-params (assoc options :identifiers identifiers))))
 
 (defn insert!
-  {:arglists '([db-spec table row-map :transaction? true]
-               [db-spec table row-map & row-maps :transaction? true]
-               [db-spec table col-name-vec col-val-vec & col-val-vecs :transaction? true])}
-  [db table & options]
-  (-> (apply jdbc/insert! db table (concat options [:entities entities]))
-      (kebab-keywords)))
+  ([db table row] (insert! db table row {}))
+  ([db table cols-or-row values-or-opts]
+   (if (map? values-or-opts)
+     (jdbc/insert! db table cols-or-row (assoc values-or-opts :entities entities))
+     (jdbc/insert! db table cols-or-row values-or-opts {:entities entities})))
+  ([db table cols values opts]
+   (kebab-keywords (jdbc/insert! db table cols values (assoc opts :entities entities)))))
+
+(defn insert-multi!
+  ([db table rows] (insert-multi! db table rows {}))
+  ([db table cols-or-rows values-or-opts]
+   (if (map? values-or-opts)
+     (jdbc/insert-multi! db table cols-or-rows (assoc values-or-opts :entities entities))
+     (jdbc/insert-multi! db table cols-or-rows values-or-opts {:entities entities})))
+  ([db table cols values opts]
+   (jdbc/insert-multi! db table cols values (assoc opts :entities entities))))
 
 (defn update!
-  [db table set-map where-clause & {:as m}]
-  (let [options (assoc m :entities entities)]
-    (apply jdbc/update! db table set-map where-clause (mapcat identity options))))
+  ([db table set-map where-clause] (update! db table set-map where-clause {}))
+  ([db table set-map where-clause options]
+   (jdbc/update! db table set-map where-clause (assoc options :entities entities))))
 
 (defn delete!
-  [db table where-clause & {:as m}]
-  (let [options (assoc m :entities entities)]
-    (apply jdbc/delete! db table where-clause (mapcat identity options))))
+  ([db table where-clause] (delete! db table where-clause {}))
+  ([db table where-clause options]
+   (jdbc/delete! db table where-clause (assoc options :entities entities))))
 
 (import-vars
   [clojure.java.jdbc

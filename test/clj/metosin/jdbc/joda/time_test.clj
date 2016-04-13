@@ -13,9 +13,9 @@
   (with-db-connection [db h2-spec]
     (db-do-commands db
       (create-table-ddl :test_table
-        [:id "bigint primary key auto_increment"]
-        [:datetime "timestamp"]
-        [:date "date"]))
+                        [[:id "bigint primary key auto_increment"]
+                         [:datetime "timestamp"]
+                         [:date "date"]]))
 
     (insert! db :test_table {:datetime (dates/date-time 2015 2 9 13 1)
                              :date (dates/date 2015 2 9)})

@@ -1,4 +1,4 @@
-(def +version+ "0.1.4")
+(def +version+ "0.2.0-SNAPSHOT")
 
 (set-env!
   ; Test path can be included here as source-files are not included in JAR
@@ -41,7 +41,7 @@
                   ;; metosin.email
                   [com.draines/postal "1.11.4"]
                   ;; metosin.jdbc, metosin.postgres.joda.time, metosin.postgres.types
-                  [org.clojure/java.jdbc "0.4.2"]
+                  [org.clojure/java.jdbc "0.5.8"]
                   ;; metosin.jdbc
                   [camel-snake-kebab "0.3.2"]
                   ;; metosin.postgres.types

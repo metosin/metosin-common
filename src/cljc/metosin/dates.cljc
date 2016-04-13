@@ -12,8 +12,6 @@
   #?(:clj  (:import [org.joda.time DateTimeZone]
                     [org.joda.time.format DateTimeFormat])))
 
-#?(:clj (set! *warn-on-reflection* true))
-
 ; Default to UTC ALWAYS!
 #?(:clj (DateTimeZone/setDefault DateTimeZone/UTC))
 

@@ -65,7 +65,7 @@
 
 (defn ping-view []
   (when @offline?
-    [:div
+    [:div.ping-view
      {:style {:opacity 1
               :display "block"
               :tab-index "-1"}}
@@ -88,7 +88,8 @@
                :align-items "center"
                :justify-content "center"
                :z-index 1050}}
-      [:div
+      [:div.ping-view-text
+       {:style {:margin "0 15%"}}
        [:h1
         {:style {:text-align "center"
                  :color "#fff"

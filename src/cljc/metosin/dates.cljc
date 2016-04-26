@@ -366,13 +366,13 @@
       :clj  (org.joda.time.Hours/hours n))))
 
 (defn minutes
-  ([] (days 1))
+  ([] (minutes 1))
   ([n]
    #?(:cljs (goog.date.Interval. goog.date.Interval.MINUTES n)
       :clj  (org.joda.time.Minutes/minutes n))))
 
 (defn seconds
-  ([] (days 1))
+  ([] (seconds 1))
   ([n]
    #?(:cljs (goog.date.Interval. goog.date.Interval.SECONDS n)
       :clj  (org.joda.time.Seconds/seconds n))))

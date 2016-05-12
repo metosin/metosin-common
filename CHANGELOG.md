@@ -1,4 +1,4 @@
-## Unreleased
+## 0.2.0 (12.5.2016)
 
 - **BREAKING**: Update java.jdbc to new version and removed all deprecated versions arities from metosin.jdbc namespace
 - Update deps

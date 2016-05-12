@@ -258,7 +258,10 @@
       :cljs (goog.date.UtcDateTime.  y (dec m) d hh mm)))
   ([y m d hh mm ss]
    #?(:clj  (org.joda.time.DateTime. y m d hh mm ss)
-      :cljs (goog.date.UtcDateTime.  y (dec m) d hh mm ss))))
+      :cljs (goog.date.UtcDateTime.  y (dec m) d hh mm ss)))
+  ([y m d hh mm ss millis]
+   #?(:clj  (org.joda.time.DateTime. y m d hh mm ss millis)
+           :cljs (goog.date.UtcDateTime.  y (dec m) d hh mm ss millis))) )
 
 (defn date
   ([]
@@ -303,6 +306,23 @@
 ;; Utilities
 ;;
 
+(defn start-of-day [date-time]
+  ;; FIXME: Should handle DST change, when first hour is 01
+  #?(:cljs (doto (.clone date-time)
+             (.setHours 0)
+             (.setMinutes 0)
+             (.setSeconds 0)
+             (.setMilliseconds 0))
+     :clj  (.withTimeAtStartOfDay date-time)))
+
+(defn end-of-day [date-time]
+  #?(:cljs (doto (.clone date-time)
+             (.setHours 23)
+             (.setMinutes 59)
+             (.setSeconds 59)
+             (.setMilliseconds 999))
+     :clj  (.withMaximumValue (.millisOfDay date-time))))
+
 (defn start-of-week [date]
   #?(:cljs (doto (.clone date)
              (.setDate (- (.getDate date) (.getIsoWeekday date))))
@@ -313,11 +333,46 @@
              (.setDate (+ (.getDate date) (- 6 (.getIsoWeekday date)))))
      :clj  (.withMaximumValue (.dayOfWeek date))))
 
-;; TODO:
-;; start-of-month
-;; end-of-month
-;; start-of-year?
-;; end-of-year?
+(defn start-of-month [date]
+  #?(:cljs (doto (.clone date)
+             (.setDate 1))
+     :clj  (.withMinimumValue (.dayOfMonth date))))
+
+(defn end-of-month [date]
+  #?(:cljs (doto (.clone date)
+             (.setDate (.getNumberOfDaysInMonth date)))
+     :clj  (.withMaximumValue (.dayOfMonth date))))
+
+(defn start-of-year [date]
+  #?(:cljs (doto (.clone date)
+             (.setMonth 0)
+             (.setDate 1))
+     :clj  (.withMinimumValue (.dayOfYear date))))
+
+(defn end-of-year [date]
+  #?(:cljs (let [decemeber (doto (.clone date)
+                              (.setMonth 11))]
+             (.setDate decemeber (.getNumberOfDaysInMonth decemeber))
+             decemeber)
+     :clj  (.withMaximumValue (.dayOfYear date))))
+
+
+;; missing min/max properties:
+;; - century of era
+;; - day of year
+;; - hour of day (keep minutes etc.)
+;; - millis of second
+;; - minute of day
+;; - minute of hour
+;; - month of year
+;; - second of day (keep millis)
+;; - second of minute
+;; - week of weekyear
+;; - weekyear
+;; - year
+;; - year of century
+;; - year of era
+
 ;; Better API for these 6 calls?
 
 (defn add [date x]

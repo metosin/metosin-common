@@ -53,6 +53,12 @@
   (is (= (d/date 2015 4 15) (d/date "2015-04-15" {:pattern "yyyy-MM-dd"})))
   (is (= (d/date-time 2015 4 15 9 13) (d/date-time "2015-04-15 09:13" {:pattern "yyyy-MM-dd HH:mm"}))))
 
+(deftest start-of-day-test
+  (is (= (d/date-time 2016 1 27 0 0 0 0) (d/start-of-day (d/date-time 2016 1 27 12 0)))))
+
+(deftest end-of-day-test
+  (is (= (d/date-time 2016 1 27 23 59 59 999) (d/end-of-day (d/date-time 2016 1 27 12 0)))))
+
 (deftest start-of-week-test
   (is (= (d/date 2016 1 25) (d/start-of-week (d/date 2016 1 27))))
   (is (= (d/date-time 2016 1 25 12 0) (d/start-of-week (d/date-time 2016 1 27 12 0)))))
@@ -60,6 +66,22 @@
 (deftest end-of-week-test
   (is (= (d/date 2016 1 31) (d/end-of-week (d/date 2016 1 27))))
   (is (= (d/date-time 2016 1 31 12 0) (d/end-of-week (d/date-time 2016 1 27 12 0)))))
+
+(deftest start-of-month-test
+  (is (= (d/date 2016 1 1) (d/start-of-month (d/date 2016 1 27))))
+  (is (= (d/date-time 2016 1 1 12 0) (d/start-of-month (d/date-time 2016 1 27 12 0)))))
+
+(deftest end-of-month-test
+  (is (= (d/date 2016 1 31) (d/end-of-month (d/date 2016 1 27))))
+  (is (= (d/date-time 2016 1 31 12 0) (d/end-of-month (d/date-time 2016 1 27 12 0)))))
+
+(deftest start-of-year-test
+  (is (= (d/date 2016 1 1) (d/start-of-year (d/date 2016 1 27))))
+  (is (= (d/date-time 2016 1 1 12 0) (d/start-of-year (d/date-time 2016 1 27 12 0)))))
+
+(deftest end-of-year-test
+  (is (= (d/date 2016 12 31) (d/end-of-year (d/date 2016 1 27))))
+  (is (= (d/date-time 2016 12 31 12 0) (d/end-of-year (d/date-time 2016 1 27 12 0)))))
 
 (deftest add-test
   (is (= (d/date 2016 1 28) (d/add (d/date 2016 1 27) (d/days 1))))

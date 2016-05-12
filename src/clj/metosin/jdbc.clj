@@ -29,6 +29,16 @@
   ([db sql-params options]
    (jdbc/query db sql-params (assoc options :identifiers identifiers))))
 
+(defn find-by-keys
+  ([db table columns] (find-by-keys db table columns {}))
+  ([db table columns opts]
+   (jdbc/find-by-keys (assoc opts :identifiers identifiers :entities entities))))
+
+(defn get-by-id
+  ([db table columns] (find-by-keys db table columns {}))
+  ([db table columns opts]
+   (jdbc/find-by-keys (assoc opts :identifiers identifiers :entities entities))))
+
 (defn insert!
   ([db table row] (insert! db table row {}))
   ([db table cols-or-row values-or-opts]
@@ -68,6 +78,5 @@
 
    db-do-commands
    db-do-prepared
-   db-transaction
 
    create-table-ddl])

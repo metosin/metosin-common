@@ -1,6 +1,9 @@
 ## Unreleased
 
 - **BREAKING**: Update java.jdbc to new version and removed all deprecated versions arities from metosin.jdbc namespace
+- Update deps
+- Move `metosin.bootstrap.*` to [Komponentit](https://github.com/metosin/komponentit)
+- Drop `metosin.forms`
 
 ## 0.1.4 (13.4.2016)
 

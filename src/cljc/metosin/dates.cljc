@@ -3,6 +3,7 @@
 
   Don't use for serializing or deserializing."
   (:refer-clojure :exclude [format])
+  #?(:cljs (:require-macros metosin.dates))
   #?(:cljs (:require goog.date.UtcDateTime
                      goog.date.Date
                      goog.i18n.DateTimeFormat

@@ -39,7 +39,7 @@
                   ;; metosin.email
                   [com.draines/postal "1.11.4"]
                   ;; metosin.jdbc, metosin.postgres.joda.time, metosin.postgres.types
-                  [org.clojure/java.jdbc "0.6.0"]
+                  [org.clojure/java.jdbc "0.6.1"]
                   ;; metosin.jdbc
                   [camel-snake-kebab "0.3.2"]
                   ;; metosin.postgres.types

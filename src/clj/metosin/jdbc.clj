@@ -24,45 +24,62 @@
         x))
     x))
 
-(defn query
-  ([db sql-params] (query db sql-params {}))
+(defn
+  ^{:doc (:doc (meta #'jdbc/query))}
+  query
+  ([db sql-params](query db sql-params {}))
   ([db sql-params options]
    (jdbc/query db sql-params (assoc options :identifiers identifiers))))
 
-(defn find-by-keys
+(defn
+  ^{:doc (:doc (meta #'jdbc/find-by-keys))}
+  find-by-keys
   ([db table columns] (find-by-keys db table columns {}))
   ([db table columns opts]
    (jdbc/find-by-keys (assoc opts :identifiers identifiers :entities entities))))
 
-(defn get-by-id
+(defn
+  ^{:doc (:doc (meta #'jdbc/get-by-id))}
+  get-by-id
   ([db table columns] (find-by-keys db table columns {}))
   ([db table columns opts]
    (jdbc/find-by-keys (assoc opts :identifiers identifiers :entities entities))))
 
-(defn insert!
+(defn
+  ^{:doc (:doc (meta #'jdbc/insert!))}
+  insert!
   ([db table row] (insert! db table row {}))
   ([db table cols-or-row values-or-opts]
-   (if (map? values-or-opts)
-     (jdbc/insert! db table cols-or-row (assoc values-or-opts :entities entities))
-     (jdbc/insert! db table cols-or-row values-or-opts {:entities entities})))
+   (kebab-keywords
+     (if (map? values-or-opts)
+       (jdbc/insert! db table cols-or-row (assoc values-or-opts :entities entities))
+       (jdbc/insert! db table cols-or-row values-or-opts {:entities entities}))))
   ([db table cols values opts]
    (kebab-keywords (jdbc/insert! db table cols values (assoc opts :entities entities)))))
 
-(defn insert-multi!
+(defn
+  ^{:doc (:doc (meta #'jdbc/insert-multi!))}
+  insert-multi!
   ([db table rows] (insert-multi! db table rows {}))
   ([db table cols-or-rows values-or-opts]
-   (if (map? values-or-opts)
-     (jdbc/insert-multi! db table cols-or-rows (assoc values-or-opts :entities entities))
-     (jdbc/insert-multi! db table cols-or-rows values-or-opts {:entities entities})))
+   (kebab-keywords
+     (if (map? values-or-opts)
+       (jdbc/insert-multi! db table cols-or-rows (assoc values-or-opts :entities entities))
+       (jdbc/insert-multi! db table cols-or-rows values-or-opts {:entities entities}))))
   ([db table cols values opts]
-   (jdbc/insert-multi! db table cols values (assoc opts :entities entities))))
+   (kebab-keywords
+     (jdbc/insert-multi! db table cols values (assoc opts :entities entities)))))
 
-(defn update!
+(defn
+  ^{:doc (:doc (meta #'jdbc/update!))}
+  update!
   ([db table set-map where-clause] (update! db table set-map where-clause {}))
   ([db table set-map where-clause options]
    (jdbc/update! db table set-map where-clause (assoc options :entities entities))))
 
-(defn delete!
+(defn
+  ^{:doc (:doc (meta #'jdbc/delete!))}
+  delete!
   ([db table where-clause] (delete! db table where-clause {}))
   ([db table where-clause options]
    (jdbc/delete! db table where-clause (assoc options :entities entities))))

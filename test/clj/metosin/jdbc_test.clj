@@ -65,6 +65,11 @@
                :where [:= :id 2]}]
         (is (= '() (query db (sql/format q))))))
 
+    (testing "insert-multi! with dashes"
+      (insert-multi! db :test-table [{:test-column2 "bar"} {:test-column2 "bar"}])
+      (is (= [{:test-column2 "bar"} {:test-column2 "bar"}]
+             (query db (sql/format {:select [:test-column2] :from [:test-table]})))))
+
     (testing "execute!"
       (is (= '(1)
              (execute! db ["INSERT INTO test_table (test_column1) VALUES (1)"]))))))

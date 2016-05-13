@@ -1,3 +1,7 @@
+## 0.2.1 (13.5.2016)
+
+- Update java.jdbc to 0.6.1 to fix Postgres problems
+
 ## 0.2.0 (12.5.2016)
 
 - **BREAKING**: Update java.jdbc to new version and removed all deprecated versions arities from metosin.jdbc namespace

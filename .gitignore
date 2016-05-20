@@ -8,6 +8,7 @@ pom.xml.asc
 /.lein-*
 /.nrepl-port
 .hgignore
+/project.clj
 .hg/
 .idea
 *.iml

@@ -33,17 +33,13 @@
           (defmethod print-method LocalDate [^LocalDate d out]
             (.write out (date->reader-str d))))
          :cljs
-         (do
-           (cljs.reader/register-tag-parser! "DateTime" d/date-time)
-           (cljs.reader/register-tag-parser! "Date" d/date)
-
-           (extend-protocol IPrintWithWriter
-             goog.date.DateTime
-             (-pr-writer [d out opts]
-               (-write out (date-time->reader-str d)))
-             goog.date.Date
-             (-pr-writer [d out opts]
-               (-write out (date->reader-str d))))))
+        (extend-protocol IPrintWithWriter
+          goog.date.DateTime
+          (-pr-writer [d out opts]
+            (-write out (date-time->reader-str d)))
+          goog.date.Date
+          (-pr-writer [d out opts]
+            (-write out (date->reader-str d)))))
 
 (def readers
   {'Date d/date

@@ -11,7 +11,7 @@
                   [boot/core "2.5.5" :scope "test"]
                   [adzerk/boot-cljs "1.7.228-1" :scope "test"]
                   [crisptrutski/boot-cljs-test "0.2.2-SNAPSHOT" :scope "test"]
-                  [adzerk/boot-test "1.1.1" :scope "test"]
+                  [metosin/boot-alt-test "0.1.0" :scope "test"]
 
                   ;; for testing metosin.jdbc
                   [com.h2database/h2 "1.4.191" :scope "test"]
@@ -64,7 +64,7 @@
 
 (require
   '[adzerk.boot-cljs :refer [cljs]]
-  '[adzerk.boot-test :refer [test]]
+  '[metosin.boot-alt-test :refer [alt-test]]
   '[crisptrutski.boot-cljs-test :refer [test-cljs]])
 
 (task-options!
@@ -82,7 +82,7 @@
 
 (deftask run-tests []
   (comp
-    (test)
+    (alt-test)
     (test-cljs)))
 
 (deftask dev []

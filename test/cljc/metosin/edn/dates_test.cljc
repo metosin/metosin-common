@@ -1,5 +1,5 @@
 (ns metosin.edn.dates-test
-  (:require [metosin.dates :as d :include-macros true]
+  (:require [metosin.dates :as d]
             [metosin.edn.dates :as ed]
             [metosin.edn :as edn]
     #?(:clj [clojure.test :refer :all]

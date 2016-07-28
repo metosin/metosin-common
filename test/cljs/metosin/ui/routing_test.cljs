@@ -1,7 +1,7 @@
 (ns metosin.ui.routing-test
   (:require [metosin.ui.routing :refer [data]]
             [domkm.silk :as silk]
-            [cljs.test :refer-macros [deftest testing is] :as test]))
+            [clojure.test :as test :refer [deftest is testing]]))
 
 ;;
 ;; Search query params

@@ -1,7 +1,6 @@
 (ns metosin.dates-test
   (:require [metosin.dates :as d :include-macros true]
-            #?(:clj [clojure.test :refer :all]
-               :cljs [cljs.test :refer-macros [deftest is testing] :as test])))
+            [clojure.test :as test :refer [deftest is testing]]))
 
 #?(:cljs (d/initialize-timezone! "Europe/Helsinki"))
 #?(:cljs (d/initialize-timezone! "America/Los_Angeles"))

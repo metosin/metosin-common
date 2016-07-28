@@ -2,7 +2,7 @@
   (:require [metosin.ui.routing.schema :refer [schema-query]]
             [domkm.silk :as silk]
             [schema.core :as s]
-            [cljs.test :refer-macros [deftest testing is] :as test]))
+            [clojure.test :as test :refer [deftest is testing]]))
 
 ;;
 ;; Search query params

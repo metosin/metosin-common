@@ -2,8 +2,7 @@
   (:require [metosin.dates :as d]
             [metosin.edn.dates :as ed]
             [metosin.edn :as edn]
-    #?(:clj [clojure.test :refer :all]
-       :cljs [cljs.test :refer-macros [deftest is testing] :as test])))
+            [clojure.test :as test :refer [deftest is testing]]))
 
 (deftest dates-test
   (testing "date"

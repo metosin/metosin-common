@@ -2,8 +2,7 @@
   (:require [metosin.dates :as d]
             [metosin.dates.schema :as ds]
             [schema.coerce :as sc]
-            #?(:clj [clojure.test :refer :all]
-               :cljs [cljs.test :refer-macros [deftest is testing] :as test])))
+            [clojure.test :as test :refer [deftest is testing]]))
 
 (def schema {:local-date d/LocalDate
              :date-time d/DateTime})

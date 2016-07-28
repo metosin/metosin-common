@@ -10,8 +10,7 @@
 
   Some consideration has been made to provide performant read
   implemenation for ClojureScript."
-  (:require [metosin.dates :as d]
-            #?(:cljs cljs.reader))
+  (:require [metosin.dates :as d])
   #?(:clj (:import [org.joda.time DateTime LocalDate])))
 
 (defn- date-time->reader-str [d]

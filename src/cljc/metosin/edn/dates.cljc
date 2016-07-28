@@ -20,26 +20,27 @@
 (defn- date->reader-str [d]
   (str "#Date \"" (d/to-string d) \"))
 
-#?(:clj (do
-          (defmethod print-dup DateTime [^DateTime d out]
-            (.write out (date-time->reader-str d)))
+#?(:clj
+   (do
+     (defmethod print-dup DateTime [^DateTime d out]
+       (.write out (date-time->reader-str d)))
 
-          (defmethod print-method DateTime [^DateTime d out]
-            (.write out (date-time->reader-str d)))
+     (defmethod print-method DateTime [^DateTime d out]
+       (.write out (date-time->reader-str d)))
 
-          (defmethod print-dup LocalDate [^LocalDate d out]
-            (.write out (date->reader-str d)))
+     (defmethod print-dup LocalDate [^LocalDate d out]
+       (.write out (date->reader-str d)))
 
-          (defmethod print-method LocalDate [^LocalDate d out]
-            (.write out (date->reader-str d))))
-         :cljs
-        (extend-protocol IPrintWithWriter
-          goog.date.DateTime
-          (-pr-writer [d out opts]
-            (-write out (date-time->reader-str d)))
-          goog.date.Date
-          (-pr-writer [d out opts]
-            (-write out (date->reader-str d)))))
+     (defmethod print-method LocalDate [^LocalDate d out]
+       (.write out (date->reader-str d))))
+   :cljs
+   (extend-protocol IPrintWithWriter
+     goog.date.DateTime
+     (-pr-writer [d out opts]
+       (-write out (date-time->reader-str d)))
+     goog.date.Date
+     (-pr-writer [d out opts]
+       (-write out (date->reader-str d)))))
 
 (def readers
   {'Date d/date

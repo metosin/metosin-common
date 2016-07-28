@@ -1,7 +1,5 @@
 (ns metosin.dates
-  "Use this namespace to format dates and datetimes for user.
-
-  Don't use for serializing or deserializing."
+  "Use this namespace to format dates and datetimes for user."
   (:refer-clojure :exclude [format])
   #?(:cljs (:require-macros metosin.dates))
   #?(:cljs (:require goog.date.UtcDateTime
@@ -70,28 +68,28 @@
   (to-native [x] "Convers to native Date object (java.util.Date or js/Date)."))
 
 #?(:cljs
-    (extend-protocol ToNative
-      goog.date.Date
-      (to-native [x]
-        (let [d (js/Date. (.getYear x) (.getMonth x) (.getDate x) 0 0 0 0)]
-          (.setMinutes d (- (.getMinutes d) (.getTimezoneOffset d)))
-          d))
-      goog.date.UtcDateTime
-      (to-native [x]
-        ; Will create js/Date in local time zone.
-        ; Manually convert to UTC. x.getTimezoneOffset can't be used because it's zero for UtcDateTime.
-        (let [d (js/Date. (.getYear x) (.getMonth x) (.getDate x) (.getHours x) (.getMinutes x) (.getSeconds x) (.getMilliseconds x))]
-          (.setMinutes d (- (.getMinutes d) (.getTimezoneOffset d)))
-          d)))
+   (extend-protocol ToNative
+     goog.date.Date
+     (to-native [x]
+       (let [d (js/Date. (.getYear x) (.getMonth x) (.getDate x) 0 0 0 0)]
+         (.setMinutes d (- (.getMinutes d) (.getTimezoneOffset d)))
+         d))
+     goog.date.UtcDateTime
+     (to-native [x]
+       ; Will create js/Date in local time zone.
+       ; Manually convert to UTC. x.getTimezoneOffset can't be used because it's zero for UtcDateTime.
+       (let [d (js/Date. (.getYear x) (.getMonth x) (.getDate x) (.getHours x) (.getMinutes x) (.getSeconds x) (.getMilliseconds x))]
+         (.setMinutes d (- (.getMinutes d) (.getTimezoneOffset d)))
+         d)))
    :clj
-    (extend-protocol ToNative
-      org.joda.time.DateTime
-      (to-native [x]
-        (.toDate x))
-      org.joda.time.LocalDate
-      (to-native [x]
-        ; LocalDate toDate creates date in local timezone, that is Helsinki
-        (.toDate (.toDateTimeAtStartOfDay x)))))
+   (extend-protocol ToNative
+     org.joda.time.DateTime
+     (to-native [x]
+       (.toDate x))
+     org.joda.time.LocalDate
+     (to-native [x]
+       ; LocalDate toDate creates date in local timezone, that is Helsinki
+       (.toDate (.toDateTimeAtStartOfDay x)))))
 
 (defprotocol ToDateTime
   (-to-date-time [x] "Convers Date or such to DateTime."))
@@ -149,34 +147,34 @@
   (-to-string [x] "Converts object to good date string representation"))
 
 #?(:clj
-    (extend-protocol ToString
-      org.joda.time.DateTime
-      (-to-string [x]
-        (write-date-time x))
-      org.joda.time.LocalDate
-      (-to-string [x]
-        (write-local-date x)))
+   (extend-protocol ToString
+     org.joda.time.DateTime
+     (-to-string [x]
+       (write-date-time x))
+     org.joda.time.LocalDate
+     (-to-string [x]
+       (write-local-date x)))
    :cljs
-     (extend-protocol ToString
-       goog.date.UtcDateTime
-       (-to-string [x]
-         (write-date-time x))
-       goog.date.Date
-       (-to-string [x]
-         (write-local-date x))))
+   (extend-protocol ToString
+     goog.date.UtcDateTime
+     (-to-string [x]
+       (write-date-time x))
+     goog.date.Date
+     (-to-string [x]
+       (write-local-date x))))
 
 ; FIXME: Is this a good idea?
 ; Required for using dates as keys etc.
 #?(:cljs
-    (extend-type goog.date.Date
-      IEquiv
-      (-equiv [o other]
-        (and (instance? goog.date.Date other)
-             (identical? (.getTime o) (.getTime other))
-             (identical? (.getTimezoneOffset o) (.getTimezoneOffset other))))
-      IComparable
-      (-compare [o other]
-        (- (.getTime o) (.getTime other)))))
+   (extend-type goog.date.Date
+     IEquiv
+     (-equiv [o other]
+       (and (instance? goog.date.Date other)
+            (identical? (.getTime o) (.getTime other))
+            (identical? (.getTimezoneOffset o) (.getTimezoneOffset other))))
+     IComparable
+     (-compare [o other]
+       (- (.getTime o) (.getTime other)))))
 
 ;;
 ;; Formatter and parser constructors, private.
@@ -261,7 +259,7 @@
       :cljs (goog.date.UtcDateTime.  y (dec m) d hh mm ss)))
   ([y m d hh mm ss millis]
    #?(:clj  (org.joda.time.DateTime. y m d hh mm ss millis)
-           :cljs (goog.date.UtcDateTime.  y (dec m) d hh mm ss millis))) )
+      :cljs (goog.date.UtcDateTime.  y (dec m) d hh mm ss millis))) )
 
 (defn date
   ([]
@@ -386,8 +384,8 @@
 (defn minus [date x]
   {:pre [#?(:cljs (instance? goog.date.Interval x))]}
   #?(:cljs
-      (doto (.clone date)
-        (.add (.getInverse x)))
+     (doto (.clone date)
+       (.add (.getInverse x)))
      :clj
      (.minus date x)))
 

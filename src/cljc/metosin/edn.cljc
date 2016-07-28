@@ -13,5 +13,3 @@
   ([opts s]
     #?(:clj (edn/read-string opts s)
        :cljs (reader/read-string opts s))))
-
-

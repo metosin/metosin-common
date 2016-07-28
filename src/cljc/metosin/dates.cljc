@@ -376,8 +376,8 @@
 (defn add [date x]
   {:pre [#?(:cljs (instance? goog.date.Interval x))]}
   #?(:cljs
-      (doto (.clone date)
-        (.add x))
+     (doto (.clone date)
+       (.add x))
      :clj
      (.plus date x)))
 

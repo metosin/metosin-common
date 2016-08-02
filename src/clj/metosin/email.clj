@@ -69,6 +69,7 @@
             :context s/Any
             :settings {:from s/Str
                        (s/optional-key :smtp) {(s/optional-key :ssl) s/Bool
+                                               (s/optional-key :tls) s/Bool
                                                (s/optional-key :port) s/Int
                                                :host s/Str
                                                :user s/Str

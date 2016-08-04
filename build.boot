@@ -82,8 +82,8 @@
 
 (deftask run-tests []
   (comp
-    (alt-test)
-    (test-cljs)))
+    (alt-test :fail true)
+    (test-cljs :exit? true)))
 
 (deftask dev []
   (comp

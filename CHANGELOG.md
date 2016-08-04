@@ -1,3 +1,12 @@
+## 0.2.3 (2.8.2016)
+
+- Add TLS support to `metosin.email` - pass in `:tls true` in SMTP settings.
+
+## 0.2.2 (20.5.2016)
+
+- New namespace: `metosin.edn.dates`
+    - Implements EDN tag readers/writers for Joda-Time and goog.date.
+
 ## 0.2.1 (13.5.2016)
 
 - Update java.jdbc to 0.6.1 to fix Postgres problems

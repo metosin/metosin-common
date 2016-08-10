@@ -6,7 +6,7 @@
   :source-paths #{"test/clj" "test/cljc" "test/cljs"}
   :resource-paths #{"src/clj" "src/cljc" "src/cljs"}
   :dependencies '[[org.clojure/clojure "1.8.0" :scope "test"]
-                  [org.clojure/clojurescript "1.8.51" :scope "test"]
+                  [org.clojure/clojurescript "1.9.89" :scope "test"]
 
                   [boot/core "2.6.0" :scope "test"]
                   [adzerk/boot-cljs "1.7.228-1" :scope "test"]
@@ -43,9 +43,9 @@
                   ;; metosin.jdbc
                   [camel-snake-kebab "0.3.2"]
                   ;; metosin.postgres.types
-                  [org.postgresql/postgresql "9.4.1208"]
+                  [org.postgresql/postgresql "9.4.1209"]
                   ;; metosin.sql
-                  [honeysql "0.6.3"]
+                  [honeysql "0.8.0"]
                   ;; metosin.ping
                   [aleph "0.4.1"]
                   ;; metosin.postgres.types

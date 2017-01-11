@@ -450,7 +450,7 @@
   "Test if x is date or date-time (as they extend date) as defined by this namespace.
 
   Platform dependent libraries might have other date objects, but only the
-  exact classes used by this namespace are accpeted."
+  exact classes used by this namespace are accepted."
   [x]
   #?(:cljs (or (instance? goog.date.Date x) (instance? goog.date.UtcDateTime x))
      :clj (or (instance? org.joda.time.LocalDate x) (instance? org.joda.time.DateTime x))))
@@ -459,7 +459,7 @@
   "Test if x is date-time as defined by this namespace.
 
   Platform dependent libraries might have other date-time objects, but only the
-  exact classes used by this namespace are accpeted."
+  exact classes used by this namespace are accepted."
   [x]
   #?(:cljs (instance? goog.date.UtcDateTime x)
      :clj (instance? org.joda.time.DateTime x)))

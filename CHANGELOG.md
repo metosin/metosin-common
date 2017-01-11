@@ -1,15 +1,27 @@
+## 0.3.0
+
+- Deprecate `dates/date->str`, `dates/date-time->str`, use `format` instead
+- Replace `dates/add` with `dates/plus`, similar to JodaTime API instead of Closure
+- Add `dates/before?`, `dates/after?` and `dates/equal?` predicates
+- Add `metosin.ring.utils.etag` and `metosin.ring.utils.last-modified` to work with conditional HTTP requests
+
+**[compare](https://github.com/metosin/metosin-common/compare/0.2.3...master)**
+
 ## 0.2.3 (2.8.2016)
 
 - Add TLS support to `metosin.email` - pass in `:tls true` in SMTP settings.
+**[compare](https://github.com/metosin/metosin-common/compare/0.2.2...0.2.3)**
 
 ## 0.2.2 (20.5.2016)
 
 - New namespace: `metosin.edn.dates`
     - Implements EDN tag readers/writers for Joda-Time and goog.date.
+**[compare](https://github.com/metosin/metosin-common/compare/0.2.1...0.2.2)**
 
 ## 0.2.1 (13.5.2016)
 
 - Update java.jdbc to 0.6.1 to fix Postgres problems
+**[compare](https://github.com/metosin/metosin-common/compare/0.2.0...0.1)**
 
 ## 0.2.0 (12.5.2016)
 
@@ -17,10 +29,12 @@
 - Update deps
 - Move `metosin.bootstrap.*` to [Komponentit](https://github.com/metosin/komponentit)
 - Drop `metosin.forms`
+**[compare](https://github.com/metosin/metosin-common/compare/0.1.4...0.2.0)**
 
 ## 0.1.4 (13.4.2016)
 
 - Disable warn of reflection
+**[compare](https://github.com/metosin/metosin-common/compare/0.1.3...0.1.4)**
 
 ## 0.1.3 (12.2.2016)
 
@@ -34,9 +48,11 @@
 - New namespace: `metosin.dates.schema`
     - Implements Schema coercion-matchers for well-formatted date strings
 
+**[compare](https://github.com/metosin/metosin-common/compare/0.1.2...0.1.3)**
+
 ## 0.1.2 (9.2.2016)
 
-**[compare](https://github.com/metosin/metosin-common/compare/0.1.1...master)**
+**[compare](https://github.com/metosin/metosin-common/compare/0.1.1...0.1.2)**
 
 - `metosin.jdbc`
     - maps in `insert!` result are converted to use kebab-case

@@ -30,7 +30,7 @@
                   ;; metosin.email
                   [metosin/palikka "0.5.2"]
                   ;; metosin.ping
-                  [metosin/ring-http-response "0.8.0"]
+                  [metosin/ring-http-response "0.8.1"]
                   ;; metosin.ui.routing.schema
                   [metosin/schema-tools "0.9.0"]
                   ;; metosin.ui.routing.schema

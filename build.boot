@@ -93,7 +93,8 @@
     (pom)
     (jar)
     (install)
-    (run-tests)))
+    (alt-test)
+    (test-cljs :exit? false)))
 
 (deftask deploy []
   (comp

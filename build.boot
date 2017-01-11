@@ -6,34 +6,35 @@
   :source-paths #{"test/clj" "test/cljc" "test/cljs"}
   :resource-paths #{"src/clj" "src/cljc" "src/cljs"}
   :dependencies '[[org.clojure/clojure "1.8.0" :scope "test"]
-                  [org.clojure/clojurescript "1.9.89" :scope "test"]
+                  [org.clojure/clojurescript "1.9.293" :scope "test"]
 
-                  [boot/core "2.6.0" :scope "test"]
-                  [adzerk/boot-cljs "1.7.228-1" :scope "test"]
-                  [crisptrutski/boot-cljs-test "0.2.2-SNAPSHOT" :scope "test"]
-                  [metosin/boot-alt-test "0.1.0" :scope "test"]
+                  [boot/core "2.7.1" :scope "test"]
+                  [adzerk/boot-cljs "1.7.228-2" :scope "test"]
+                  [crisptrutski/boot-cljs-test "0.3.0" :scope "test"]
+                  [doo "0.1.7"]
+                  [metosin/boot-alt-test "0.2.1" :scope "test"]
 
                   ;; for testing metosin.jdbc
-                  [com.h2database/h2 "1.4.192" :scope "test"]
+                  [com.h2database/h2 "1.4.193" :scope "test"]
 
                   ;; metosin.jdbc
                   [potemkin "0.4.3"]
                   ;; metosin.dates
-                  [joda-time/joda-time "2.9.4"]
+                  [joda-time/joda-time "2.9.7"]
                   ;; metosin.core.async.debounce
-                  [org.clojure/core.async "0.2.385"]
+                  [org.clojure/core.async "0.2.395"]
                   ;; metosin.email
                   [org.clojure/tools.logging "0.3.1"]
                   ;; metosin.dates.generators
                   [org.clojure/test.check "0.9.0"]
                   ;; metosin.email
-                  [metosin/palikka "0.5.1"]
+                  [metosin/palikka "0.5.2"]
                   ;; metosin.ping
                   [metosin/ring-http-response "0.8.0"]
                   ;; metosin.ui.routing.schema
                   [metosin/schema-tools "0.9.0"]
                   ;; metosin.ui.routing.schema
-                  [metosin/potpuri "0.3.0"]
+                  [metosin/potpuri "0.4.0"]
                   ;; metosin.email
                   [de.ubercode.clostache/clostache "1.4.0"]
                   ;; metosin.email
@@ -43,18 +44,18 @@
                   ;; metosin.jdbc
                   [camel-snake-kebab "0.3.2"]
                   ;; metosin.postgres.types
-                  [org.postgresql/postgresql "9.4.1209"]
+                  [org.postgresql/postgresql "9.4.1212"]
                   ;; metosin.sql
-                  [honeysql "0.8.0"]
+                  [honeysql "0.8.2"]
                   ;; metosin.ping
                   [aleph "0.4.1"]
                   ;; metosin.postgres.types
                   [cheshire "5.6.3"]
                   ;; metosin.transit.dates
-                  [com.cognitect/transit-clj "0.8.288"]
+                  [com.cognitect/transit-clj "0.8.297"]
                   [com.cognitect/transit-cljs "0.8.239"]
                   ;; metosin.ping
-                  [reagent "0.6.0-SNAPSHOT"]
+                  [reagent "0.6.0"]
                   ;; metosin.forms, metosin.email, metosin
                   [prismatic/schema "1.1.3"]
                   ;; metosin.ping

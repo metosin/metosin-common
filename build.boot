@@ -87,6 +87,7 @@
     (test-cljs :exit? true)))
 
 (deftask dev []
+  (set-env! :resource-paths #(conj % "dev-resources"))
   (comp
     (watch)
     (repl :server true)

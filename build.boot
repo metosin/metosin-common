@@ -5,13 +5,13 @@
   ; Just be careful to not AOT them
   :source-paths #{"test/clj" "test/cljc" "test/cljs"}
   :resource-paths #{"src/clj" "src/cljc" "src/cljs"}
-  :dependencies '[[org.clojure/clojure "1.8.0" :scope "test"]
+  :dependencies '[[org.clojure/clojure "1.8.0" :scope "provided"]
                   [org.clojure/clojurescript "1.9.293" :scope "test"]
 
                   [boot/core "2.7.1" :scope "test"]
                   [adzerk/boot-cljs "1.7.228-2" :scope "test"]
                   [crisptrutski/boot-cljs-test "0.3.0" :scope "test"]
-                  [doo "0.1.7"]
+                  [doo "0.1.7" :scope "test"]
                   [metosin/boot-alt-test "0.2.1" :scope "test"]
 
                   ;; for testing metosin.jdbc
@@ -38,7 +38,7 @@
                   ;; metosin.email
                   [de.ubercode.clostache/clostache "1.4.0"]
                   ;; metosin.email
-                  [com.draines/postal "1.11.4"]
+                  [com.draines/postal "2.0.2"]
                   ;; metosin.jdbc, metosin.postgres.joda.time, metosin.postgres.types
                   [org.clojure/java.jdbc "0.6.1"]
                   ;; metosin.jdbc
@@ -56,7 +56,7 @@
                   [com.cognitect/transit-cljs "0.8.239"]
                   ;; metosin.ping
                   [reagent "0.6.0"]
-                  ;; metosin.forms, metosin.email, metosin
+                  ;; metosin.email, metosin
                   [prismatic/schema "1.1.3"]
                   ;; metosin.ping
                   [jarohen/chord "0.7.0"]

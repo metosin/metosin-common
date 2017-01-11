@@ -108,6 +108,18 @@
   (is (= (d/date-time 2016 1 27 12 13 00)
          (d/minus (d/date-time 2016 1 27 12 13 01) (d/seconds 1)))))
 
+(deftest date-predicate-test
+  (is (false? (d/date? "string")))
+  (is (false? (d/date? nil)))
+  (is (true? (d/date? (d/date))))
+  (is (true? (d/date? (d/date-time)))))
+
+(deftest date-time-predicate-test
+  (is (false? (d/date-time? "string")))
+  (is (false? (d/date-time? nil)))
+  (is (true? (d/date-time? (d/date-time))))
+  (is (false? (d/date-time? (d/date)))))
+
 (deftest before-predicate-test
   (is (nil? (d/before? nil (d/date 2016 1 1))))
   (is (nil? (d/before? (d/date 2016 1 1) nil)))

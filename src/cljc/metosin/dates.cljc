@@ -465,19 +465,19 @@
      :clj (instance? org.joda.time.DateTime x)))
 
 (defn before?
-  "Defined only for Date objects. Does null check."
+  "Defined only for Date objects. Does nil check."
   [a b]
   (and a b #?(:clj (.isBefore a b)
               :cljs (neg? (goog.date.Date/compare a b)))))
 
 (defn after?
-  "Defined only for Date objects. Does null check."
+  "Defined only for Date objects. Does nil check."
   [a b]
   (and a b #?(:clj (.isAfter a b)
               :cljs (pos? (goog.date.Date/compare a b)))))
 
 (defn equal?
-  "Defined only for Date objects. Does null check."
+  "Defined only for Date objects. Does nil check."
   [a b]
   (and a b #?(:clj (.isEqual a b)
               :cljs (zero? (goog.date.Date/compare a b)))))

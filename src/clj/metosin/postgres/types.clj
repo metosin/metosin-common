@@ -24,8 +24,6 @@
 ; resetting the connection, the dispatcher sometimes gets "app.keyword"
 ; and sometimes it gets "keyword"
 
-
-
 (def keyword-type-name "keyword")
 (def keyword-type-long-name "\"app\".\"keyword\"")
 
@@ -41,6 +39,7 @@
   (sql-value [this]
     (->PGobject (:type this) (:value this)))
 
+  ;; FIXME: Dangerous? Best to remove this?
   clojure.lang.Keyword
   (sql-value [this]
     (let [k (if (namespace this)

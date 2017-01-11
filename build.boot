@@ -82,6 +82,7 @@
     (install)))
 
 (deftask run-tests []
+  (set-env! :resource-paths #(conj % "dev-resources"))
   (comp
     (alt-test :fail true)
     (test-cljs :exit? true)))

@@ -443,6 +443,22 @@
       :clj  (org.joda.time.Seconds/seconds n))))
 
 ;;
+;; Predicates
+;;
+
+(defn before? [a b]
+  #?(:clj (.isBefore a b)
+     :cljs (neg? (goog.date.Date/compare a b))))
+
+(defn after? [a b]
+  #?(:clj (.isAfter a b)
+     :cljs (pos? (goog.date.Date/compare a b))))
+
+(defn equal? [a b]
+  #?(:clj (.isEqual a b)
+     :cljs (zero? (goog.date.Date/compare a b))))
+
+;;
 ;; "Legacy api"
 ;;
 

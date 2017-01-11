@@ -446,17 +446,23 @@
 ;; Predicates
 ;;
 
-(defn before? [a b]
-  #?(:clj (.isBefore a b)
-     :cljs (neg? (goog.date.Date/compare a b))))
+(defn before?
+  "Defined only for Date objects. Does null check."
+  [a b]
+  (and a b #?(:clj (.isBefore a b)
+              :cljs (neg? (goog.date.Date/compare a b)))))
 
-(defn after? [a b]
-  #?(:clj (.isAfter a b)
-     :cljs (pos? (goog.date.Date/compare a b))))
+(defn after?
+  "Defined only for Date objects. Does null check."
+  [a b]
+  (and a b #?(:clj (.isAfter a b)
+              :cljs (pos? (goog.date.Date/compare a b)))))
 
-(defn equal? [a b]
-  #?(:clj (.isEqual a b)
-     :cljs (zero? (goog.date.Date/compare a b))))
+(defn equal?
+  "Defined only for Date objects. Does null check."
+  [a b]
+  (and a b #?(:clj (.isEqual a b)
+              :cljs (zero? (goog.date.Date/compare a b)))))
 
 ;;
 ;; "Legacy api"

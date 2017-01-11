@@ -109,25 +109,34 @@
          (d/minus (d/date-time 2016 1 27 12 13 01) (d/seconds 1)))))
 
 (deftest before-predicate-test
-  (is (not (d/before? (d/date 2016 1 2) (d/date 2016 1 1))))
-  (is (d/before? (d/date 2016 1 1) (d/date 2016 1 2)))
+  (is (nil? (d/before? nil (d/date 2016 1 1))))
+  (is (nil? (d/before? (d/date 2016 1 1) nil)))
 
-  (is (not (d/before? (d/date-time 2016 1 1 12 1) (d/date-time 2016 1 1 12 0))))
-  (is (d/before? (d/date-time 2016 1 1 12 0) (d/date-time 2016 1 1 12 1))))
+  (is (false? (d/before? (d/date 2016 1 2) (d/date 2016 1 1))))
+  (is (true? (d/before? (d/date 2016 1 1) (d/date 2016 1 2))))
+
+  (is (false? (d/before? (d/date-time 2016 1 1 12 1) (d/date-time 2016 1 1 12 0))))
+  (is (true? (d/before? (d/date-time 2016 1 1 12 0) (d/date-time 2016 1 1 12 1)))))
 
 (deftest after-predicate-test
-  (is (not (d/after? (d/date 2016 1 1) (d/date 2016 1 2))))
-  (is (d/after? (d/date 2016 1 2) (d/date 2016 1 1)))
+  (is (nil? (d/after? nil (d/date 2016 1 1))))
+  (is (nil? (d/after? (d/date 2016 1 1) nil)))
 
-  (is (not (d/after? (d/date-time 2016 1 1 12 0) (d/date-time 2016 1 1 12 1))))
-  (is (d/after? (d/date-time 2016 1 1 12 1) (d/date-time 2016 1 1 12 0))))
+  (is (false? (d/after? (d/date 2016 1 1) (d/date 2016 1 2))))
+  (is (true? (d/after? (d/date 2016 1 2) (d/date 2016 1 1))))
+
+  (is (false? (d/after? (d/date-time 2016 1 1 12 0) (d/date-time 2016 1 1 12 1))))
+  (is (true? (d/after? (d/date-time 2016 1 1 12 1) (d/date-time 2016 1 1 12 0)))))
 
 (deftest equal-predicate-test
-  (is (not (d/equal? (d/date 2016 1 2) (d/date 2016 1 1))))
-  (is (d/equal? (d/date 2016 1 1) (d/date 2016 1 1)))
+  (is (nil? (d/equal? nil (d/date 2016 1 1))))
+  (is (nil? (d/equal? (d/date 2016 1 1) nil)))
 
-  (is (not (d/equal? (d/date-time 2016 1 1 12 1) (d/date-time 2016 1 1 12 0))))
-  (is (d/equal? (d/date-time 2016 1 1 12 0) (d/date-time 2016 1 1 12 0))))
+  (is (false? (d/equal? (d/date 2016 1 2) (d/date 2016 1 1))))
+  (is (true? (d/equal? (d/date 2016 1 1) (d/date 2016 1 1))))
+
+  (is (false? (d/equal? (d/date-time 2016 1 1 12 1) (d/date-time 2016 1 1 12 0))))
+  (is (true? (d/equal? (d/date-time 2016 1 1 12 0) (d/date-time 2016 1 1 12 0)))))
 
 (deftest legacy-api-test
   (is (= "14.5.2015" (d/date->str (d/date 2015 5 14))))

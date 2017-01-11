@@ -1,8 +1,9 @@
-## 0.3.0
+## 0.3.0 (11.1.2016)
 
 - Deprecate `dates/date->str`, `dates/date-time->str`, use `format` instead
 - Replace `dates/add` with `dates/plus`, similar to JodaTime API instead of Closure (`add` is still available, but deprecated).
 - Add `dates/before?`, `dates/after?` and `dates/equal?` predicates ([#6](https://github.com/metosin/metosin-common/issues/6))
+- Add `dates/date?` and `dates/date-time?` predicates
 - Add `metosin.ring.utils.etag` and `metosin.ring.utils.last-modified` to work with conditional HTTP requests
 - Fix Cache-Control header letter case ([#9](https://github.com/metosin/metosin-common/issues/9))
 

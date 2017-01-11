@@ -1,7 +1,5 @@
 (ns metosin.ring.util.cache)
 
-(def +cache-control+ "cache-control")
-
 (def no-cache     "max-age=0,no-cache,no-store")
 (def cache-30d    "public,max-age=2592000,s-maxage=2592000")
 
@@ -13,9 +11,9 @@
   ([response] (cache-control response cache-30d))
   ([response value]
    (if (map? response)
-     (assoc-in response [:headers +cache-control+] value)))
+     (assoc-in response [:headers "Cache-Control"] value)))
   ([response value default?]
-   (if (and default? (get-in response [:headers +cache-control+]))
+   (if (and default? (get-in response [:headers "Cache-Control"]))
      response
      (cache-control response value))))
 

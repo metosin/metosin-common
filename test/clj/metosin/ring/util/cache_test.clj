@@ -9,7 +9,7 @@
                               :default? true})))
 
 (deftest wrap-cache-test
-  (is (= {:status 200, :body nil, :headers {"cache-control" cache-30d}}
+  (is (= {:status 200, :body nil, :headers {"Cache-Control" cache-30d}}
          (handler {})))
-  (is (= {:status 200, :body nil, :headers {"cache-control" no-cache}}
+  (is (= {:status 200, :body nil, :headers {"Cache-Control" no-cache}}
          (handler {:no-cache true}))))

@@ -83,17 +83,18 @@
   (is (= (d/date 2016 12 31) (d/end-of-year (d/date 2016 1 27))))
   (is (= (d/date-time 2016 12 31 12 0) (d/end-of-year (d/date-time 2016 1 27 12 0)))))
 
-(deftest add-test
+(deftest plus-test
+  (is (= (d/date 2016 1 28) (d/plus (d/date 2016 1 27) (d/days 1))))
   (is (= (d/date 2016 1 28) (d/add (d/date 2016 1 27) (d/days 1))))
 
-  (is (= (d/date-time 2017 1 27 12 13) (d/add (d/date-time 2016 1 27 12 13) (d/years 1))))
-  (is (= (d/date-time 2016 2 27 12 13) (d/add (d/date-time 2016 1 27 12 13) (d/months 1))))
-  (is (= (d/date-time 2016 2 3 12 13) (d/add (d/date-time 2016 1 27 12 13) (d/weeks 1))))
-  (is (= (d/date-time 2016 1 28 12 13) (d/add (d/date-time 2016 1 27 12 13) (d/days 1))))
-  (is (= (d/date-time 2016 1 27 13 13) (d/add (d/date-time 2016 1 27 12 13) (d/hours 1))))
-  (is (= (d/date-time 2016 1 27 12 14) (d/add (d/date-time 2016 1 27 12 13) (d/minutes 1))))
+  (is (= (d/date-time 2017 1 27 12 13) (d/plus (d/date-time 2016 1 27 12 13) (d/years 1))))
+  (is (= (d/date-time 2016 2 27 12 13) (d/plus (d/date-time 2016 1 27 12 13) (d/months 1))))
+  (is (= (d/date-time 2016 2 3 12 13) (d/plus (d/date-time 2016 1 27 12 13) (d/weeks 1))))
+  (is (= (d/date-time 2016 1 28 12 13) (d/plus (d/date-time 2016 1 27 12 13) (d/days 1))))
+  (is (= (d/date-time 2016 1 27 13 13) (d/plus (d/date-time 2016 1 27 12 13) (d/hours 1))))
+  (is (= (d/date-time 2016 1 27 12 14) (d/plus (d/date-time 2016 1 27 12 13) (d/minutes 1))))
   (is (= (d/date-time 2016 1 27 12 13 02)
-         (d/add (d/date-time 2016 1 27 12 13 01) (d/seconds 1)))))
+         (d/plus (d/date-time 2016 1 27 12 13 01) (d/seconds 1)))))
 
 (deftest minus-test
   (is (= (d/date 2016 1 26) (d/minus (d/date 2016 1 27) (d/days 1))))

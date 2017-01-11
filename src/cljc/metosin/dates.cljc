@@ -373,7 +373,18 @@
 
 ;; Better API for these 6 calls?
 
-(defn add [date x]
+(defn plus [date x]
+  {:pre [#?(:cljs (instance? goog.date.Interval x))]}
+  #?(:cljs
+     (doto (.clone date)
+       (.add x))
+     :clj
+     (.plus date x)))
+
+(defn add
+  "DEPRECATED: Use plus instead."
+  {:deprecated "0.3.0"}
+  [date x]
   {:pre [#?(:cljs (instance? goog.date.Interval x))]}
   #?(:cljs
      (doto (.clone date)
@@ -435,14 +446,22 @@
 ;; "Legacy api"
 ;;
 
-(def date-fmt {:pattern "d.M.yyyy"})
-(def date-time-fmt {:pattern "d.M.yyyy H:mm"
-                    :timezone "Europe/Helsinki"})
+(def ^:private date-fmt
+  {:pattern "d.M.yyyy"})
+(def ^:private date-time-fmt
+  {:pattern "d.M.yyyy H:mm"
+   :timezone "Europe/Helsinki"})
 
-(defn date->str [d]
+(defn date->str
+  "DEPRECATED: Use format instead."
+  {:deprecated "0.3.0"}
+  [d]
   (if d
     (format d date-fmt)))
 
-(defn date-time->str [d]
+(defn date-time->str
+  "DEPRECATED: Use format instead."
+  {:deprecated "0.3.0"}
+  [d]
   (if d
     (format d date-time-fmt)))

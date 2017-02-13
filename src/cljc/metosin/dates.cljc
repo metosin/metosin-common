@@ -241,7 +241,7 @@
 ;; Constructors
 ;;
 
-(defn date-time
+(defn #?(:clj ^org.joda.time.DateTime date-time :cljs date-time)
   ([]
    #?(:clj  (org.joda.time.DateTime.)
       :cljs (goog.date.UtcDateTime.)))
@@ -261,7 +261,7 @@
    #?(:clj  (org.joda.time.DateTime. y m d hh mm ss millis)
       :cljs (goog.date.UtcDateTime.  y (dec m) d hh mm ss millis))) )
 
-(defn date
+(defn #?(:clj ^org.joda.time.LocalDate date :cljs date)
   ([]
    #?(:clj  (org.joda.time.LocalDate.)
       :cljs (goog.date.Date.)))

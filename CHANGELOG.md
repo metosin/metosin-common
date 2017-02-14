@@ -1,3 +1,7 @@
+## Unreleased
+
+- Add some type hints to `metosin.dates`.
+
 ## 0.3.0 (11.1.2016)
 
 - Deprecate `dates/date->str`, `dates/date-time->str`, use `format` instead

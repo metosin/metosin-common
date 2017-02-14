@@ -80,7 +80,10 @@
        ; Manually convert to UTC. x.getTimezoneOffset can't be used because it's zero for UtcDateTime.
        (let [d (js/Date. (.getYear x) (.getMonth x) (.getDate x) (.getHours x) (.getMinutes x) (.getSeconds x) (.getMilliseconds x))]
          (.setMinutes d (- (.getMinutes d) (.getTimezoneOffset d)))
-         d)))
+         d))
+     js/Date
+     (to-native [x]
+       x))
    :clj
    (extend-protocol ToNative
      org.joda.time.DateTime
@@ -89,7 +92,10 @@
      org.joda.time.LocalDate
      (to-native [x]
        ; LocalDate toDate creates date in local timezone, that is Helsinki
-       (.toDate (.toDateTimeAtStartOfDay x)))))
+       (.toDate (.toDateTimeAtStartOfDay x)))
+     java.util.Date
+     (to-native [x]
+       x)))
 
 (defprotocol ToDateTime
   (-to-date-time [x] "Convers Date or such to DateTime."))

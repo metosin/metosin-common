@@ -32,6 +32,12 @@
   (testing "to native"
     (is (= #inst "2015-05-14T09:13" (d/to-native (d/date-time 2015 5 14 9 13))))))
 
+(deftest to-native-test
+  (testing "native date to native is a nop"
+    (let [now #?(:clj (java.util.Date.)
+                 :cljs (js/Date.))]
+      (is (identical? now (d/to-native now))))))
+
 (deftest to-string-test
   (is (= "2015-05-14"
          (d/to-string (d/date 2015 5 14))))

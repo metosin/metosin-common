@@ -1,6 +1,7 @@
 ## Unreleased
 
 - Add some type hints to `metosin.dates`.
+- Remove dangerous keyword -> PGobject `ISQLValue` implementation from `metosin.postgres.types`
 
 ## 0.3.0 (11.1.2016)
 

@@ -12,7 +12,7 @@
                   [adzerk/boot-cljs "1.7.228-2" :scope "test"]
                   [crisptrutski/boot-cljs-test "0.3.0" :scope "test"]
                   [doo "0.1.7" :scope "test"]
-                  [metosin/boot-alt-test "0.3.0-SNAPSHOT" :scope "test"]
+                  [metosin/boot-alt-test "0.3.0" :scope "test"]
 
                   ;; for testing metosin.jdbc
                   [com.h2database/h2 "1.4.193" :scope "test"]

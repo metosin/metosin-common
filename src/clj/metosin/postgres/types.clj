@@ -14,25 +14,10 @@
 ;; From Clojure to Postgres
 ;;
 
-; ISQLValue is used when data is being inserted into JDBC
-; ISQLValue is also used as default if there is no ISQLParameter
-; implementation.
-
-;; Marker for wrapping inserted values to wanted Postgres type
-(defrecord PgType [type value])
-
-(extend-protocol jdbc/ISQLValue
-  PgType
-  (sql-value [this]
-    (->PGobject (:type this) (:value this)))
-
-  clojure.lang.IPersistentMap
-  (sql-value [this]
-    (->PGobject "json" (json/generate-string this)))
-
-  clojure.lang.IPersistentVector
-  (sql-value [this]
-    (->PGobject "json" (json/generate-string this))))
+(defn write-json
+  "Write a value to Postgres JSON field."
+  [x]
+  (->PGobject "json" (json/generate-string this)))
 
 ;;
 ;; From Postgres to Clojure

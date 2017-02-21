@@ -17,7 +17,7 @@
 (defn write-json
   "Write a value to Postgres JSON field."
   [x]
-  (->PGobject "json" (json/generate-string this)))
+  (->PGobject "json" (json/generate-string x)))
 
 ;;
 ;; From Postgres to Clojure

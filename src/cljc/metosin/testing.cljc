@@ -1,8 +1,8 @@
 (ns metosin.testing
   (:require [clojure.test :refer [assert-any assert-expr do-report function?]]))
 
-;; assert-not and assert-expr are directly derived from clojure.test source code
-;; <https://github.com/clojure/clojure/blob/c0326d2386dd1227f35f46f1c75a8f87e2e93076/src/clj/clojure/test.clj>
+;; assert-not and assert-expr 'not are based from assert-predicate and assert-expr :default
+;; <https://github.com/clojure/clojure/blob/c0326d2386dd1227f35f46f1c75a8f87e2e93076/src/clj/clojure/test.clj#L435>
 
 (defn- assert-not [msg form]
   (let [subform (second form)

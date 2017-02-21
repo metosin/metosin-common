@@ -12,7 +12,7 @@
                   [adzerk/boot-cljs "1.7.228-2" :scope "test"]
                   [crisptrutski/boot-cljs-test "0.3.0" :scope "test"]
                   [doo "0.1.7" :scope "test"]
-                  [metosin/boot-alt-test "0.2.1" :scope "test"]
+                  [metosin/boot-alt-test "0.3.0-SNAPSHOT" :scope "test"]
 
                   ;; for testing metosin.jdbc
                   [com.h2database/h2 "1.4.193" :scope "test"]
@@ -84,7 +84,7 @@
 (deftask run-tests []
   (set-env! :resource-paths #(conj % "dev-resources"))
   (comp
-    (alt-test :fail true)
+    (alt-test)
     (test-cljs :exit? true)))
 
 (deftask dev []

@@ -296,6 +296,20 @@
                  (.add (goog.date.Interval. goog.date.Interval.MINUTES offset)))))
     d))
 
+;
+;; Getters
+;;
+
+(defn day [x] #?(:clj (.getDayOfMonth x) :cljs (.getDate x)))
+
+(defn month
+  "Get the month of the date. 1 = January, 12 = December."
+  [x]
+  #?(:clj (.getMonthOfYear x)
+     :cljs (inc (.getMonth x))))
+
+(defn year [x] (.getYear x))
+
 ;;
 ;; Format
 ;;
@@ -359,7 +373,6 @@
              (.setDate decemeber (.getNumberOfDaysInMonth decemeber))
              decemeber)
      :clj  (.withMaximumValue (.dayOfYear date))))
-
 
 ;; missing min/max properties:
 ;; - century of era

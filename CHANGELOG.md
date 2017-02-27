@@ -1,3 +1,11 @@
+## Unreleased
+
+- New namespace: `metosin.hetu`
+    - Implements a validator for Finnish personal identification codes (henkilötunnus/hetu)
+- Add `dates/day`, `dates/month`, and `dates/year` getters.
+
+**[compare](https://github.com/metosin/metosin-common/compare/0.4.0...master)**
+
 ## 0.4.0 (21.2.2017)
 
 - Add some type hints to `metosin.dates`.

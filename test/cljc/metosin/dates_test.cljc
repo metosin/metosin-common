@@ -1,7 +1,7 @@
 (ns metosin.dates-test
   (:require [metosin.dates :as d :include-macros true]
-            #?(:clj [clojure.test :refer :all]
-               :cljs [cljs.test :refer-macros [deftest is testing] :as test])))
+            #?(:clj [clojure.test :refer [deftest is testing are]]
+               :cljs [cljs.test :refer-macros [deftest is testing are] :as test])))
 
 #?(:cljs (d/initialize-timezone! "Europe/Helsinki"))
 #?(:cljs (d/initialize-timezone! "America/Los_Angeles"))
@@ -58,6 +58,13 @@
 (deftest parse-test
   (is (= (d/date 2015 4 15) (d/date "2015-04-15" {:pattern "yyyy-MM-dd"})))
   (is (= (d/date-time 2015 4 15 9 13) (d/date-time "2015-04-15 09:13" {:pattern "yyyy-MM-dd HH:mm"}))))
+
+(deftest getter-test
+  (let [date (d/date-time 2017 2 22 10 30)]
+    (are [f x] (= (f date) x)
+      d/year   2017
+      d/month  2
+      d/day    22)))
 
 (deftest start-of-day-test
   (is (= (d/date-time 2016 1 27 0 0 0 0) (d/start-of-day (d/date-time 2016 1 27 12 0)))))

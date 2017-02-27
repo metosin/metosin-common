@@ -72,7 +72,8 @@
   pom {:project 'metosin/metosin-common
        :version +version+
        :description "Random collection of various namespaces used in multiple Metosin projects."
-       :license {"Eclipse Public License" "http://opensource.org/licenses/mit-license.php"}}
+       :license {"Eclipse Public License" "http://opensource.org/licenses/mit-license.php"}
+       :scm {:url "https://github.com/metosin/metosin-common"}}
   cljs {:source-map true})
 
 (deftask build []

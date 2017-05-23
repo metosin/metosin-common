@@ -1,7 +1,7 @@
 (ns metosin.jdbc-test
-  (:require [metosin.jdbc :refer :all]
+  (:require [metosin.jdbc :refer [db-spec-defaults]]
             [clojure.test :refer :all]
-            [clojure.java.jdbc :as jdbc]
+            [clojure.java.jdbc :as jdbc :refer [query update! delete! execute! insert! insert-multi!]]
             [honeysql.core :as sql]))
 
 (def h2-spec (merge
@@ -23,15 +23,19 @@
 (defn h2? [spec]
   (= "org.h2.Driver" (:classname spec)))
 
+(def db-spec (merge
+               ;; Enable metosin.jdbc options
+               db-spec-defaults
+               ;; Select test DB
+               (try
+                 (query psql-spec ["select now()"])
+                 (println "Running tests against Postgres")
+                 psql-spec
+                 (catch Exception e
+                   (println "No Postgres available, running tests against H2. Run `docker-compose up` to use Postgres.")
+                   h2-spec))))
+
 (deftest metosin-jdbc-test
-  (doseq [db-spec [h2-spec psql-spec]
-          :when (try
-                  (query db-spec ["select now()"])
-                  (println "\nRunning tests against" (or (:classname db-spec) (:dbtype db-spec)))
-                  true
-                  (catch Exception e
-                    (println (str "\nNot running tests against " (or (:classname db-spec) (:dbtype db-spec)) ", start the DB to run tests."))
-                    false))]
   (jdbc/with-db-connection [db db-spec]
     (jdbc/db-do-commands db
       (jdbc/create-table-ddl :test_table
@@ -40,7 +44,11 @@
                               [:test_column2 "varchar"]]))
 
     (testing "insert! with underscores"
-      (insert! db :test_table {:test_column1 100}))
+      ;; Postgres insert returns the row, h2 doesn't
+      (if (h2? db-spec)
+        (insert! db :test_table {:test_column1 100})
+        (is (= [{:id 1 :test-column1 100 :test-column2 nil}]
+               (insert! db :test_table {:test_column1 100})))))
 
     (testing "query with underscores"
       (let [q {:select [:id :test_column1 :test_column2]
@@ -89,13 +97,17 @@
         (is (= '() (query db (sql/format q))))))
 
     (testing "insert-multi! with dashes"
-      (insert-multi! db :test-table [{:test-column2 "bar"} {:test-column2 "bar"}])
+      (if (h2? db-spec)
+        (insert-multi! db :test-table [{:test-column2 "bar"} {:test-column2 "bar"}])
+        (is (= [{:id 3 :test-column1 nil :test-column2 "bar"} {:id 4 :test-column1 nil :test-column2 "bar"}]
+               (insert-multi! db :test-table [{:test-column2 "bar"} {:test-column2 "bar"}]))))
+
       (is (= [{:test-column2 "bar"} {:test-column2 "bar"}]
              (query db (sql/format {:select [:test-column2] :from [:test-table]})))))
 
     (testing "execute!"
       (is (= '(1)
-             (execute! db ["INSERT INTO test_table (test_column1) VALUES (1)"])))))))
+             (execute! db ["INSERT INTO test_table (test_column1) VALUES (1)"]))))))
 
 (def kebab-keywords #'metosin.jdbc/kebab-keywords)
 

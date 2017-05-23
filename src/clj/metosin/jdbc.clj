@@ -20,14 +20,14 @@
     (fn [x]
       (if (map? x)
         (into (empty x) (for [[k v] x]
-                          [(if (keyword? k) (->kebab-case k) k) v]))
+                          [(if (keyword? k) (keyword (identifiers (name k))) k) v]))
         x))
     x))
 
 (defn
   ^{:doc (:doc (meta #'jdbc/query))}
   query
-  ([db sql-params](query db sql-params {}))
+  ([db sql-params] (query db sql-params {}))
   ([db sql-params options]
    (jdbc/query db sql-params (assoc options :identifiers identifiers))))
 

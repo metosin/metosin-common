@@ -8,16 +8,36 @@
               :subprotocol "h2:mem"
               :subname "db/metosin-common-test"})
 
+;; Run docker-compose up
+(def psql-spec {:dbtype "postgresql"
+                :host "localhost"
+                :port 7612
+                :dbname "common"
+                :user "common"
+                :password "common"})
+
+(defn h2? [spec]
+  (= "org.h2.Driver" (:classname spec)))
+
+(def db-spec psql-spec)
+
 (deftest metosin-jdbc-test
-  (jdbc/with-db-connection [db h2-spec]
+  (jdbc/with-db-connection [db db-spec]
     (jdbc/db-do-commands db
-      (jdbc/create-table-ddl :test_table
-                             [[:id "bigint primary key auto_increment"]
-                              [:test_column1 "int"]
-                              [:test_column2 "varchar"]]))
+                         [(jdbc/drop-table-ddl :test_table)
+                          (jdbc/create-table-ddl :test_table
+                                                 [[:id (if (h2? db-spec)
+                                                         "bigint primary key auto_increment"
+                                                         "serial primary key")]
+                                                  [:test_column1 "int"]
+                                                  [:test_column2 "varchar"]])])
 
     (testing "insert! with underscores"
-      (insert! db :test_table {:test_column1 100}))
+      ;; Postgres insert returns the row, h2 doesn't
+      (if (h2? db-spec)
+        (insert! db :test_table {:test_column1 100})
+        (is (= [{:id 1 :test-column1 100 :test-column2 nil}]
+               (insert! db :test_table {:test_column1 100})))))
 
     (testing "query with underscores"
       (let [q {:select [:id :test_column1 :test_column2]
@@ -66,7 +86,11 @@
         (is (= '() (query db (sql/format q))))))
 
     (testing "insert-multi! with dashes"
-      (insert-multi! db :test-table [{:test-column2 "bar"} {:test-column2 "bar"}])
+      (if (h2? db-spec)
+        (insert-multi! db :test-table [{:test-column2 "bar"} {:test-column2 "bar"}])
+        (is (= [{:id 3 :test-column1 nil :test-column2 "bar"} {:id 4 :test-column1 nil :test-column2 "bar"}]
+               (insert-multi! db :test-table [{:test-column2 "bar"} {:test-column2 "bar"}]))))
+
       (is (= [{:test-column2 "bar"} {:test-column2 "bar"}]
              (query db (sql/format {:select [:test-column2] :from [:test-table]})))))
 

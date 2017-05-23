@@ -1,5 +1,5 @@
 (ns metosin.jdbc.joda.time-test
-  (:require [metosin.jdbc :refer :all]
+  (:require [clojure.java.jdbc :refer :all]
             [clojure.test :refer :all]
             [metosin.dates :as dates]
             metosin.jdbc.joda.time)

@@ -1,3 +1,10 @@
+## Unreleased
+
+- Update [java.jdbc](https://github.com/clojure/java.jdbc) to version 0.7-alpha3
+    - `metosin.jdbc` functions have been removed, instead provides
+    `db-spec-defaults` map with entities/identifiers functions. Merge this
+    to your db spec to use these options.
+
 ## 0.4.0 (21.2.2017)
 
 - Add some type hints to `metosin.dates`.

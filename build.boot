@@ -8,21 +8,21 @@
   :dependencies '[[org.clojure/clojure "1.8.0" :scope "provided"]
                   [org.clojure/clojurescript "1.9.293" :scope "test"]
 
-                  [boot/core "2.7.1" :scope "test"]
-                  [adzerk/boot-cljs "1.7.228-2" :scope "test"]
+                  [adzerk/boot-cljs "2.0.0" :scope "test"]
                   [crisptrutski/boot-cljs-test "0.3.0" :scope "test"]
                   [doo "0.1.7" :scope "test"]
-                  [metosin/boot-alt-test "0.3.0" :scope "test"]
+                  [metosin/boot-alt-test "0.3.2" :scope "test"]
+                  [metosin/boot-deps-size "0.1.0" :scope "test"]
 
                   ;; for testing metosin.jdbc
-                  [com.h2database/h2 "1.4.193" :scope "test"]
+                  [com.h2database/h2 "1.4.195" :scope "test"]
 
                   ;; metosin.jdbc
                   [potemkin "0.4.3"]
                   ;; metosin.dates
-                  [joda-time/joda-time "2.9.7"]
+                  [joda-time/joda-time "2.9.9"]
                   ;; metosin.core.async.debounce
-                  [org.clojure/core.async "0.2.395"]
+                  [org.clojure/core.async "0.3.442"]
                   ;; metosin.email
                   [org.clojure/tools.logging "0.3.1"]
                   ;; metosin.dates.generators
@@ -30,7 +30,7 @@
                   ;; metosin.email
                   [metosin/palikka "0.5.2"]
                   ;; metosin.ping
-                  [metosin/ring-http-response "0.8.1"]
+                  [metosin/ring-http-response "0.9.0"]
                   ;; metosin.ui.routing.schema
                   [metosin/schema-tools "0.9.0"]
                   ;; metosin.ui.routing.schema
@@ -41,32 +41,31 @@
                   [com.draines/postal "2.0.2"]
                   ;; metosin.jdbc, metosin.postgres.joda.time, metosin.postgres.types
                   [org.clojure/java.jdbc "0.7.0-alpha3"]
-                  ;; metosin.jdbc
-                  [camel-snake-kebab "0.3.2"]
                   ;; metosin.postgres.types
-                  [org.postgresql/postgresql "9.4.1212"]
+                  [org.postgresql/postgresql "42.1.1"]
                   ;; metosin.sql
                   [honeysql "0.8.2"]
-                  ;; metosin.ping
-                  [aleph "0.4.1"]
+                  ;; metosin.ping, require in the app if used!
+                  [aleph "0.4.1" :scope "test"]
                   ;; metosin.postgres.types
-                  [cheshire "5.6.3"]
+                  [cheshire "5.7.1"]
                   ;; metosin.transit.dates
-                  [com.cognitect/transit-clj "0.8.297"]
+                  [com.cognitect/transit-clj "0.8.300"]
                   [com.cognitect/transit-cljs "0.8.239"]
                   ;; metosin.ping
-                  [reagent "0.6.0"]
+                  [reagent "0.6.2"]
                   ;; metosin.email, metosin
-                  [prismatic/schema "1.1.3"]
+                  [prismatic/schema "1.1.6"]
                   ;; metosin.ping
-                  [jarohen/chord "0.7.0"]
+                  [jarohen/chord "0.8.1"]
                   ;; metosin.ui.routing.schema
                   [com.domkm/silk "0.1.2"]])
 
 (require
   '[adzerk.boot-cljs :refer [cljs]]
   '[metosin.boot-alt-test :refer [alt-test]]
-  '[crisptrutski.boot-cljs-test :refer [test-cljs]])
+  '[crisptrutski.boot-cljs-test :refer [test-cljs]]
+  '[metosin.boot-deps-size :refer [deps-size]])
 
 (task-options!
   pom {:project 'metosin/metosin-common

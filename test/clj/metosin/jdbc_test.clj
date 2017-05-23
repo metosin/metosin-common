@@ -4,12 +4,35 @@
             [clojure.java.jdbc :as jdbc]
             [honeysql.core :as sql]))
 
-(def h2-spec {:classname "org.h2.Driver"
-              :subprotocol "h2:mem"
-              :subname "db/metosin-common-test"})
+(def h2-spec (merge
+               db-spec-defaults
+               {:classname "org.h2.Driver"
+                :subprotocol "h2:mem"
+                :subname "db/metosin-common-test"}))
+
+;; Run docker-compose up
+(def psql-spec (merge
+                 db-spec-defaults
+                 {:dbtype "postgresql"
+                  :host "localhost"
+                  :port 7612
+                  :dbname "common"
+                  :user "common"
+                  :password "common"}))
+
+(defn h2? [spec]
+  (= "org.h2.Driver" (:classname spec)))
 
 (deftest metosin-jdbc-test
-  (jdbc/with-db-connection [db h2-spec]
+  (doseq [db-spec [h2-spec psql-spec]
+          :when (try
+                  (query db-spec ["select now()"])
+                  (println "\nRunning tests against" (or (:classname db-spec) (:dbtype db-spec)))
+                  true
+                  (catch Exception e
+                    (println (str "\nNot running tests against " (or (:classname db-spec) (:dbtype db-spec)) ", start the DB to run tests."))
+                    false))]
+  (jdbc/with-db-connection [db db-spec]
     (jdbc/db-do-commands db
       (jdbc/create-table-ddl :test_table
                              [[:id "bigint primary key auto_increment"]
@@ -72,7 +95,7 @@
 
     (testing "execute!"
       (is (= '(1)
-             (execute! db ["INSERT INTO test_table (test_column1) VALUES (1)"]))))))
+             (execute! db ["INSERT INTO test_table (test_column1) VALUES (1)"])))))))
 
 (def kebab-keywords #'metosin.jdbc/kebab-keywords)
 

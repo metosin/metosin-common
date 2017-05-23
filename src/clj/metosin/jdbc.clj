@@ -3,8 +3,7 @@
   (:require [clojure.string :as string]
             [clojure.java.jdbc :as jdbc]
             [potemkin :refer [import-vars]]
-            [clojure.walk :refer [postwalk]]
-            [camel-snake-kebab.core :refer [->kebab-case]]))
+            [clojure.walk :refer [postwalk]]))
 
 
 (defn entities [x]
@@ -14,15 +13,6 @@
   (-> x
       (string/lower-case)
       (string/replace #"_" "-")))
-
-(defn- kebab-keywords [x]
-  (postwalk
-    (fn [x]
-      (if (map? x)
-        (into (empty x) (for [[k v] x]
-                          [(if (keyword? k) (keyword (identifiers (name k))) k) v]))
-        x))
-    x))
 
 (defn
   ^{:doc (:doc (meta #'jdbc/query))}
@@ -50,25 +40,22 @@
   insert!
   ([db table row] (insert! db table row {}))
   ([db table cols-or-row values-or-opts]
-   (kebab-keywords
-     (if (map? values-or-opts)
-       (jdbc/insert! db table cols-or-row (assoc values-or-opts :entities entities))
-       (jdbc/insert! db table cols-or-row values-or-opts {:entities entities}))))
+   (if (map? values-or-opts)
+     (jdbc/insert! db table cols-or-row (assoc values-or-opts :entities entities :identifiers identifiers))
+     (jdbc/insert! db table cols-or-row values-or-opts {:entities entities :identifiers identifiers})))
   ([db table cols values opts]
-   (kebab-keywords (jdbc/insert! db table cols values (assoc opts :entities entities)))))
+   (jdbc/insert! db table cols values (assoc opts :entities entities :identifiers identifiers))))
 
 (defn
   ^{:doc (:doc (meta #'jdbc/insert-multi!))}
   insert-multi!
   ([db table rows] (insert-multi! db table rows {}))
   ([db table cols-or-rows values-or-opts]
-   (kebab-keywords
-     (if (map? values-or-opts)
-       (jdbc/insert-multi! db table cols-or-rows (assoc values-or-opts :entities entities))
-       (jdbc/insert-multi! db table cols-or-rows values-or-opts {:entities entities}))))
+   (if (map? values-or-opts)
+     (jdbc/insert-multi! db table cols-or-rows (assoc values-or-opts :entities entities :identifiers identifiers))
+     (jdbc/insert-multi! db table cols-or-rows values-or-opts {:entities entities :identifiers identifiers})))
   ([db table cols values opts]
-   (kebab-keywords
-     (jdbc/insert-multi! db table cols values (assoc opts :entities entities)))))
+   (jdbc/insert-multi! db table cols values (assoc opts :entities entities :identifiers identifiers))))
 
 (defn
   ^{:doc (:doc (meta #'jdbc/update!))}

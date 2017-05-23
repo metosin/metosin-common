@@ -4,34 +4,34 @@
             [clojure.java.jdbc :as jdbc :refer [query update! delete! execute! insert! insert-multi!]]
             [honeysql.core :as sql]))
 
-(def h2-spec {:classname "org.h2.Driver"
-              :subprotocol "h2:mem"
-              :subname "db/metosin-common-test"})
+(def h2-spec (merge
+               db-spec-defaults
+               {:classname "org.h2.Driver"
+                :subprotocol "h2:mem"
+                :subname "db/metosin-common-test"}))
 
 ;; Run docker-compose up
-(def psql-spec {:dbtype "postgresql"
-                :host "localhost"
-                :port 7612
-                :dbname "common"
-                :user "common"
-                :password "common"})
+(def psql-spec (merge
+                 db-spec-defaults
+                 {:dbtype "postgresql"
+                  :host "localhost"
+                  :port 7612
+                  :dbname "common"
+                  :user "common"
+                  :password "common"}))
 
 (defn h2? [spec]
   (= "org.h2.Driver" (:classname spec)))
 
-(def db-spec (merge
-               ;; Enable metosin.jdbc options
-               db-spec-defaults
-               ;; Select test DB
-               (try
-                 (query psql-spec ["select now()"])
-                 (println "Running tests against Postgres")
-                 psql-spec
-                 (catch Exception e
-                   (println "No Postgres available, running tests against H2. Run `docker-compose up` to use Postgres.")
-                   h2-spec))))
-
 (deftest metosin-jdbc-test
+  (doseq [db-spec [h2-spec psql-spec]
+          :when (try
+                  (query db-spec ["select now()"])
+                  (println "\nRunning tests against" (or (:classname db-spec) (:dbtype db-spec)))
+                  true
+                  (catch Exception e
+                    (println (str "\nNot running tests against " (or (:classname db-spec) (:dbtype db-spec)) ", start the DB to run tests."))
+                    false))]
   (jdbc/with-db-connection [db db-spec]
     (jdbc/db-do-commands db
                          ["DROP TABLE IF EXISTS test_table"
@@ -106,4 +106,4 @@
 
     (testing "execute!"
       (is (= '(1)
-             (execute! db ["INSERT INTO test_table (test_column1) VALUES (1)"]))))))
+             (execute! db ["INSERT INTO test_table (test_column1) VALUES (1)"])))))))

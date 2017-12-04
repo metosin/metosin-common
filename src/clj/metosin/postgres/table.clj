@@ -17,6 +17,6 @@
 (defn table-names
   "Extracts all table names as keywords from a PostgreSQL Database Schema."
   [db schema]
-  (->> ["select table_name from information_schema.tables where table_schema = ?"]
+  (->> ["select table_name from information_schema.tables where table_schema = ?" schema]
        (jdbc/query db)
        (map (comp keyword :table_name))))

@@ -1,3 +1,9 @@
+## Unreleased
+
+- Update dependencies.
+
+**[compare](https://github.com/metosin/metosin-common/compare/0.4.0...master)**
+
 ## 0.4.0 (21.2.2017)
 
 - Add some type hints to `metosin.dates`.

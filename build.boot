@@ -5,67 +5,67 @@
   ; Just be careful to not AOT them
   :source-paths #{"test/clj" "test/cljc" "test/cljs"}
   :resource-paths #{"src/clj" "src/cljc" "src/cljs"}
-  :dependencies '[[org.clojure/clojure "1.8.0" :scope "provided"]
-                  [org.clojure/clojurescript "1.9.293" :scope "test"]
+  :dependencies '[[org.clojure/clojure "1.9.0" :scope "provided"]
+                  [org.clojure/clojurescript "1.9.946" :scope "test"]
 
-                  [boot/core "2.7.1" :scope "test"]
-                  [adzerk/boot-cljs "1.7.228-2" :scope "test"]
-                  [crisptrutski/boot-cljs-test "0.3.0" :scope "test"]
-                  [doo "0.1.7" :scope "test"]
-                  [metosin/boot-alt-test "0.3.0" :scope "test"]
+                  [boot/core "2.7.2" :scope "test"]
+                  [adzerk/boot-cljs "2.1.4" :scope "test"]
+                  [crisptrutski/boot-cljs-test "0.3.4" :scope "test"]
+                  [doo "0.1.8" :scope "test"]
+                  [metosin/bat-test "0.4.0" :scope "test"]
 
                   ;; for testing metosin.jdbc
-                  [com.h2database/h2 "1.4.193" :scope "test"]
+                  [com.h2database/h2 "1.4.196" :scope "test"]
 
                   ;; metosin.jdbc
-                  [potemkin "0.4.3"]
+                  [potemkin "0.4.4"]
                   ;; metosin.dates
-                  [joda-time/joda-time "2.9.7"]
+                  [joda-time/joda-time "2.9.9"]
                   ;; metosin.core.async.debounce
-                  [org.clojure/core.async "0.2.395"]
+                  [org.clojure/core.async "0.4.474"]
                   ;; metosin.email
-                  [org.clojure/tools.logging "0.3.1"]
+                  [org.clojure/tools.logging "0.4.0"]
                   ;; metosin.dates.generators
                   [org.clojure/test.check "0.9.0"]
                   ;; metosin.email
-                  [metosin/palikka "0.5.2"]
+                  [metosin/palikka "0.5.4"]
                   ;; metosin.ping
-                  [metosin/ring-http-response "0.8.1"]
+                  [metosin/ring-http-response "0.9.0"]
                   ;; metosin.ui.routing.schema
-                  [metosin/schema-tools "0.9.0"]
+                  [metosin/schema-tools "0.9.1"]
                   ;; metosin.ui.routing.schema
-                  [metosin/potpuri "0.4.0"]
+                  [metosin/potpuri "0.5.1"]
                   ;; metosin.email
                   [de.ubercode.clostache/clostache "1.4.0"]
                   ;; metosin.email
                   [com.draines/postal "2.0.2"]
                   ;; metosin.jdbc, metosin.postgres.joda.time, metosin.postgres.types
-                  [org.clojure/java.jdbc "0.6.1"]
+                  [org.clojure/java.jdbc "0.7.5"]
                   ;; metosin.jdbc
-                  [camel-snake-kebab "0.3.2"]
+                  [camel-snake-kebab "0.4.0"]
                   ;; metosin.postgres.types
-                  [org.postgresql/postgresql "9.4.1212"]
+                  [org.postgresql/postgresql "42.2.1"]
                   ;; metosin.sql
-                  [honeysql "0.8.2"]
+                  [honeysql "0.9.1"]
                   ;; metosin.ping
-                  [aleph "0.4.1"]
+                  [aleph "0.4.5-alpha3"]
                   ;; metosin.postgres.types
-                  [cheshire "5.6.3"]
+                  [cheshire "5.8.0"]
                   ;; metosin.transit.dates
-                  [com.cognitect/transit-clj "0.8.297"]
-                  [com.cognitect/transit-cljs "0.8.239"]
+                  [com.cognitect/transit-clj "0.8.300"]
+                  [com.cognitect/transit-cljs "0.8.243"]
                   ;; metosin.ping
-                  [reagent "0.6.0"]
+                  [reagent "0.7.0"]
                   ;; metosin.email, metosin
-                  [prismatic/schema "1.1.3"]
+                  [prismatic/schema "1.1.7"]
                   ;; metosin.ping
-                  [jarohen/chord "0.7.0"]
+                  [jarohen/chord "0.8.1"]
                   ;; metosin.ui.routing.schema
                   [com.domkm/silk "0.1.2"]])
 
 (require
   '[adzerk.boot-cljs :refer [cljs]]
-  '[metosin.boot-alt-test :refer [alt-test]]
+  '[metosin.bat-test :refer [bat-test]]
   '[crisptrutski.boot-cljs-test :refer [test-cljs]])
 
 (task-options!
@@ -85,7 +85,7 @@
 (deftask run-tests []
   (set-env! :resource-paths #(conj % "dev-resources"))
   (comp
-    (alt-test)
+    (bat-test)
     (test-cljs :exit? true)))
 
 (deftask dev []
@@ -96,7 +96,7 @@
     (pom)
     (jar)
     (install)
-    (alt-test)
+    (bat-test)
     (test-cljs :exit? false)))
 
 (deftask deploy []

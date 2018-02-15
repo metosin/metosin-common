@@ -1,8 +1,8 @@
-## Unreleased
+## 0.4.1 (15.2.2018)
 
 - Update dependencies.
 
-**[compare](https://github.com/metosin/metosin-common/compare/0.4.0...master)**
+**[compare](https://github.com/metosin/metosin-common/compare/0.4.0...0.4.1)**
 
 ## 0.4.0 (21.2.2017)
 

@@ -1,6 +1,7 @@
 ## 0.4.1 (15.2.2018)
 
-- Update dependencies.
+- Updated dependencies.
+- *BREAKING*: Dropped support for Clojure 1.7.
 
 **[compare](https://github.com/metosin/metosin-common/compare/0.4.0...0.4.1)**
 

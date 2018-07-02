@@ -1,8 +1,7 @@
 (ns metosin.ui.routing
-  (:require-macros [cljs.core.async.macros :refer [go]])
   (:require [clojure.set :refer [rename-keys]]
-            [cljs.core.async :refer [<!]]
-            cljs.core.async.impl.channels
+            [clojure.core.async :refer [<! go]]
+            clojure.core.async.impl.channels
             [domkm.silk :as silk]))
 
 ;;

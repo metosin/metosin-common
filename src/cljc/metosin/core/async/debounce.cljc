@@ -1,6 +1,5 @@
 (ns metosin.core.async.debounce
-  (:require #?(:cljs [cljs.core.async :as a]
-               :clj [clojure.core.async :as a])))
+  (:require [clojure.core.async :as a]))
 
 (defn debounce [in ms]
   "Creates a channel which will change put a new value to the output channel

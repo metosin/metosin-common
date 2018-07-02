@@ -1,5 +1,5 @@
 (ns metosin.ui.mouse
-  (:require [cljs.core.async :as a]))
+  (:require [clojure.core.async :as a]))
 
 ;;
 ;; Window clicks singleton channel

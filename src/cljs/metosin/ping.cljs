@@ -1,8 +1,7 @@
 (ns metosin.ping
-  (:require-macros [cljs.core.async.macros :refer [go alt!]])
   (:require [reagent.core :as r]
             [chord.client :refer [ws-ch]]
-            [cljs.core.async :refer [chan <! >! put! close! timeout]]
+            [clojure.core.async :refer [go alt! chan <! >! put! close! timeout]]
             [common.loc :refer [loc]]))
 
 (defonce prev-channel (atom nil))

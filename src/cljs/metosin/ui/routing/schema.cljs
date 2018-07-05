@@ -3,7 +3,6 @@
             [schema.core :as s]
             [schema.coerce :as sc]
             [schema-tools.core :as st]
-            [potpuri.core :as util]
             [clojure.string :as string]))
 
 (defprotocol ToUrlParam
@@ -29,7 +28,11 @@
 (defrecord SchemaQueryParams [schema coercer]
   silk/Pattern
   (-match [this that]
-    (coercer (util/map-keys keyword that)))
+    (coercer (persistent!
+               (reduce-kv (fn [acc k v]
+                            (assoc! acc (keyword k) v))
+                          (transient (empty that))
+                          that))))
   (-unmatch [this that]
     (persistent!
      (reduce-kv (fn [acc k v]

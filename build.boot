@@ -31,8 +31,6 @@
                   [metosin/ring-http-response "0.9.0" :scope "test"]
                   ;; metosin.ui.routing.schema
                   [metosin/schema-tools "0.10.3" :scope "test"]
-                  ;; metosin.ui.routing.schema
-                  [metosin/potpuri "0.5.1" :scope "test"]
                   ;; metosin.email
                   [de.ubercode.clostache/clostache "1.4.0" :scope "test"]
                   ;; metosin.email

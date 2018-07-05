@@ -1,9 +1,12 @@
 (ns metosin.postgres.types
-  (:require [cheshire.core :as json]
+  (:require [jsonista.core :as json]
             [clojure.java.jdbc :as jdbc]
             [clojure.string :as cs]
             [clojure.test :refer :all])
   (:import [org.postgresql.util PGobject]))
+
+(def keyword-mapper (json/object-mapper {:encode-key-fn true
+                                         :decode-key-fn true}))
 
 (defn ->PGobject [type value]
   (doto (PGobject.)
@@ -17,7 +20,7 @@
 (defn write-json
   "Write a value to Postgres JSON field."
   [x]
-  (->PGobject "json" (json/generate-string x)))
+  (->PGobject "json" (json/write-value-as-string x keyword-mapper)))
 
 ;;
 ;; From Postgres to Clojure
@@ -30,10 +33,10 @@
 (defmulti pgobject->clj (fn [^PGobject x] (.getType x)))
 
 (defmethod pgobject->clj "json" [^PGobject x]
-  (json/parse-string (.getValue x) true))
+  (json/read-value (.getValue x) keyword-mapper))
 
 (defmethod pgobject->clj "jsonb" [^PGobject x]
-  (json/parse-string (.getValue x) true))
+  (json/read-value (.getValue x) keyword-mapper))
 
 (defmethod pgobject->clj :default [x] x)
 

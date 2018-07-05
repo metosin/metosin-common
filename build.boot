@@ -46,7 +46,7 @@
                   ;; metosin.ping
                   [aleph "0.4.6" :scope "test"]
                   ;; metosin.postgres.types
-                  [cheshire "5.8.0" :scope "test"]
+                  [metosin/jsonista "0.2.1" :scope "test"]
                   ;; metosin.transit.dates
                   [com.cognitect/transit-clj "0.8.309" :scope "test"]
                   [com.cognitect/transit-cljs "0.8.256" :scope "test"]

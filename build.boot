@@ -27,8 +27,6 @@
                   [org.clojure/tools.logging "0.4.0" :scope "test"]
                   ;; metosin.dates.generators
                   [org.clojure/test.check "0.9.0" :scope "test"]
-                  ;; metosin.ping
-                  [metosin/ring-http-response "0.9.0" :scope "test"]
                   ;; metosin.ui.routing.schema
                   [metosin/schema-tools "0.10.3" :scope "test"]
                   ;; metosin.email

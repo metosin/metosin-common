@@ -1,15 +1,14 @@
 (ns metosin.ping
   (:require [manifold.deferred :as d]
             [manifold.stream :as s]
-            [aleph.http :as http]
-            [ring.util.http-response :refer [bad-request!]]))
+            [aleph.http :as http]))
 
 (defn ping-handler [req]
   (d/let-flow [conn (d/catch
                       (http/websocket-connection req)
                       (fn [_] nil))]
     (if-not conn
-      (bad-request!)
+      {:status 400}
       (s/consume (fn [_]
                    (s/put! conn (pr-str {:type :pong})))
                  conn))))

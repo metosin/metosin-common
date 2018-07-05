@@ -1,4 +1,4 @@
-(def +version+ "0.4.2")
+(def +version+ "0.5.0-SNAPSHOT")
 
 (set-env!
   ; Test path can be included here as source-files are not included in JAR
@@ -18,50 +18,48 @@
                   [com.h2database/h2 "1.4.197" :scope "test"]
 
                   ;; metosin.jdbc
-                  [potemkin "0.4.5"]
+                  [potemkin "0.4.5" :scope "test"]
                   ;; metosin.dates
-                  [joda-time/joda-time "2.10"]
+                  [joda-time/joda-time "2.10" :scope "test"]
                   ;; metosin.core.async.debounce
-                  [org.clojure/core.async "0.4.474"]
+                  [org.clojure/core.async "0.4.474" :scope "test"]
                   ;; metosin.email
-                  [org.clojure/tools.logging "0.4.0"]
+                  [org.clojure/tools.logging "0.4.0" :scope "test"]
                   ;; metosin.dates.generators
-                  [org.clojure/test.check "0.9.0"]
-                  ;; metosin.email
-                  [metosin/palikka "0.5.4"]
+                  [org.clojure/test.check "0.9.0" :scope "test"]
                   ;; metosin.ping
-                  [metosin/ring-http-response "0.9.0"]
+                  [metosin/ring-http-response "0.9.0" :scope "test"]
                   ;; metosin.ui.routing.schema
-                  [metosin/schema-tools "0.10.3"]
+                  [metosin/schema-tools "0.10.3" :scope "test"]
                   ;; metosin.ui.routing.schema
-                  [metosin/potpuri "0.5.1"]
+                  [metosin/potpuri "0.5.1" :scope "test"]
                   ;; metosin.email
-                  [de.ubercode.clostache/clostache "1.4.0"]
+                  [de.ubercode.clostache/clostache "1.4.0" :scope "test"]
                   ;; metosin.email
-                  [com.draines/postal "2.0.2"]
+                  [com.draines/postal "2.0.2" :scope "test"]
                   ;; metosin.jdbc, metosin.postgres.joda.time, metosin.postgres.types
-                  [org.clojure/java.jdbc "0.7.7"]
+                  [org.clojure/java.jdbc "0.7.7" :scope "test"]
                   ;; metosin.jdbc
-                  [camel-snake-kebab "0.4.0"]
+                  [camel-snake-kebab "0.4.0" :scope "test"]
                   ;; metosin.postgres.types
-                  [org.postgresql/postgresql "42.2.2"]
+                  [org.postgresql/postgresql "42.2.2" :scope "test"]
                   ;; metosin.sql
-                  [honeysql "0.9.3"]
+                  [honeysql "0.9.3" :scope "test"]
                   ;; metosin.ping
-                  [aleph "0.4.6"]
+                  [aleph "0.4.6" :scope "test"]
                   ;; metosin.postgres.types
-                  [cheshire "5.8.0"]
+                  [cheshire "5.8.0" :scope "test"]
                   ;; metosin.transit.dates
-                  [com.cognitect/transit-clj "0.8.309"]
-                  [com.cognitect/transit-cljs "0.8.256"]
+                  [com.cognitect/transit-clj "0.8.309" :scope "test"]
+                  [com.cognitect/transit-cljs "0.8.256" :scope "test"]
                   ;; metosin.ping
-                  [reagent "0.8.1"]
+                  [reagent "0.8.1" :scope "test"]
                   ;; metosin.email, metosin
-                  [prismatic/schema "1.1.9"]
+                  [prismatic/schema "1.1.9" :scope "test"]
                   ;; metosin.ping
-                  [jarohen/chord "0.8.1"]
+                  [jarohen/chord "0.8.1" :scope "test"]
                   ;; metosin.ui.routing.schema
-                  [com.domkm/silk "0.1.2"]])
+                  [com.domkm/silk "0.1.2" :scope "test"]])
 
 (require
   '[adzerk.boot-cljs :refer [cljs]]

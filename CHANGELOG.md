@@ -1,3 +1,8 @@
+## Unreleased
+
+- Removed all dependencies. Depend on necessary libraries on the application.
+- Removed `backend.email/create` Component.
+
 ## 0.4.2 (2018-06-02)
 
 - Updated dependencies.

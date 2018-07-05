@@ -2,10 +2,8 @@
   (:require [clojure.java.io :as io]
             [clojure.string :as string]
             [clojure.tools.logging :as log]
-            [palikka.coerce :as coerce]
             [clostache.parser :as clostache]
             [schema.core :as s]
-            [com.stuartsierra.component :as component]
             [postal.core :as postal]))
 
 (def deliveries (atom []))
@@ -74,8 +72,3 @@
                                                :host s/Str
                                                :user s/Str
                                                :pass s/Str}}}))
-
-(s/defn ^:always-validate create
-  "This component is stateless"
-  [env]
-  (coerce/env-coerce Config env))

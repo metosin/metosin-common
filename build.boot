@@ -17,6 +17,8 @@
                   ;; for testing metosin.jdbc
                   [com.h2database/h2 "1.4.197" :scope "test"]
 
+                  ;; metosin.ring.util.*
+                  [ring/ring-core "1.6.0" :scope "test"]
                   ;; metosin.jdbc
                   [potemkin "0.4.5" :scope "test"]
                   ;; metosin.dates

@@ -21,74 +21,69 @@
 
 ;; Deprecated?
 
-(defn- kebab-keywords [x]
-  (postwalk
-    (fn [x]
-      (if (map? x)
-        (into (empty x) (for [[k v] x]
-                          [(if (keyword? k) (->kebab-case k) k) v]))
-        x))
-    x))
-
 (defn
-  ^{:doc (:doc (meta #'jdbc/query))}
+  ^{:doc (:doc (meta #'jdbc/query))
+    :deprecated true}
   query
   ([db sql-params](query db sql-params {}))
   ([db sql-params options]
-   (jdbc/query db sql-params (assoc options :identifiers identifiers))))
+   (jdbc/query db sql-params (assoc options :identifiers identifiers :entities entities))))
 
 (defn
-  ^{:doc (:doc (meta #'jdbc/find-by-keys))}
+  ^{:doc (:doc (meta #'jdbc/find-by-keys))
+    :deprecated true}
   find-by-keys
   ([db table columns] (find-by-keys db table columns {}))
   ([db table columns opts]
    (jdbc/find-by-keys (assoc opts :identifiers identifiers :entities entities))))
 
 (defn
-  ^{:doc (:doc (meta #'jdbc/get-by-id))}
+  ^{:doc (:doc (meta #'jdbc/get-by-id))
+    :deprecated true}
   get-by-id
   ([db table columns] (find-by-keys db table columns {}))
   ([db table columns opts]
    (jdbc/find-by-keys (assoc opts :identifiers identifiers :entities entities))))
 
 (defn
-  ^{:doc (:doc (meta #'jdbc/insert!))}
+  ^{:doc (:doc (meta #'jdbc/insert!))
+    :deprecated true}
   insert!
   ([db table row] (insert! db table row {}))
   ([db table cols-or-row values-or-opts]
-   (kebab-keywords
-     (if (map? values-or-opts)
-       (jdbc/insert! db table cols-or-row (assoc values-or-opts :entities entities))
-       (jdbc/insert! db table cols-or-row values-or-opts {:entities entities}))))
+   (if (map? values-or-opts)
+     (jdbc/insert! db table cols-or-row (assoc values-or-opts :entities entities :identifiers identifiers))
+     (jdbc/insert! db table cols-or-row values-or-opts {:entities entities :identifiers identifiers})))
   ([db table cols values opts]
-   (kebab-keywords (jdbc/insert! db table cols values (assoc opts :entities entities)))))
+   (jdbc/insert! db table cols values (assoc opts :entities entities :identifiers identifiers))))
 
 (defn
-  ^{:doc (:doc (meta #'jdbc/insert-multi!))}
+  ^{:doc (:doc (meta #'jdbc/insert-multi!))
+    :deprecated true}
   insert-multi!
   ([db table rows] (insert-multi! db table rows {}))
   ([db table cols-or-rows values-or-opts]
-   (kebab-keywords
-     (if (map? values-or-opts)
-       (jdbc/insert-multi! db table cols-or-rows (assoc values-or-opts :entities entities))
-       (jdbc/insert-multi! db table cols-or-rows values-or-opts {:entities entities}))))
+   (if (map? values-or-opts)
+     (jdbc/insert-multi! db table cols-or-rows (assoc values-or-opts :entities entities :identifiers identifiers))
+     (jdbc/insert-multi! db table cols-or-rows values-or-opts {:entities entities :identifiers identifiers})))
   ([db table cols values opts]
-   (kebab-keywords
-     (jdbc/insert-multi! db table cols values (assoc opts :entities entities)))))
+   (jdbc/insert-multi! db table cols values (assoc opts :entities entities :identifiers identifiers))))
 
 (defn
-  ^{:doc (:doc (meta #'jdbc/update!))}
+  ^{:doc (:doc (meta #'jdbc/update!))
+    :deprecated true}
   update!
   ([db table set-map where-clause] (update! db table set-map where-clause {}))
   ([db table set-map where-clause options]
-   (jdbc/update! db table set-map where-clause (assoc options :entities entities))))
+   (jdbc/update! db table set-map where-clause (assoc options :entities entities :identifiers identifiers))))
 
 (defn
-  ^{:doc (:doc (meta #'jdbc/delete!))}
+  ^{:doc (:doc (meta #'jdbc/delete!))
+    :deprecated true}
   delete!
   ([db table where-clause] (delete! db table where-clause {}))
   ([db table where-clause options]
-   (jdbc/delete! db table where-clause (assoc options :entities entities))))
+   (jdbc/delete! db table where-clause (assoc options :entities entities :identifiers identifiers))))
 
 (import-vars
   [clojure.java.jdbc

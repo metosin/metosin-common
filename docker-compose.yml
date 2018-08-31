@@ -1,0 +1,11 @@
+version: '2'
+services:
+  postgres:
+    image: postgres:10.0
+    environment:
+      POSTGRES_PASSWORD: common
+      POSTGRES_USER: common
+      POSTGRES_DB: common
+    ports:
+      - "7612:5432"
+

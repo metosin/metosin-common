@@ -15,6 +15,12 @@
       (string/lower-case)
       (string/replace #"_" "-")))
 
+(def db-spec-defaults
+  {:entities entities
+   :identifiers identifiers})
+
+;; Deprecated?
+
 (defn- kebab-keywords [x]
   (postwalk
     (fn [x]

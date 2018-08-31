@@ -38,10 +38,11 @@
 (deftest metosin-jdbc-test
   (jdbc/with-db-connection [db db-spec]
     (jdbc/db-do-commands db
-      (jdbc/create-table-ddl :test_table
+      ["DROP TABLE IF EXISTS test_table"
+       (jdbc/create-table-ddl :test_table
                              [[:id "bigint primary key auto_increment"]
                               [:test_column1 "int"]
-                              [:test_column2 "varchar"]]))
+                              [:test_column2 "varchar"]])])
 
     (testing "insert! with underscores"
       ;; Postgres insert returns the row, h2 doesn't

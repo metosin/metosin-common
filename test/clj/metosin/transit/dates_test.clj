@@ -2,7 +2,7 @@
   (:require [metosin.dates :as d]
             [metosin.transit.dates :as t]
             [cognitect.transit :as transit]
-            [clojure.test :refer :all])
+            [clojure.test :refer [deftest is]])
   (:import [java.io ByteArrayInputStream ByteArrayOutputStream]))
 
 (deftest write-local-date

@@ -2,7 +2,7 @@
   (:require [metosin.dates :as d]
             [metosin.transit.dates :as t]
             [cognitect.transit :as transit]
-            [clojure.test :refer-macros [deftest testing is]]))
+            [clojure.test :refer-macros [deftest is]]))
 
 (deftest write-local-date
   (let [writer (transit/writer :json {:handlers t/writers})]

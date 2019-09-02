@@ -1,4 +1,4 @@
-(def +version+ "0.5.1-SNAPSHOT")
+(def +version+ "0.6.0-SNAPSHOT")
 
 (set-env!
   ; Test path can be included here as source-files are not included in JAR
@@ -18,8 +18,6 @@
 
                   ;; metosin.ring.util.*
                   [ring/ring-core "1.7.1" :scope "test"]
-                  ;; metosin.jdbc
-                  [potemkin "0.4.5" :scope "test"]
                   ;; metosin.dates
                   [joda-time/joda-time "2.10.3" :scope "test"]
                   ;; metosin.core.async.debounce
@@ -36,8 +34,6 @@
                   [com.draines/postal "2.0.3" :scope "test"]
                   ;; metosin.jdbc, metosin.postgres.joda.time, metosin.postgres.types
                   [org.clojure/java.jdbc "0.7.10" :scope "test"]
-                  ;; metosin.jdbc
-                  [camel-snake-kebab "0.4.0" :scope "test"]
                   ;; metosin.postgres.types
                   [org.postgresql/postgresql "42.2.6" :scope "test"]
                   ;; metosin.sql

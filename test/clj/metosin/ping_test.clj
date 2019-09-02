@@ -1,10 +1,9 @@
 (ns metosin.ping-test
   (:require [metosin.ping :as ping]
-            [clojure.test :refer :all]
+            [clojure.test :refer [deftest is]]
             [aleph.http :as http]
             [aleph.netty :as netty]
-            [manifold.stream :as s]
-            [manifold.deferred :as d]))
+            [manifold.stream :as s]))
 
 (def handler (ping/create-handler))
 

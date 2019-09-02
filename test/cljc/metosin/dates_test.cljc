@@ -90,7 +90,6 @@
 
 (deftest plus-test
   (is (= (d/date 2016 1 28) (d/plus (d/date 2016 1 27) (d/days 1))))
-  (is (= (d/date 2016 1 28) (d/add (d/date 2016 1 27) (d/days 1))))
 
   (is (= (d/date-time 2017 1 27 12 13) (d/plus (d/date-time 2016 1 27 12 13) (d/years 1))))
   (is (= (d/date-time 2016 2 27 12 13) (d/plus (d/date-time 2016 1 27 12 13) (d/months 1))))
@@ -154,11 +153,6 @@
 
   (is (false? (d/equal? (d/date-time 2016 1 1 12 1) (d/date-time 2016 1 1 12 0))))
   (is (true? (d/equal? (d/date-time 2016 1 1 12 0) (d/date-time 2016 1 1 12 0)))))
-
-(deftest legacy-api-test
-  (is (= "14.5.2015" (d/date->str (d/date 2015 5 14))))
-  ;; Helsinki tz
-  (is (= "14.5.2015 12:13" (d/date-time->str (d/date-time 2015 5 14 9 13)))))
 
 #?(:clj (deftest closure-timezone-test
           (is (= {:id "America/Los_Angeles"

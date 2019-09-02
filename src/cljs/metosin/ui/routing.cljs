@@ -1,4 +1,6 @@
 (ns metosin.ui.routing
+  "Please use Reitit-frontend instead."
+  {:deprecated "0.6.0"}
   (:require [clojure.set :refer [rename-keys]]
             [clojure.core.async :refer [<! go]]
             clojure.core.async.impl.channels

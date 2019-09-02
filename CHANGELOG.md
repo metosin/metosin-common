@@ -1,3 +1,11 @@
+## Unreleased
+
+- Update deps
+- Remove all deprecated functions in `metosin.jdbc` (i.e. all the copied fns)
+    - Just provide `entities` and `identifiers` options to connection spec to
+    convert column names.
+- Remove deprecated functions in `metosin.dates`
+
 ## 0.5.0 (2018-08-31)
 
 - Removed all dependencies. Depend on necessary libraries on the application.

@@ -1,8 +1,6 @@
 (ns metosin.postgres.types
   (:require [cheshire.core :as json]
-            [clojure.java.jdbc :as jdbc]
-            [clojure.string :as cs]
-            [clojure.test :refer :all])
+            [clojure.java.jdbc :as jdbc])
   (:import [org.postgresql.util PGobject]))
 
 (defn ->PGobject [type value]

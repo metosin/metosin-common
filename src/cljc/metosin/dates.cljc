@@ -254,8 +254,9 @@
   ([x]
    (-to-date-time x))
   ([s {:keys [pattern]}]
-   #?(:cljs (doto (goog.date.UtcDateTime. 0 0 0 0 0 0 0)
-              (as-> date (.strictParse (parser pattern) s date)))
+   #?(:cljs (let [date (goog.date.UtcDateTime. 0 0 0 0 0 0 0)]
+              (.strictParse (parser pattern) s date)
+              date)
       :clj  (org.joda.time.DateTime/parse s (parser pattern))))
   ([y m d hh mm]
    #?(:clj  (org.joda.time.DateTime. y m d hh mm)
@@ -265,7 +266,7 @@
       :cljs (goog.date.UtcDateTime.  y (dec m) d hh mm ss)))
   ([y m d hh mm ss millis]
    #?(:clj  (org.joda.time.DateTime. y m d hh mm ss millis)
-      :cljs (goog.date.UtcDateTime.  y (dec m) d hh mm ss millis))) )
+      :cljs (goog.date.UtcDateTime.  y (dec m) d hh mm ss millis))))
 
 (defn #?(:clj ^org.joda.time.LocalDate date :cljs date)
   ([]
@@ -274,8 +275,9 @@
   ([x]
    (-to-date x))
   ([s {:keys [pattern]}]
-   #?(:cljs (doto (goog.date.Date. 0 0 0)
-              (as-> date (.strictParse (parser pattern) s date)))
+   #?(:cljs (let [date (goog.date.Date. 0 0 0)]
+              (.strictParse (parser pattern) s date)
+              date)
       :clj  (org.joda.time.LocalDate/parse s (parser pattern))))
   ([y m d]
    #?(:clj  (org.joda.time.LocalDate. y m d)
@@ -487,27 +489,3 @@
   [a b]
   (and a b #?(:clj (.isEqual a b)
               :cljs (zero? (goog.date.Date/compare a b)))))
-
-;;
-;; "Legacy api"
-;;
-
-(def ^:private date-fmt
-  {:pattern "d.M.yyyy"})
-(def ^:private date-time-fmt
-  {:pattern "d.M.yyyy H:mm"
-   :timezone "Europe/Helsinki"})
-
-(defn date->str
-  "DEPRECATED: Use format instead."
-  {:deprecated "0.3.0"}
-  [d]
-  (if d
-    (format d date-fmt)))
-
-(defn date-time->str
-  "DEPRECATED: Use format instead."
-  {:deprecated "0.3.0"}
-  [d]
-  (if d
-    (format d date-time-fmt)))

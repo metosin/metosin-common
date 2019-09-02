@@ -1,6 +1,7 @@
 (ns metosin.ui.routing.schema
+  "Please use Reitit-frontend instead."
+  {:deprecated "0.6.0"}
   (:require [domkm.silk :as silk]
-            [schema.core :as s]
             [schema.coerce :as sc]
             [schema-tools.core :as st]
             [clojure.string :as string]))
@@ -28,16 +29,20 @@
 (defrecord SchemaQueryParams [schema coercer]
   silk/Pattern
   (-match [this that]
-    (coercer (persistent!
-               (reduce-kv (fn [acc k v]
-                            (assoc! acc (keyword k) v))
-                          (transient (empty that))
-                          that))))
+    (println "match")
+    (coercer
+      (persistent!
+        (reduce-kv (fn [acc k v]
+                     (assoc! acc (keyword k) v))
+                   (transient (empty that))
+                   that))))
   (-unmatch [this that]
+    (println "unmatch")
     (persistent!
-     (reduce-kv (fn [acc k v]
-                  (assoc! acc (name k) (to-url-param v)))
-                (transient {}) (st/select-schema that schema))))
+      (reduce-kv (fn [acc k v]
+                   (assoc! acc (name k) (to-url-param v)))
+                 (transient {})
+                 (st/select-schema that schema))))
   (-match-validator [_]
     some?)
   (-unmatch-validators [_]
@@ -60,4 +65,3 @@
             :or {coercion-matcher query-string-coercion-matcher}}]
    (map->SchemaQueryParams {:schema schema
                             :coercer (sc/coercer schema coercion-matcher)})))
-

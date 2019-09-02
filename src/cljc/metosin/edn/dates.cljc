@@ -11,26 +11,27 @@
   Some consideration has been made to provide performant read
   implemenation for ClojureScript."
   (:require [metosin.dates :as d])
-  #?(:clj (:import [org.joda.time DateTime LocalDate])))
+  #?(:clj (:import [org.joda.time DateTime LocalDate]
+                   [java.io Writer])))
 
-(defn- date-time->reader-str [d]
+(defn- date-time->reader-str ^String [d]
   (str "#DateTime \"" (d/to-string d) \"))
 
-(defn- date->reader-str [d]
+(defn- date->reader-str ^String [d]
   (str "#Date \"" (d/to-string d) \"))
 
 #?(:clj
    (do
-     (defmethod print-dup DateTime [^DateTime d out]
+     (defmethod print-dup DateTime [^DateTime d ^Writer out]
        (.write out (date-time->reader-str d)))
 
-     (defmethod print-method DateTime [^DateTime d out]
+     (defmethod print-method DateTime [^DateTime d ^Writer out]
        (.write out (date-time->reader-str d)))
 
-     (defmethod print-dup LocalDate [^LocalDate d out]
+     (defmethod print-dup LocalDate [^LocalDate d ^Writer out]
        (.write out (date->reader-str d)))
 
-     (defmethod print-method LocalDate [^LocalDate d out]
+     (defmethod print-method LocalDate [^LocalDate d ^Writer out]
        (.write out (date->reader-str d))))
    :cljs
    (extend-protocol IPrintWithWriter

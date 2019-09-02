@@ -1,7 +1,6 @@
 (ns metosin.dates.generators
   "Based on https://github.com/dm3/clojure.joda-time/blob/master/test/joda_time/generators.clj"
-  (:require [clojure.test.check.generators :as g]
-            [clojure.set :as sets])
+  (:require [clojure.test.check.generators :as g])
   (:import [org.joda.time.chrono ISOChronology]
            [org.joda.time LocalDate DateTime]))
 

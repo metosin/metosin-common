@@ -1,7 +1,7 @@
 (ns metosin.ping
   (:require [reagent.core :as r]
             [chord.client :refer [ws-ch]]
-            [clojure.core.async :refer [go alt! chan <! >! put! close! timeout]]
+            [clojure.core.async :refer [go alt! chan <! >! close! timeout]]
             [common.loc :refer [loc]]))
 
 (defonce prev-channel (atom nil))
@@ -44,20 +44,19 @@
                 (if (>= fail +fails+) (reconnect))
                 (>! ws-channel {:type :ping})
                 (recur ws-channel (timeout +timeout+) 0)))))
-         (do
-          (let [{:keys [type error]} (alt! timeout-ch {:type :timeout}
-                                           conn ([v] (:message v))
-                                           ctrl-ch {:type :stop})]
-            (if (and type (not error))
-              (case type
-                :stop nil
-                :timeout (recur conn (timeout +timeout+) (inc fail))
-                :pong (do (if (pos? fail) (reconnect))
-                          (<! (timeout +ping-every+))
-                          (>! conn {:type :ping})
-                          (recur conn (timeout +timeout+) 0))
-                nil)
-              (recur nil (timeout +timeout+) (inc fail))))))))
+         (let [{:keys [type error]} (alt! timeout-ch {:type :timeout}
+                                          conn ([v] (:message v))
+                                          ctrl-ch {:type :stop})]
+           (if (and type (not error))
+             (case type
+               :stop nil
+               :timeout (recur conn (timeout +timeout+) (inc fail))
+               :pong (do (if (pos? fail) (reconnect))
+                         (<! (timeout +ping-every+))
+                         (>! conn {:type :ping})
+                         (recur conn (timeout +timeout+) 0))
+               nil)
+             (recur nil (timeout +timeout+) (inc fail)))))))
     ctrl-ch))
 
 (start-ping)

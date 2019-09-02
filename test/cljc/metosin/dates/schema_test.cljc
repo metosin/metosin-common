@@ -2,7 +2,7 @@
   (:require [metosin.dates :as d]
             [metosin.dates.schema :as ds]
             [schema.coerce :as sc]
-            [clojure.test :as t :refer [deftest is testing]]))
+            [clojure.test :as t :refer [deftest is]]))
 
 (def schema {:local-date d/LocalDate
              :date-time d/DateTime})

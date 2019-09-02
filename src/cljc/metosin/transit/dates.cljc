@@ -7,6 +7,8 @@
 
   Represents DateTimes in RFC 3339 format: yyyy-mm-ddTHH:MM:SS.sssZ.
   RFC 3339 format is an specific profile of ISO 8601 DateTime format.
+  DateTimes are first converted to UTC, as that is only zone JavaScript
+  supports.
 
   Some consideration has been made to provide performant read
   implemenation for ClojureScript."

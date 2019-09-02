@@ -1,59 +1,58 @@
-(def +version+ "0.5.0")
+(def +version+ "0.5.1-SNAPSHOT")
 
 (set-env!
   ; Test path can be included here as source-files are not included in JAR
   ; Just be careful to not AOT them
   :source-paths #{"test/clj" "test/cljc" "test/cljs" "dev-resources"}
   :resource-paths #{"src/clj" "src/cljc" "src/cljs"}
-  :dependencies '[[org.clojure/clojure "1.9.0" :scope "provided"]
-                  [org.clojure/clojurescript "1.10.339" :scope "test"]
+  :dependencies '[[org.clojure/clojure "1.10.1" :scope "provided"]
+                  [org.clojure/clojurescript "1.10.520" :scope "test"]
 
-                  [boot/core "2.7.2" :scope "test"]
-                  [adzerk/boot-cljs "2.1.4" :scope "test"]
+                  [adzerk/boot-cljs "2.1.5" :scope "test"]
                   [crisptrutski/boot-cljs-test "0.3.4" :scope "test"]
                   [doo "0.1.8" :scope "test"]
-                  [metosin/bat-test "0.4.0" :scope "test"]
+                  [metosin/bat-test "0.4.3" :scope "test"]
 
                   ;; for testing metosin.jdbc
-                  [com.h2database/h2 "1.4.197" :scope "test"]
+                  [com.h2database/h2 "1.4.199" :scope "test"]
 
                   ;; metosin.ring.util.*
-                  [ring/ring-core "1.6.0" :scope "test"]
+                  [ring/ring-core "1.7.1" :scope "test"]
                   ;; metosin.jdbc
                   [potemkin "0.4.5" :scope "test"]
                   ;; metosin.dates
-                  [joda-time/joda-time "2.10" :scope "test"]
+                  [joda-time/joda-time "2.10.3" :scope "test"]
                   ;; metosin.core.async.debounce
-                  [org.clojure/core.async "0.4.474" :scope "test"]
+                  [org.clojure/core.async "0.4.500" :scope "test"]
                   ;; metosin.email
-                  [org.clojure/tools.logging "0.4.0" :scope "test"]
+                  [org.clojure/tools.logging "0.5.0" :scope "test"]
                   ;; metosin.dates.generators
-                  [org.clojure/test.check "0.9.0" :scope "test"]
+                  [org.clojure/test.check "0.10.0" :scope "test"]
                   ;; metosin.ui.routing.schema
-                  [metosin/schema-tools "0.10.3" :scope "test"]
+                  [metosin/schema-tools "0.12.0" :scope "test"]
                   ;; metosin.email
                   [de.ubercode.clostache/clostache "1.4.0" :scope "test"]
                   ;; metosin.email
-                  [com.draines/postal "2.0.2" :scope "test"]
+                  [com.draines/postal "2.0.3" :scope "test"]
                   ;; metosin.jdbc, metosin.postgres.joda.time, metosin.postgres.types
-                  [org.clojure/java.jdbc "0.7.7" :scope "test"]
+                  [org.clojure/java.jdbc "0.7.10" :scope "test"]
                   ;; metosin.jdbc
                   [camel-snake-kebab "0.4.0" :scope "test"]
                   ;; metosin.postgres.types
-                  [org.postgresql/postgresql "42.2.2" :scope "test"]
+                  [org.postgresql/postgresql "42.2.6" :scope "test"]
                   ;; metosin.sql
-                  [honeysql "0.9.3" :scope "test"]
+                  [honeysql "0.9.6" :scope "test"]
                   ;; metosin.ping
                   [aleph "0.4.6" :scope "test"]
                   ;; metosin.postgres.types
-                  [cheshire "5.8.0" :scope "test"]
+                  [cheshire "5.9.0" :scope "test"]
                   ;; metosin.transit.dates
-                  [com.cognitect/transit-clj "0.8.309" :scope "test"]
+                  [com.cognitect/transit-clj "0.8.313" :scope "test"]
                   [com.cognitect/transit-cljs "0.8.256" :scope "test"]
                   ;; metosin.ping
                   [reagent "0.8.1" :scope "test"]
                   ;; metosin.email, metosin
-                  [prismatic/schema "1.1.9" :scope "test"]
+                  [prismatic/schema "1.1.12" :scope "test"]
                   ;; metosin.ping
                   [jarohen/chord "0.8.1" :scope "test"]
                   ;; metosin.ui.routing.schema

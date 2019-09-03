@@ -18,6 +18,8 @@ don't expect full support.
 - We might remove features if we think they are not useful anymore
 - We will reject PRs and issues about features we wouldn't use ourselves
 
+## Use
+
 Recommended way to use this will be to copy the namespaces the project uses
 into the project source-paths. To help with this, one can use
 `metosin.copy-namespaces` in a script that can be ran using `clj`.

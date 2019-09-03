@@ -8,10 +8,10 @@
 (copy-namespaces '[metosin.ring.util.etag
                    metosin.ring.util.last-modified
                    metosin.ring.util.cache
-                   metosin.postgres.types
-                   metosin.transit.dates]
+                   metosin.postgres.types]
                  "src/clj" [".clj"])
 
-(copy-namespaces '[metosin.dates]
+(copy-namespaces '[metosin.dates
+                   metosin.transit.dates]
                  "src/cljc" [".cljc"])
 

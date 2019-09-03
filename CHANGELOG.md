@@ -9,6 +9,12 @@
 - Add `metosin.transit.java-time` to provide readers and writers for Transit
 using Java time
 - Add `metosin.xml`
+- Rename `metosin.jdbc.joda.time` to `metosin.jdbc.joda-time` (old namespace
+provided also for compatibility &amp; deprecated)
+- Add `metosin.copy-namespaces` which provides a function to copy namespaces
+from classpath to a directory. This can be used e.g. with deps.edn to copy
+wanted files from metosin-common to the project repository. Check
+[metosin_common.clj script](./metosin_common_example.clj)
 
 ## 0.5.0 (2018-08-31)
 

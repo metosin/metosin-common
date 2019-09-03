@@ -1,8 +1,8 @@
-(ns metosin.jdbc.joda.time-test
+(ns metosin.jdbc.joda-time-test
   (:require [clojure.java.jdbc :as jdbc]
             [clojure.test :refer [deftest testing is]]
             [metosin.dates :as dates]
-            [metosin.jdbc.joda.time :as x])
+            [metosin.jdbc.joda-time :as x])
   (:import [org.joda.time DateTime LocalDate]))
 
 (def h2-spec {:classname "org.h2.Driver"

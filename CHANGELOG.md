@@ -8,6 +8,7 @@
 - Add `metosin.jdbc.java-time` to provide time conversions for Clojure.java.jdbc
 - Add `metosin.transit.java-time` to provide readers and writers for Transit
 using Java time
+- Add `metosin.xml`
 
 ## 0.5.0 (2018-08-31)
 

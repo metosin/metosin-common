@@ -52,7 +52,10 @@
                   ;; metosin.ping
                   [jarohen/chord "0.8.1" :scope "test"]
                   ;; metosin.ui.routing.schema
-                  [com.domkm/silk "0.1.2" :scope "test"]])
+                  [com.domkm/silk "0.1.2" :scope "test"]
+                  ;; metosin.xml
+                  [frankiesardo/linked "1.3.0" :scope "test"]
+                  ])
 
 (require
   '[adzerk.boot-cljs :refer [cljs]]

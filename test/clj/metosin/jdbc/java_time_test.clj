@@ -1,9 +1,8 @@
-(ns metosin.jdbc.joda.time-test
+(ns metosin.jdbc.java-time-test
   (:require [clojure.java.jdbc :as jdbc]
             [clojure.test :refer [deftest testing is]]
-            [metosin.dates :as dates]
-            [metosin.jdbc.joda.time :as x])
-  (:import [org.joda.time DateTime LocalDate]))
+            [metosin.jdbc.java-time :as x])
+  (:import [java.time ZonedDateTime LocalDate ZoneId]))
 
 (def h2-spec {:classname "org.h2.Driver"
               :subprotocol "h2:mem"
@@ -19,15 +18,16 @@
 
     (x/init!)
 
-    (jdbc/insert! db :test_table {:datetime (dates/date-time 2015 2 9 13 1)
-                                  :date (dates/date 2015 2 9)})
+    (jdbc/insert! db :test_table {:datetime (ZonedDateTime/of 2015 2 9 13 1 0 0 (ZoneId/of "Z"))
+                                  :date (LocalDate/of 2015 2 9)})
 
     (testing "read inserted values"
       (let [{:keys [datetime date]}
             (first (jdbc/query db ["SELECT * from test_table"]))]
 
-        (is (= (dates/date-time 2015 2 9 13 1)
+        (is (= (ZonedDateTime/of 2015 2 9 13 1 0 0 (ZoneId/of "Z"))
                datetime))
 
-        (is (= (dates/date 2015 2 9)
+        (is (= (LocalDate/of 2015 2 9)
                date))))))
+

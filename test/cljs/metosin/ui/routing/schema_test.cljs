@@ -14,8 +14,11 @@
       (is (= "/tickets?q=a"
              (silk/depart routes :tickets {:q "a"})))
       (is (thrown? js/Error (silk/depart routes :tickets)))
+
       (is (= {:domkm.silk/name :tickets :q "a"}
              (select-keys (silk/arrive routes "/tickets?q=a") [:domkm.silk/name :q])))
+      ;; FIXME: Not sure if this should work...
+      #_
       (is (thrown? js/Error (silk/arrive routes "/tickets"))) ))
 
   (testing "single optional option"

@@ -1,4 +1,4 @@
-(ns metosin.transit.java8-time
+(ns metosin.transit.java-time
   "Transit readers and writers for JodaTime and goog.date.
 
   Supports two types:

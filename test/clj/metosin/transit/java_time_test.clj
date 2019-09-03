@@ -1,5 +1,5 @@
-(ns metosin.transit.java8-time-test
-  (:require [metosin.transit.java8-time :as t]
+(ns metosin.transit.java-time-test
+  (:require [metosin.transit.java-time :as t]
             [cognitect.transit :as transit]
             [clojure.test :refer [deftest testing is]])
   (:import [java.io ByteArrayInputStream ByteArrayOutputStream]
@@ -26,14 +26,14 @@
         (is (= "[\"^ \",\"~:foo\",[\"~#DateTime\",\"2015-05-14T12:13:00Z\"]]"
                (.toString out))))))
 
-  (testing "With zone (offset)"
+  (testing "With zone (offset) - converted to UTC"
     (with-open [out (ByteArrayOutputStream. 4096)]
       (let [writer (transit/writer out :json {:handlers t/writers})]
         (transit/write writer {:foo (ZonedDateTime/of 2015 5 14 12 13 0 0 (ZoneId/of "+03:00"))})
         (is (= "[\"^ \",\"~:foo\",[\"~#DateTime\",\"2015-05-14T09:13:00Z\"]]"
                (.toString out))))))
 
-  (testing "With zone (id)"
+  (testing "With zone (id) - converted to UTC"
     (with-open [out (ByteArrayOutputStream. 4096)]
       (let [writer (transit/writer out :json {:handlers t/writers})]
         (transit/write writer {:foo (ZonedDateTime/of 2015 5 14 12 13 0 0 (ZoneId/of "Europe/Helsinki"))})

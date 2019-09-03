@@ -18,26 +18,21 @@ don't expect full support.
 - We might remove features if we think they are not useful anymore
 - We will reject PRs and issues about features we wouldn't use ourselves
 
-## TODO
+Recommended way to use this will be to copy the namespaces the project uses
+into the project source-paths. To help with this, one can use
+`metosin.copy-namespaces` in a script that can be ran using `clj`.
 
-- [ ] Test everything
-- [ ] Start using
+Add deps.edn alias:
+```
+{:metosin-common {:extra-deps {metosin/metosin-common {:mvn/version "0.6.0"}}
+                  :main-opts ["metosin_common.clj"]}}
+```
 
-## Ideas
-
-- [ ] Static resources handler and middleware
-- [ ] Common users, groups and logic backend and UI
-- [ ] Changelog UI and generation mechanism...?
-
-## Separate useful stuff
-
-1. Cljc Date library
-2. Postgres library
-3. Reagent components library?
+Create `metosin_common.clj` script, check [example](./metosin_common_example.clj).
 
 ## License
 
-Copyright © 2016-2017 [Metosin Oy](http://www.metosin.fi).
+Copyright © 2016-2019 [Metosin Oy](http://www.metosin.fi).
 
 Distributed under the Eclipse Public License 1.0, the same as Clojure.
 

@@ -5,6 +5,9 @@
 
 (require '[metosin.copy-namespaces :refer :all])
 
+;; Reset folders to ensure only following namespaces are present
+(delete-folders ["src/clj/metosin" "src/cljc/metosin"])
+
 (copy-namespaces '[metosin.ring.util.etag
                    metosin.ring.util.last-modified
                    metosin.ring.util.cache

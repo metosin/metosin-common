@@ -14,5 +14,10 @@
     (println "Copy" url-path "to" (.getPath trg))
     (spit trg (slurp res))))
 
+(defn delete-folders [folders]
+  (doseq [d folders
+          f (file-seq (io/file d))]
+    (.delete f)))
+
 (comment
   (copy-namespaces '(metosin.dates) "foobar" [".cljc"]))

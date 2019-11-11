@@ -17,6 +17,7 @@ wanted files from metosin-common to the project repository. Check
 [metosin_common.clj script](./metosin_common_example.clj)
 - Deprecate `metosin.edn`, `clojure.tools.reader.edn` can be used instead.
 - Add locale support to `metosin.dates`
+- Handle `nil` in `metosin.dates/format`
 
 ## 0.5.0 (2018-08-31)
 

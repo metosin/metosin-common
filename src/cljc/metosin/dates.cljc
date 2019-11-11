@@ -198,7 +198,7 @@
 
 ;; TODO: fix place
 "Creates formatter object for underlying implementation.
-  
+
   Optional locale can be given as second argument.
   If locale is keyword, it will be used to retrieve relevant
   locale value. Or implementation value can be used directly:
@@ -332,23 +332,24 @@
 
 (defn format
   "Pattern is required.
-  
+
   Locale and timezone are optional options.
-  
+
   Locale can be given as keyword, and it will be used to retrieve implementation
   specific Locale.
 
   For cljs use, locales have to be register first using
   `(initalize-locale! name symbols)` call, where symbols is e.g.
   `goog.i18n.DateTimeSymbols_fi`.
-  
+
   For cljs use, timezones have to be registered using
   `(initalize-timezone! name)` call, where name is e.g. \"Europe/Helsinki\""
   [x {:keys [pattern locale timezone]}]
   (let [x (with-zone x timezone)
         f (formatter pattern locale)]
-    #?(:cljs (.format f x)
-       :clj  (.toString x f))))
+    (if x
+      #?(:cljs (.format f x)
+         :clj  (.toString x f)))))
 
 ;;
 ;; Utilities

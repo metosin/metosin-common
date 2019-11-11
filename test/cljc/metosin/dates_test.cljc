@@ -49,6 +49,8 @@
 
 (deftest format-test
   (is (= nil (d/format nil {:pattern "yyyy-MM-dd"})))
+  (is (= nil (d/format nil {:pattern "yyyy-MM-dd"
+                            :timezone "Europe/Helsinki"})))
   (is (= "2015-04-15" (d/format (d/date 2015 4 15) {:pattern "yyyy-MM-dd"})))
   (is (= "2015-04-15 09:13" (d/format (d/date-time 2015 4 15 9 13) {:pattern "yyyy-MM-dd HH:mm"})))
 

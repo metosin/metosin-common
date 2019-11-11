@@ -345,9 +345,9 @@
   For cljs use, timezones have to be registered using
   `(initalize-timezone! name)` call, where name is e.g. \"Europe/Helsinki\""
   [x {:keys [pattern locale timezone]}]
-  (let [x (with-zone x timezone)
-        f (formatter pattern locale)]
-    (if x
+  (if x
+    (let [x (with-zone x timezone)
+          f (formatter pattern locale)]
       #?(:cljs (.format f x)
          :clj  (.toString x f)))))
 

@@ -1,9 +1,13 @@
 (ns metosin.dates-test
   (:require [metosin.dates :as d :include-macros true]
-            [clojure.test :as t :refer [deftest is testing]]))
+            [clojure.test :as t :refer [deftest is testing]])
+  #?(:cljs (:import [goog.i18n DateTimeSymbols_fi DateTimeSymbols_en])))
 
 #?(:cljs (d/initialize-timezone! "Europe/Helsinki"))
 #?(:cljs (d/initialize-timezone! "America/Los_Angeles"))
+#?(:cljs (d/initialize-timezone! "America/Los_Angeles"))
+#?(:cljs (d/initialize-locale! :fi DateTimeSymbols_fi))
+#?(:cljs (d/initialize-locale! :en DateTimeSymbols_en))
 
 (deftest date-test
   (testing "today"
@@ -50,13 +54,30 @@
   (testing "standard time"
     (is (= "2015-03-01 11:13" (d/format (d/date-time 2015 3 1 9 13) {:pattern "yyyy-MM-dd HH:mm" :timezone "Europe/Helsinki"})))
     (is (= "2015-03-01 01:13" (d/format (d/date-time 2015 3 1 9 13) {:pattern "yyyy-MM-dd HH:mm" :timezone "America/Los_Angeles"}))) )
+
   (testing "summer time"
     (is (= "2015-07-15 12:13" (d/format (d/date-time 2015 7 15 9 13) {:pattern "yyyy-MM-dd HH:mm" :timezone "Europe/Helsinki"})))
-    (is (= "2015-07-15 02:13" (d/format (d/date-time 2015 7 15 9 13) {:pattern "yyyy-MM-dd HH:mm" :timezone "America/Los_Angeles"}))) ))
+    (is (= "2015-07-15 02:13" (d/format (d/date-time 2015 7 15 9 13) {:pattern "yyyy-MM-dd HH:mm" :timezone "America/Los_Angeles"}))))
+
+  (testing "with locale"
+    (is (= "15. July 2015"
+           (d/format (d/date-time 2015 7 15 9 13) {:pattern "d. MMMM y"
+                                                   :locale :en})))
+    (is (= "15. heinäkuuta 2015"
+           (d/format (d/date-time 2015 7 15 9 13) {:pattern "d. MMMM y"
+                                                   :locale :fi})))))
 
 (deftest parse-test
   (is (= (d/date 2015 4 15) (d/date "2015-04-15" {:pattern "yyyy-MM-dd"})))
-  (is (= (d/date-time 2015 4 15 9 13) (d/date-time "2015-04-15 09:13" {:pattern "yyyy-MM-dd HH:mm"}))))
+  (is (= (d/date-time 2015 4 15 9 13) (d/date-time "2015-04-15 09:13" {:pattern "yyyy-MM-dd HH:mm"})))
+
+  (testing "with locale"
+    (is (= (d/date 2015 7 15)
+           (d/date "15. heinäkuuta 2015" {:pattern "d. MMMM y"
+                                          :locale :fi})))
+    (is (= (d/date-time 2015 7 15 9 13)
+           (d/date-time "15. heinäkuuta 2015 09:13" {:pattern "d. MMMM y HH:mm"
+                                                     :locale :fi}))) ))
 
 (deftest start-of-day-test
   (is (= (d/date-time 2016 1 27 0 0 0 0) (d/start-of-day (d/date-time 2016 1 27 12 0)))))

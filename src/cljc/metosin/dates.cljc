@@ -9,7 +9,8 @@
                      goog.i18n.TimeZone
                      [goog.string :as gs]))
   #?(:clj  (:import [org.joda.time DateTimeZone]
-                    [org.joda.time.format DateTimeFormat])))
+                    [org.joda.time.format DateTimeFormat]
+                    [java.util Locale])))
 
 ; Default to UTC ALWAYS!
 #?(:clj (DateTimeZone/setDefault DateTimeZone/UTC))
@@ -187,15 +188,31 @@
 ;; these turn pattern values into low level implementations.
 ;;
 
-(defn- formatter' [f]
-  #?(:cljs (goog.i18n.DateTimeFormat. f)
-     :clj  (DateTimeFormat/forPattern f)))
+(declare get-locale)
 
-(def ^:private formatter (memoize formatter'))
+(defn- formatter'
+  [pattern locale]
+  #?(:cljs (goog.i18n.DateTimeFormat. pattern (get-locale locale))
+     :clj  (cond-> (DateTimeFormat/forPattern pattern)
+             locale (.withLocale (get-locale locale)))))
 
-(defn- parser' [f]
-  #?(:cljs (goog.i18n.DateTimeParse. f)
-     :clj  (DateTimeFormat/forPattern f)))
+;; TODO: fix place
+"Creates formatter object for underlying implementation.
+  
+  Optional locale can be given as second argument.
+  If locale is keyword, it will be used to retrieve relevant
+  locale value. Or implementation value can be used directly:
+  For clj this should be `java.util.Locale` instance.
+  For cljs this should be `goog.i18n.DateTimeSymbols`,
+  e.g. `goog.i18n.DateTimeSymbols_fi`."
+
+(def ^:private formatter
+  (memoize formatter'))
+
+(defn- parser' [pattern locale]
+  #?(:cljs (goog.i18n.DateTimeParse. pattern (get-locale locale))
+     :clj  (cond-> (DateTimeFormat/forPattern pattern)
+             locale (.withLocale (get-locale locale)))))
 
 (def ^:private parser (memoize parser'))
 
@@ -243,21 +260,31 @@
 
 (def ^:private timezone (memoize timezone'))
 
+#?(:cljs (def locales (atom {})))
+
+(defn ^:private get-locale [locale-name]
+  #?(:clj (Locale. (name locale-name))
+     :cljs (get @locales locale-name)))
+
+#?(:cljs (defn initialize-locale! [locale-name symbols]
+           (swap! locales assoc locale-name symbols)))
+
 ;;
 ;; Constructors
 ;;
 
 (defn #?(:clj ^org.joda.time.DateTime date-time :cljs date-time)
+  "For pattern and locale options, check `format` docstring."
   ([]
    #?(:clj  (org.joda.time.DateTime.)
       :cljs (goog.date.UtcDateTime.)))
   ([x]
    (-to-date-time x))
-  ([s {:keys [pattern]}]
+  ([s {:keys [pattern locale]}]
    #?(:cljs (let [date (goog.date.UtcDateTime. 0 0 0 0 0 0 0)]
-              (.strictParse (parser pattern) s date)
+              (.strictParse (parser pattern locale) s date)
               date)
-      :clj  (org.joda.time.DateTime/parse s (parser pattern))))
+      :clj  (org.joda.time.DateTime/parse s (parser pattern locale))))
   ([y m d hh mm]
    #?(:clj  (org.joda.time.DateTime. y m d hh mm)
       :cljs (goog.date.UtcDateTime.  y (dec m) d hh mm)))
@@ -269,16 +296,17 @@
       :cljs (goog.date.UtcDateTime.  y (dec m) d hh mm ss millis))))
 
 (defn #?(:clj ^org.joda.time.LocalDate date :cljs date)
+  "For pattern and locale options, check `format` docstring."
   ([]
    #?(:clj  (org.joda.time.LocalDate.)
       :cljs (goog.date.Date.)))
   ([x]
    (-to-date x))
-  ([s {:keys [pattern]}]
+  ([s {:keys [pattern locale]}]
    #?(:cljs (let [date (goog.date.Date. 0 0 0)]
-              (.strictParse (parser pattern) s date)
+              (.strictParse (parser pattern locale) s date)
               date)
-      :clj  (org.joda.time.LocalDate/parse s (parser pattern))))
+      :clj  (org.joda.time.LocalDate/parse s (parser pattern locale))))
   ([y m d]
    #?(:clj  (org.joda.time.LocalDate. y m d)
       :cljs (goog.date.Date. y (dec m) d))))
@@ -302,9 +330,23 @@
 ;; Format
 ;;
 
-(defn format [x {:keys [pattern timezone]}]
+(defn format
+  "Pattern is required.
+  
+  Locale and timezone are optional options.
+  
+  Locale can be given as keyword, and it will be used to retrieve implementation
+  specific Locale.
+
+  For cljs use, locales have to be register first using
+  `(initalize-locale! name symbols)` call, where symbols is e.g.
+  `goog.i18n.DateTimeSymbols_fi`.
+  
+  For cljs use, timezones have to be registered using
+  `(initalize-timezone! name)` call, where name is e.g. \"Europe/Helsinki\""
+  [x {:keys [pattern locale timezone]}]
   (let [x (with-zone x timezone)
-        f (formatter pattern)]
+        f (formatter pattern locale)]
     #?(:cljs (.format f x)
        :clj  (.toString x f))))
 

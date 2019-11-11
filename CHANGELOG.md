@@ -16,6 +16,7 @@ from classpath to a directory. This can be used e.g. with deps.edn to copy
 wanted files from metosin-common to the project repository. Check
 [metosin_common.clj script](./metosin_common_example.clj)
 - Deprecate `metosin.edn`, `clojure.tools.reader.edn` can be used instead.
+- Add locale support to `metosin.dates`
 
 ## 0.5.0 (2018-08-31)
 

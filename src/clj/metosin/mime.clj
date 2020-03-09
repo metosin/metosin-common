@@ -1,5 +1,5 @@
 (ns metosin.mime
-  (:import [java.io File]
+  (:import [java.io File InputStream]
            [java.net URL]
            (org.apache.tika Tika)
            (org.apache.tika.mime MimeTypes MimeTypeException)) )
@@ -21,11 +21,14 @@
 
 (extend-protocol IDetect
   File
-  (-detech [file]
+  (-detect [file]
     (.detect detector file))
   URL
   (-detect [url]
-    (.detect detector url)))
+    (.detect detector url))
+  InputStream
+  (-detect [is]
+    (.detect detector is)))
 
 (defn mime-type-of
   [x]

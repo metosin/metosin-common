@@ -4,6 +4,10 @@
 ;; assert-not and assert-expr 'not are based from assert-predicate and assert-expr :default
 ;; <https://github.com/clojure/clojure/blob/c0326d2386dd1227f35f46f1c75a8f87e2e93076/src/clj/clojure/test.clj#L435>
 
+;; Clojure only. Cljs.test/assert-expr has different arity.
+;; Check https://seespotcode.net/2018/01/13/portable-clojure-test-assert-expr/ if cljs
+;; version is needed.
+
 (defn- assert-not [msg form]
   (let [subform (second form)
         args (rest subform)

@@ -4,11 +4,11 @@
 
 (defn init! []
   (extend-protocol jdbc/ISQLValue
-    java.time.ZonedDateTime
+    ZonedDateTime
     (sql-value [this]
       (java.sql.Timestamp/valueOf (.toLocalDateTime this)))
 
-    java.time.LocalDate
+    LocalDate
     (sql-value [this]
       (java.sql.Date/valueOf this)))
 

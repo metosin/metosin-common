@@ -4,10 +4,6 @@
   (:import [org.joda.time.chrono ISOChronology]
            [org.joda.time LocalDate DateTime]))
 
-(defn- utc-instances-of [chrono-types]
-  (for [^Class tp chrono-types]
-    (eval `(. ~(symbol (.getSimpleName tp)) getInstanceUTC))))
-
 (def default-chronology (ISOChronology/getInstanceUTC))
 
 (def year-of-century

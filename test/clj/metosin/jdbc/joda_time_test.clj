@@ -2,8 +2,7 @@
   (:require [clojure.java.jdbc :as jdbc]
             [clojure.test :refer [deftest testing is]]
             [metosin.dates :as dates]
-            [metosin.jdbc.joda-time :as x])
-  (:import [org.joda.time DateTime LocalDate]))
+            [metosin.jdbc.joda-time :as x]))
 
 (def h2-spec {:classname "org.h2.Driver"
               :subprotocol "h2:mem"

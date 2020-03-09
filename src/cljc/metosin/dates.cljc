@@ -46,7 +46,7 @@
   "Read RFC3339 string to DateTime."
   [s]
   #?(:clj  (org.joda.time.DateTime/parse s)
-     :cljs (goog.date.UtcDateTime.fromIsoString s)))
+     :cljs (goog.date.UtcDateTime/fromIsoString s)))
 
 (defn- write-local-date
   "Represent Date in YYYY-MM-DD format."

@@ -1,6 +1,7 @@
 {:lint-as {manifold.deferred/let-flow clojure.core/let
            clojure.java.jdbc/with-db-connection clojure.core/let}
- :linters {:unused-namespace {:exclude [clojure.test cljs.test]}
+ :linters {:if {:level :off}
+           :unused-namespace {:exclude [clojure.test cljs.test]}
            :unused-referred-var {:exclude {clojure.test [deftest testing is]
                                            cljs.test [deftest testing is]}}
            :deprecated-vars {:exclude {metosin.dates/add {:namespaces [".*-test$"]}

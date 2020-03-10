@@ -2,15 +2,12 @@
   "Use this namespace to format dates and datetimes for user."
   (:refer-clojure :exclude [format])
   #?(:cljs (:require-macros metosin.dates))
-  #?(:cljs (:require goog.date.UtcDateTime
-                     goog.date.Date
-                     goog.i18n.DateTimeFormat
-                     goog.i18n.DateTimeParse
-                     goog.i18n.TimeZone
-                     [goog.string :as gs]))
+  #?(:cljs (:require [goog.string :as gs]))
   #?(:clj  (:import [org.joda.time DateTimeZone]
                     [org.joda.time.format DateTimeFormat]
-                    [java.util Locale])))
+                    [java.util Locale])
+     :cljs (:import [goog.date Date UtcDateTime Interval]
+                    [goog.i18n DateTimeFormat DateTimeParse TimeZone])))
 
 ; Default to UTC ALWAYS!
 #?(:clj (DateTimeZone/setDefault DateTimeZone/UTC))
@@ -52,7 +49,7 @@
   "Represent Date in YYYY-MM-DD format."
   [x]
   #?(:clj  (.toString ^org.joda.time.LocalDate x)
-     :cljs (.toIsoString x true false)))
+     :cljs (.toIsoString ^Date x true false)))
 
 (defn- read-local-date
   "Read Date in YYYY-MM-DD format."
@@ -282,7 +279,7 @@
    (-to-date-time x))
   ([s {:keys [pattern locale]}]
    #?(:cljs (let [date (goog.date.UtcDateTime. 0 0 0 0 0 0 0)]
-              (.strictParse (parser pattern locale) s date)
+              (.strictParse ^DateTimeParse (parser pattern locale) s date)
               date)
       :clj  (org.joda.time.DateTime/parse s (parser pattern locale))))
   ([y m d hh mm]
@@ -304,7 +301,7 @@
    (-to-date x))
   ([s {:keys [pattern locale]}]
    #?(:cljs (let [date (goog.date.Date. 0 0 0)]
-              (.strictParse (parser pattern locale) s date)
+              (.strictParse ^DateTimeParse (parser pattern locale) s date)
               date)
       :clj  (org.joda.time.LocalDate/parse s (parser pattern locale))))
   ([y m d]
@@ -374,12 +371,12 @@
 
 (defn start-of-week [date]
   #?(:cljs (doto (.clone date)
-             (.setDate (- (.getDate date) (.getIsoWeekday date))))
+             (.setDate (- (.getDate date) (.getIsoWeekday ^Date date))))
      :clj  (.withMinimumValue (.dayOfWeek date))))
 
 (defn end-of-week [date]
   #?(:cljs (doto (.clone date)
-             (.setDate (+ (.getDate date) (- 6 (.getIsoWeekday date)))))
+             (.setDate (+ (.getDate date) (- 6 (.getIsoWeekday ^Date date)))))
      :clj  (.withMaximumValue (.dayOfWeek date))))
 
 (defn start-of-month [date]
@@ -389,7 +386,7 @@
 
 (defn end-of-month [date]
   #?(:cljs (doto (.clone date)
-             (.setDate (.getNumberOfDaysInMonth date)))
+             (.setDate (.getNumberOfDaysInMonth ^Date date)))
      :clj  (.withMaximumValue (.dayOfMonth date))))
 
 (defn start-of-year [date]
@@ -401,7 +398,7 @@
 (defn end-of-year [date]
   #?(:cljs (let [decemeber (doto (.clone date)
                               (.setMonth 11))]
-             (.setDate decemeber (.getNumberOfDaysInMonth decemeber))
+             (.setDate decemeber (.getNumberOfDaysInMonth ^Date decemeber))
              decemeber)
      :clj  (.withMaximumValue (.dayOfYear date))))
 
@@ -425,18 +422,6 @@
 ;; Better API for these 6 calls?
 
 (defn plus [date x]
-  {:pre [#?(:cljs (instance? goog.date.Interval x))]}
-  #?(:cljs
-     (doto (.clone date)
-       (.add x))
-     :clj
-     (.plus date x)))
-
-(defn add
-  "DEPRECATED: Use plus instead."
-  {:deprecated "0.3.0"}
-  [date x]
-  {:pre [#?(:cljs (instance? goog.date.Interval x))]}
   #?(:cljs
      (doto (.clone date)
        (.add x))
@@ -444,10 +429,9 @@
      (.plus date x)))
 
 (defn minus [date x]
-  {:pre [#?(:cljs (instance? goog.date.Interval x))]}
   #?(:cljs
      (doto (.clone date)
-       (.add (.getInverse x)))
+       (.add (.getInverse ^Interval x)))
      :clj
      (.minus date x)))
 

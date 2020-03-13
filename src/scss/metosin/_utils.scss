@@ -1,0 +1,68 @@
+.flex {
+  display: flex;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-1 {
+  flex: 1 1 0%;
+}
+
+.flex-2 {
+  flex: 2 1 0%;
+}
+
+.flex-auto {
+  flex: 1 1 auto;
+}
+
+@each $n, $v in (center: center, start: flex-start, end: flex-end) {
+  .items-#{$n} {
+    align-items: $v;
+  }
+}
+
+@each $r, $rule in (m: margin, p:padding) {
+  @each $i, $v in (0: 0, 2: 0.5rem, 4: 1rem, 6: 1.5rem, 8: 2rem) {
+    .#{$r}-#{$i} {
+      #{$rule}: $v;
+    }
+    .#{$r}x-#{$i} {
+      #{$rule}-right: $v;
+      #{$rule}-left: $v;
+    }
+    .#{$r}y-#{$i} {
+      #{$rule}-top: $v;
+      #{$rule}-bottom: $v;
+    }
+  }
+}
+
+// Repeat to ensure all specific rules are after others
+@each $r, $rule in (m: margin, p:padding) {
+  @each $i, $v in (0: 0, 2: 0.5rem, 4: 1rem, 8: 2rem) {
+    @each $n, $name in (l: left, r: right, t: top, b: bottom) {
+      .#{$r}#{$n}-#{$i} {
+        #{$rule}-#{$name}: $v;
+      }
+    }
+  }
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.text-lg {
+  font-size: 1.2rem;
+}
+
+.list-none {
+  list-style-type: none;
+}

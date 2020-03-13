@@ -4,7 +4,7 @@
   ; Test path can be included here as source-files are not included in JAR
   ; Just be careful to not AOT them
   :source-paths #{"test/clj" "test/cljc" "test/cljs" "dev-resources"}
-  :resource-paths #{"src/clj" "src/cljc" "src/cljs" "resources"}
+  :resource-paths #{"src/clj" "src/cljc" "src/cljs" "resources" "src/scss"}
   :dependencies '[[org.clojure/clojure "1.10.1" :scope "provided"]
                   [org.clojure/clojurescript "1.10.520" :scope "test"]
 

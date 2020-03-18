@@ -1,33 +1,46 @@
-.flex {
-  display: flex;
-}
+// Inspired by Bootstrap 4 utils and others.
 
-.flex-row {
-  flex-direction: row;
-}
+.flex { display: flex; }
 
-.flex-col {
-  flex-direction: column;
-}
+.flex-row { flex-direction: row; }
+.flex-col { flex-direction: column; }
 
-.flex-1 {
-  flex: 1 1 0%;
-}
+.flex-auto { flex: 1 1 auto; }
 
-.flex-2 {
-  flex: 2 1 0%;
-}
-
-.flex-auto {
-  flex: 1 1 auto;
-}
-
-@each $n, $v in (center: center, start: flex-start, end: flex-end) {
-  .items-#{$n} {
-    align-items: $v;
+// TODO: How many options?
+// Bootstrap also has separate grow/shrink classes.
+@for $i from 1 through 6 {
+  .flex-#{$i} {
+    flex: $i $i auto;
   }
 }
 
+.flex-wrap { flex-wrap: wrap; }
+.flex-nowrap { flex-wrap: nowrap; }
+.flex-wrap-reverse { flex-wrap: wrap-reverse; }
+
+@each $n, $v in (center: center, start: flex-start, end: flex-end, baseline: baseline, stretch: stretch) {
+  .align-items-#{$n} {
+    align-items: $v;
+  }
+  .align-self-#{$n} {
+    align-self: $v;
+  }
+}
+
+@each $n, $v in (start: flex-start, center: center, between: space-between, around: space-around, end: flex-end) {
+  .align-content-#{$n} {
+    align-content: $v;
+  }
+  .justify-content-#{$n} {
+    justify-content: $v;
+  }
+}
+
+// TODO: Maybe should use !important for these?
+// More specfic non-util classes overwrite these otherwise.
+// Adds margin and padding rules
+// e.g. m-0 removed all margins, mx-0 horizontal.
 @each $r, $rule in (m: margin, p:padding) {
   @each $i, $v in (0: 0, 2: 0.5rem, 4: 1rem, 6: 1.5rem, 8: 2rem) {
     .#{$r}-#{$i} {
@@ -55,14 +68,43 @@
   }
 }
 
-.font-bold {
-  font-weight: bold;
-}
+.m-auto { margin: auto; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.my-auto { margin-top: auto; margin-bottom: auto; }
+.ml-auto { margin-left: auto; }
+.mr-auto { margin-right: auto; }
+.mt-auto { margin-top: auto; }
+.mb-auto { margin-bottom: auto; }
 
-.text-lg {
-  font-size: 1.2rem;
-}
+.d-none { display: none; }
+.d-block { display: block; }
+.d-inline-block { display: inline-block; }
+.d-flex { display: flex; }
+.d-inline-flex { display: inline-flex; }
+// .d-table
+// .d-table-cell
+// .d-table-row
 
-.list-none {
-  list-style-type: none;
-}
+.w-100 { width: 100%; }
+.w-auto { width: auto; }
+.h-100 { height: 100%; }
+.h-auto { height: auto; }
+
+.font-bold { font-weight: bold; }
+.font-lg { font-size: 1.2rem; }
+
+.text-justify { text-align: justify; }
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.list-none { list-style-type: none; }
+
+.float-left { float: left; }
+.float-right { float: right; }
+
+.overflow-auto { overflow: auto; }
+.overflow-hidden { overflow: hidden; }
+
+.border-box { box-sizing: border-box; }
+.content-box { box-sizing: content-box; }

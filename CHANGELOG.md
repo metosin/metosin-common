@@ -18,6 +18,7 @@ wanted files from metosin-common to the project repository. Check
 - Deprecate `metosin.edn`, `clojure.tools.reader.edn` can be used instead.
 - Add locale support to `metosin.dates`
 - Handle `nil` in `metosin.dates/format`
+- Add IHash implementation for `goog.date.Date` in `metosin.dates`
 
 ## 0.5.0 (2018-08-31)
 

@@ -1,6 +1,9 @@
 (ns metosin.dates-test
   (:require [metosin.dates :as d :include-macros true]
-            [clojure.test :as t :refer [deftest is testing]])
+            [clojure.test :as t :refer [deftest is testing]]
+            #?(:cljs [clojure.test.check.generators :as gen])
+            #?(:cljs [clojure.test.check.properties :as prop])
+            #?(:cljs [clojure.test.check.clojure-test :refer [defspec]]))
   #?(:cljs (:import [goog.i18n DateTimeSymbols_fi DateTimeSymbols_en])))
 
 #?(:cljs (d/initialize-timezone! "Europe/Helsinki"))
@@ -206,3 +209,33 @@
                                 553978, 60, 559689, 0, 562714, 60, 568425, 0, 571450, 60, 577161, 0,
                                 580186, 60, 585897, 0, 588922, 60, 594633, 0]}
                  (d/closure-timezone "America/Los_Angeles")))))
+
+#?(:cljs
+   (deftest date-equiv-test
+     (testing "IEquiv implementation ofgoog.date.Date"
+       (is (= (d/date 2020 9 8) (d/date 2020 9 8))))))
+
+#?(:cljs
+   (deftest date-comparable-test
+     (testing "IComparable implementation of goog.date.Date"
+       (is (<= (d/date 2020 9 8) (d/date 2020 9 9)))
+       (is (<= (d/date 2020 9 8) (d/date 2020 9 8)))
+       (is (> (d/date 2020 9 9) (d/date 2020 9 8))))))
+
+#?(:cljs
+   (deftest date-hash-test
+     (testing "IHash implementation of goog.date.Date"
+       ;; A large set makes use of hash codes.
+       (let [dates (set (for [_ (range 100)] (d/date 2020 9 8)))]
+         (= 1 (count dates))))))
+
+#?(:cljs
+   (defspec date-hash-is-compatible-with-equiv
+     100
+     (prop/for-all [y (gen/choose 1970 2035)
+                    m (gen/choose 1 12)
+                    d (gen/choose 1 31)]
+       (let [date1 (d/date y m d)
+             date2 (d/date y m d)]
+         (and (= date1 date2)
+              (= (hash date1) (hash date2)))))))

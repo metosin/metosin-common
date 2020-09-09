@@ -178,7 +178,10 @@
             (identical? (.getTimezoneOffset o) (.getTimezoneOffset other))))
      IComparable
      (-compare [o other]
-       (- (.getTime o) (.getTime other)))))
+       (- (.getTime o) (.getTime other)))
+     IHash
+     (-hash [o]
+       (bit-xor (.getTime o) 0))))
 
 ;;
 ;; Formatter and parser constructors, private.

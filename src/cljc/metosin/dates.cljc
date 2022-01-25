@@ -319,7 +319,7 @@
 (defn with-zone [d timezone-id]
   (if timezone-id
     #?(:clj  (.withZone d (timezone timezone-id))
-       :cljs (let [tz (timezone timezone-id)
+       :cljs (let [^TimeZone tz (timezone timezone-id)
                    offset (- (.getOffset tz d))]
                ; Doesn't change date timeZone, as it's not possible in JS
                (doto (goog.date.UtcDateTime. d)

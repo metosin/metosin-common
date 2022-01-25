@@ -13,3 +13,5 @@ pom.xml.asc
 .idea
 *.iml
 .clj-kondo/
+.shadow-cljs
+node_modules

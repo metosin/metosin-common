@@ -26,7 +26,8 @@ into the project source-paths. To help with this, one can use
 
 Add deps.edn alias:
 ```
-{:metosin-common {:extra-deps {metosin/metosin-common {:mvn/version "0.6.0"}}
+{:metosin-common {:extra-deps {metosin/metosin-common {:git/url "https://github.com/metosin-metosin-common"
+                                                       :sha ""}}
                   :main-opts ["metosin_common.clj"]}}
 ```
 

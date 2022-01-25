@@ -1,0 +1,7 @@
+{:nrepl {:port 7202}
+ :deps {:aliases [:test]}
+ :builds {:test {:target :karma
+                 :output-to  "target/karma.js"
+                 :ns-regexp ".*-test$"}}}
+
+

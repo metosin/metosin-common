@@ -1,0 +1,9 @@
+{:kaocha/tests                       [{:kaocha.testable/type :kaocha.type/clojure.test
+                                       :kaocha.testable/id   :unit
+                                       :kaocha/ns-patterns   ["-test$"]
+                                       :kaocha/source-paths  ["src/clj" "src/cljc"]
+                                       :kaocha/test-paths    ["test/clj" "test/cljc"]}]
+ :kaocha/fail-fast?                  false
+ :kaocha/color?                      true
+ :kaocha/reporter                    [kaocha.report/dots]
+ :kaocha/plugins                     [:kaocha.plugin/capture-output]}

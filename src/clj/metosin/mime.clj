@@ -34,8 +34,8 @@
   [x]
   (-detect x))
 
-(defn ^String extension-for-name
-  [^String s]
+(defn extension-for-name
+  ^String [^String s]
   (try
     (or (some-> (.forName registry s)
                 (.getExtension))

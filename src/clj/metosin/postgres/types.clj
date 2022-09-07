@@ -37,5 +37,5 @@
 
 (extend-protocol jdbc/IResultSetReadColumn
   PGobject
-  (result-set-read-column [x rsmeta idx]
+  (result-set-read-column [x _rsmeta _idx]
     (pgobject->clj x)))

@@ -36,10 +36,10 @@
    :cljs
    (extend-protocol IPrintWithWriter
      goog.date.DateTime
-     (-pr-writer [d out opts]
+     (-pr-writer [d out _opts]
        (-write out (date-time->reader-str d)))
      goog.date.Date
-     (-pr-writer [d out opts]
+     (-pr-writer [d out _opts]
        (-write out (date->reader-str d)))))
 
 (def readers

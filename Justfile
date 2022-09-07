@@ -1,11 +1,14 @@
+help:
+    @just --list
+
 lint:
     clj-kondo --lint src test
 
 test:
-    clojure -A:test -m kaocha.runner
+    clojure -M:test
 
 autotest:
-    clojure -A:test -m kaocha.runner --watch
+    clojure -M:test --watch
 
 # Run Cljs unit tests once (shadow-cljs compile, karma run)
 test-cljs:

@@ -43,7 +43,7 @@
   "Read RFC3339 string to DateTime."
   [s]
   #?(:clj  (org.joda.time.DateTime/parse s)
-     :cljs (goog.date.UtcDateTime/fromIsoString s)))
+     :cljs (UtcDateTime/fromIsoString s)))
 
 (defn- write-local-date
   "Represent Date in YYYY-MM-DD format."
@@ -102,10 +102,10 @@
    (extend-protocol ToDateTime
      js/Date
      (-to-date-time [x]
-       (goog.date.UtcDateTime. x))
+       (UtcDateTime. x))
      goog.date.Date
      (-to-date-time [x]
-       (goog.date.UtcDateTime. (.getYear x) (.getMonth x) (.getDate x)))
+       (UtcDateTime. (.getYear x) (.getMonth x) (.getDate x)))
      string
      (-to-date-time [x]
        (read-date-time x)))
@@ -192,7 +192,7 @@
 
 (defn- formatter'
   [pattern locale]
-  #?(:cljs (goog.i18n.DateTimeFormat. pattern (get-locale locale))
+  #?(:cljs (DateTimeFormat. pattern (get-locale locale))
      :clj  (cond-> (DateTimeFormat/forPattern pattern)
              locale (.withLocale (get-locale locale)))))
 
@@ -210,7 +210,7 @@
   (memoize formatter'))
 
 (defn- parser' [pattern locale]
-  #?(:cljs (goog.i18n.DateTimeParse. pattern (get-locale locale))
+  #?(:cljs (DateTimeParse. pattern (get-locale locale))
      :clj  (cond-> (DateTimeFormat/forPattern pattern)
              locale (.withLocale (get-locale locale)))))
 
@@ -273,43 +273,64 @@
 ;; Constructors
 ;;
 
-(defn #?(:clj ^org.joda.time.DateTime date-time :cljs date-time)
-  "For pattern and locale options, check `format` docstring."
-  ([]
-   #?(:clj  (org.joda.time.DateTime.)
-      :cljs (goog.date.UtcDateTime.)))
-  ([x]
-   (-to-date-time x))
-  ([s {:keys [pattern locale]}]
-   #?(:cljs (let [date (goog.date.UtcDateTime. 0 0 0 0 0 0 0)]
-              (.strictParse ^DateTimeParse (parser pattern locale) s date)
-              date)
-      :clj  (org.joda.time.DateTime/parse s (parser pattern locale))))
-  ([y m d hh mm]
-   #?(:clj  (org.joda.time.DateTime. y m d hh mm)
-      :cljs (goog.date.UtcDateTime.  y (dec m) d hh mm)))
-  ([y m d hh mm ss]
-   #?(:clj  (org.joda.time.DateTime. y m d hh mm ss)
-      :cljs (goog.date.UtcDateTime.  y (dec m) d hh mm ss)))
-  ([y m d hh mm ss millis]
-   #?(:clj  (org.joda.time.DateTime. y m d hh mm ss millis)
-      :cljs (goog.date.UtcDateTime.  y (dec m) d hh mm ss millis))))
+#?(:clj
+   (defn date-time
+     "For pattern and locale options, check `format` docstring."
+     (^org.joda.time.DateTime []
+      (org.joda.time.DateTime.))
+     (^org.joda.time.DateTime [x]
+      (-to-date-time x))
+     (^org.joda.time.DateTime [s {:keys [pattern locale]}]
+      (org.joda.time.DateTime/parse s (parser pattern locale)))
+     (^org.joda.time.DateTime [y m d hh mm]
+      (org.joda.time.DateTime. y m d hh mm))
+     (^org.joda.time.DateTime [y m d hh mm ss]
+      (org.joda.time.DateTime. y m d hh mm ss))
+     (^org.joda.time.DateTime [y m d hh mm ss millis]
+      (org.joda.time.DateTime. y m d hh mm ss millis)))
 
-(defn #?(:clj ^org.joda.time.LocalDate date :cljs date)
-  "For pattern and locale options, check `format` docstring."
-  ([]
-   #?(:clj  (org.joda.time.LocalDate.)
-      :cljs (goog.date.Date.)))
-  ([x]
-   (-to-date x))
-  ([s {:keys [pattern locale]}]
-   #?(:cljs (let [date (goog.date.Date. 0 0 0)]
-              (.strictParse ^DateTimeParse (parser pattern locale) s date)
-              date)
-      :clj  (org.joda.time.LocalDate/parse s (parser pattern locale))))
-  ([y m d]
-   #?(:clj  (org.joda.time.LocalDate. y m d)
-      :cljs (goog.date.Date. y (dec m) d))))
+   :cljs
+   (defn date-time
+     "For pattern and locale options, check `format` docstring."
+     ([]
+      (UtcDateTime.))
+     ([x]
+      (-to-date-time x))
+     ([s {:keys [pattern locale]}]
+      (let [date (UtcDateTime. 0 0 0 0 0 0 0)]
+        (.strictParse ^DateTimeParse (parser pattern locale) s date)
+        date))
+     ([y m d hh mm]
+      (UtcDateTime.  y (dec m) d hh mm))
+     ([y m d hh mm ss]
+      (UtcDateTime.  y (dec m) d hh mm ss))
+     ([y m d hh mm ss millis]
+      (UtcDateTime.  y (dec m) d hh mm ss millis))))
+
+#?(:clj
+   (defn date
+     "For pattern and locale options, check `format` docstring."
+     (^org.joda.time.LocalDate []
+      (org.joda.time.LocalDate.))
+     (^org.joda.time.LocalDate [x]
+      (-to-date x))
+     (^org.joda.time.LocalDate [s {:keys [pattern locale]}]
+      (org.joda.time.LocalDate/parse s (parser pattern locale)))
+     (^org.joda.time.LocalDate [y m d]
+      (org.joda.time.LocalDate. y m d)))
+   :cljs
+   (defn date
+     "For pattern and locale options, check `format` docstring."
+     ([]
+      (goog.date.Date.))
+     ([x]
+      (-to-date x))
+     ([s {:keys [pattern locale]}]
+      (let [date (goog.date.Date. 0 0 0)]
+        (.strictParse ^DateTimeParse (parser pattern locale) s date)
+        date))
+     ([y m d]
+      (goog.date.Date. y (dec m) d))))
 
 (defn to-string
   "Returns good (e.g. RFC3339 or YYYY-MM-DD) representation for given object."
@@ -506,16 +527,16 @@
   "Defined only for Date objects. Does nil check."
   [a b]
   (and a b #?(:clj (.isBefore a b)
-              :cljs (neg? (goog.date.Date/compare a b)))))
+              :cljs (neg? (Date/compare a b)))))
 
 (defn after?
   "Defined only for Date objects. Does nil check."
   [a b]
   (and a b #?(:clj (.isAfter a b)
-              :cljs (pos? (goog.date.Date/compare a b)))))
+              :cljs (pos? (Date/compare a b)))))
 
 (defn equal?
   "Defined only for Date objects. Does nil check."
   [a b]
   (and a b #?(:clj (.isEqual a b)
-              :cljs (zero? (goog.date.Date/compare a b)))))
+              :cljs (zero? (Date/compare a b)))))

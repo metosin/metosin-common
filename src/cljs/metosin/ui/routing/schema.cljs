@@ -28,14 +28,14 @@
 
 (defrecord SchemaQueryParams [schema coercer]
   silk/Pattern
-  (-match [this that]
+  (-match [_this that]
     (coercer
       (persistent!
         (reduce-kv (fn [acc k v]
                      (assoc! acc (keyword k) v))
                    (transient (empty that))
                    that))))
-  (-unmatch [this that]
+  (-unmatch [_this that]
     (persistent!
       (reduce-kv (fn [acc k v]
                    (assoc! acc (name k) (to-url-param v)))

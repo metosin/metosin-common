@@ -35,6 +35,7 @@
 ;;
 
 (defn- chan? [v]
+  #_{:clj-kondo/ignore [:unresolved-symbol]}
   (instance? cljs.core.async.impl.channels.ManyToManyChannel v))
 
 (defn- query-params [match]
